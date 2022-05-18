@@ -4,12 +4,15 @@ import styles from './styles'
 import { TouchableOpacity } from 'react-native'
 import {Ionicons} from '@expo/vector-icons'
 import { getLikeById, updateLike } from '../../../services/posts'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import {throttle} from 'throttle-debounce'
+import { openCommentModal } from '../../../redux/actions/modal'
 
 export default function PostSingleOverlay({user, post}) {
 
   const currentUser = useSelector((state) => state.auth.currentUser)
+
+  const dispatch = useDispatch()
 
   const [currentLikeState, setCurrentLikeState] = useState({state: false, counter: post.likesCount})
 
@@ -21,7 +24,7 @@ export default function PostSingleOverlay({user, post}) {
       })
     })
   }, [])
-  
+
   const handleUpdateLike = useMemo(
     () =>
       throttle(500, (currentLikeStateInst) => {
@@ -44,10 +47,16 @@ export default function PostSingleOverlay({user, post}) {
       </View>
 
       <View style={styles.leftContainer}>
-        <Image style={styles.avatar} source={{uri: user?.photoURL}}/>
+        <Image style={[styles.avatar]} source={{uri: user?.photoURL}}/>
+
         <TouchableOpacity style={styles.actionButton} onPress={() => handleUpdateLike(currentLikeState)}>
-          <Ionicons color="white" size={40} name={currentLikeState.state ? 'heart' : "heart-outline"}/>
+          <Ionicons color={currentLikeState.state ? "red" : "white"} size={40} name={'heart'}/>
           <Text style={styles.actionButtonText}>{currentLikeState.counter}</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.actionButton} onPress={() => dispatch(openCommentModal(true, post))}>
+          <Ionicons color="white" size={35} name={"chatbubble"}/>
+          <Text style={styles.actionButtonText}>{post.commentsCount}</Text>
         </TouchableOpacity>
       </View>
     </View>
