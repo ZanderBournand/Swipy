@@ -25,7 +25,7 @@ export const saveUserField= (field, value) => new Promise((resolve, reject) => {
             .catch(() => reject())
 })
 
-export const queryUsersByEmail= (name) => new Promise((resolve, reject) => {
+export const queryUsersByDisplayName= (name) => new Promise((resolve, reject) => {
     if (name === '') {
         resolve([])
     }
@@ -41,6 +41,38 @@ export const queryUsersByEmail= (name) => new Promise((resolve, reject) => {
                 return {id, ...data }
             })
             resolve(users)
+        })
+        .catch(() => reject())
+})
+
+export const queryUsersByEmail = (email) => new Promise((resolve, reject) => {
+    if (email === '') {
+        resolve([])
+    }
+
+    firebase.firestore()
+        .collection('user')
+        .where('email', '>=', email)
+        .where('email', '<=', email + '\uf8ff')
+        .get()
+        .then((snapshot) => {
+            let users = snapshot.docs.map(doc => {
+                const data = doc.data();
+                const id = doc.id;
+                return { id, ...data }
+            })
+            resolve(users)
+        })
+        .catch(() => reject())
+})
+
+export const getUserById= (id) => new Promise((resolve, reject) => {
+    firebase.firestore()
+        .collection('user')
+        .doc(id)
+        .get()
+        .then((snapshot) => {
+            resolve(snapshot.exists ? snapshot.data() : null)
         })
         .catch(() => reject())
 })

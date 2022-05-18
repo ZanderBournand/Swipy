@@ -4,7 +4,7 @@ import styles from './styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { FlatList } from 'react-native'
 import SearchUserItem from '../../components/search/userItem'
-import { queryUsersByEmail } from '../../services/user'
+import { queryUsersByDisplayName} from '../../services/user'
 
 export default function SearchScreen() {
 
@@ -12,7 +12,7 @@ export default function SearchScreen() {
   const [searchUsers, setSearchUsers] = useState([])
 
   useEffect(() => {
-      queryUsersByEmail(textInput, setTextInput)
+      queryUsersByDisplayName(textInput, setTextInput)
       .then(setSearchUsers)
   }, [textInput])
 

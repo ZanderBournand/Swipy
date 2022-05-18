@@ -11,7 +11,7 @@ export default function ProfilePostListItem({ item }) {
         <Image style={styles.image} source={{uri: item.media[1]}} onLoadStart={() => {setLoading(true)}} onLoadEnd={() => {setLoading(false)}}/>
         {loading ?
           <View style={styles.loader}>
-            <ActivityIndicator size="small" color="white"/>
+            <ActivityIndicator size="small" color="gray"/>
           </View>
           :
           <></>

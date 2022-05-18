@@ -3,10 +3,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1 / 3,
         height: 200,
-        backgroundColor: 'gray',
+        backgroundColor: 'white',
+        justifyContent: 'center'
     },
     image: {
-        flex: 1
+        flex: 1,
     },
     loader: {
         position: "absolute",

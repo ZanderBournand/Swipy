@@ -3,10 +3,13 @@ import React, {useRef, forwardRef, useImperativeHandle, useEffect} from 'react'
 import styles from './styles'
 import {Video} from 'expo-av'
 import { useIsFocused } from '@react-navigation/core'
+import { useUser } from '../../hooks/useUser'
+import PostSingleOverlay from './overlay'
 
 export const PostSingle = forwardRef(({item}, parentRef) => {
  
   const ref = useRef(null)
+  const user = useUser(item.creator).data
 
   let outOfBounds = useRef(false)
 
@@ -93,15 +96,19 @@ export const PostSingle = forwardRef(({item}, parentRef) => {
   }
 
   return (
-    <Video
-        ref={ref}
-        style={styles.container}
-        shouldPlay={false}
-        isLooping
-        usePoster
-        posterSource={{ uri: item.media[1] }}
-        source={{uri: item.media[0]}}
-    />
+    <>
+      <PostSingleOverlay user={user} post={item}/>
+      <Video
+          ref={ref}
+          style={styles.container}
+          resizeMode="cover"
+          shouldPlay={false}
+          isLooping
+          usePoster
+          posterSource={{ uri: item.media[1] }}
+          source={{uri: item.media[0]}}
+      />
+    </>
   )
 })
 
