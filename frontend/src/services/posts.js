@@ -86,3 +86,18 @@ export const updateLike = (postId, uid, currentLikeState) => {
       commentListenerInstance = null;
     }
   }
+
+  export const getPostsByUserId = (uid = firebase.auth().currentUser.uid) => new Promise((resolve, reject) => {
+    firebase.firestore()
+      .collection('post')
+      .where('creator', '==', uid)
+      .orderBy('creation', 'desc')
+      .onSnapshot((snapshot) => {
+        let posts = snapshot.docs.map(doc => {
+          const data = doc.data()
+          const id = doc.id
+          return { id, ...data }
+        })
+        resolve(posts)
+      })
+  })

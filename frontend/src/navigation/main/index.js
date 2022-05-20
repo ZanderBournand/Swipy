@@ -10,6 +10,8 @@ import SavePostScreen from '../../screens/savePost';
 import EditProfileScreen from '../../screens/profile/edit';
 import EditProfileFieldScreen from '../../screens/profile/edit/field';
 import Modal from '../../components/modal';
+import ProfileScreen from '../../screens/profile';
+import FeedScreen from '../../screens/feed';
 
 const Stack = createStackNavigator()
 
@@ -37,6 +39,8 @@ export default function Route() {
                 <>
                   <Stack.Screen name="home" component={HomeScreen} options={{headerShown: false}} />
                   <Stack.Screen name="savePost" component={SavePostScreen} options={{headerShown: false}} />
+                  <Stack.Screen name="userPosts" component={FeedScreen} options={{headerShown: false}} />
+                  <Stack.Screen name="profileOther" component={ProfileScreen} options={{headerShown: false}} />
                   <Stack.Screen name="editProfile" component={EditProfileScreen} options={{headerShown: false}} />
                   <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{headerShown: false}} />
                 </>

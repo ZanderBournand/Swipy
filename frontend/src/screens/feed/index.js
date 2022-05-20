@@ -1,16 +1,18 @@
-import { View, Text, StatusBar } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity } from 'react-native'
 import React, {useRef, useEffect, useState} from 'react'
 import styles from './styles'
 import { FlatList } from 'react-native'
 import { Dimensions } from 'react-native'
 import PostSingle from '../../components/post'
-import { getFeed } from '../../services/posts'
+import { getFeed, getPostsByUserId } from '../../services/posts'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/core'
 import * as Device from 'expo-device';
 import { hasNotch } from '../../services/notch'
 
-export default function FeedScreen() {
+export default function FeedScreen({route}) {
+
+  const {setCurrentUserProfileItemInView, creator, profile} = route.params
 
   const [posts, setPosts] = useState([])
 
@@ -25,7 +27,12 @@ export default function FeedScreen() {
     notch = hasNotch();
     if (notch)
         setOffset(Dimensions.get('window').height - 88)
-    getFeed().then(setPosts)
+    if(profile) {
+      getPostsByUserId(creator).then(setPosts)
+    }
+    else {
+      getFeed().then(setPosts)
+    }
   }, [])
 
   function FocusAwareStatusBar(props) {
@@ -39,6 +46,9 @@ export default function FeedScreen() {
           const cell = mediaRefs.current[element.key]
           if(cell){
               if(element.isViewable){
+                  if(!profile){
+                    setCurrentUserProfileItemInView(element.item.creator)
+                  }
                   cell.play()
               }
               else{
@@ -47,10 +57,6 @@ export default function FeedScreen() {
           }
       })
   })
-
-  useEffect(() => {
-
-  }, [isFocused])
 
   const renderItem = ({item, index}) => {
     return (

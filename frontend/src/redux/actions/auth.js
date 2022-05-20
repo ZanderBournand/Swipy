@@ -50,3 +50,13 @@ export const register = (email, password) => dispatch => new Promise((resolve, r
         })
 })
 
+export const logout = () => dispatch => new Promise((resolve, reject) => {
+    firebase.auth().signOut()
+        .then(() => {
+            resolve()
+        })
+        .catch(() => {
+            reject()
+        })
+})
+

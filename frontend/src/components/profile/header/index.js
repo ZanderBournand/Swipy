@@ -5,6 +5,7 @@ import { buttonStyles } from '../../../styles'
 import styles from './styles'
 import { useNavigation } from '@react-navigation/native'
 import { Image } from 'react-native'
+import firebase from 'firebase'
 
 export default function ProfileHeader({ user }) {
   
@@ -16,7 +17,7 @@ export default function ProfileHeader({ user }) {
     <View style={styles.container}>
       {true ?
         <View>
-          <Image style={styles.userImage} source={{uri: user.photoURL}} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/>
+          <Image style={styles.userImage} source={{uri: user?.photoURL}} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/>
           {imageLoading ?
             <ActivityIndicator style={styles.loader} size="small" color="white" />
             :
@@ -26,7 +27,7 @@ export default function ProfileHeader({ user }) {
         :
         <Avatar.Icon size={80} icon={"account"}/>
       }
-      <Text style={styles.emailText}>{user.email}</Text>
+      <Text style={styles.emailText}>{user?.email}</Text>
       <View style={styles.counterContainer}>
           <View style={styles.counterItemContainer}>
               <Text style={styles.counterNumberText}>0</Text>
@@ -43,10 +44,15 @@ export default function ProfileHeader({ user }) {
               <Text style={styles.counterLabelText}>Likes</Text>
           </View>
       </View>
-
-      <TouchableOpacity style={buttonStyles.grayOutlinedButton} onPress={() => navigation.navigate('editProfile')}>
-        <Text>Edit Profile</Text>
-      </TouchableOpacity>
+      
+      {user?.uid === firebase.auth().currentUser.uid ?
+        <TouchableOpacity style={buttonStyles.grayOutlinedButton} onPress={() => navigation.navigate('editProfile')}>
+          <Text>Edit Profile</Text>
+        </TouchableOpacity>
+        :
+        <></>
+      }
+      
     </View>
   )
 }

@@ -6,6 +6,8 @@ import CameraScreen from '../../screens/camera';
 import ProfileScreen from '../../screens/profile';
 import SearchScreen from '../../screens/search';
 import FeedScreen from '../../screens/feed';
+import FeedNavigation from '../feed';
+import firebase from 'firebase'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -18,7 +20,7 @@ export default function HomeScreen() {
     <Tab.Navigator barStyle={{backgroundColor: 'black'}} initialRouteName="feed">
         <Tab.Screen 
             name="feed" 
-            component={FeedScreen}
+            component={FeedNavigation}
             options={{
                 tabBarIcon: ({color}) => (
                     <Feather name="home" size={24} color={color}/>
@@ -60,6 +62,7 @@ export default function HomeScreen() {
                     <Feather name="user" size={24} color={color}/>
                 )
             }}
+            initialParams={{initialUserId: firebase.auth().currentUser.uid}}
         />
     </Tab.Navigator>
   )
