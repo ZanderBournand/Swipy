@@ -10,10 +10,12 @@ export default function SearchUserItem({ item }) {
 
   const navigation = useNavigation()
 
+  const [imageLoading, setImageLoading] = useState(false)
+
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('profileOther', {initialUserId: item?.uid})}>
       <Text style={styles.text}>{item.displayName}</Text>
-      <Image style={styles.image} source={{uri: item.photoURL}}/>
+      <Image style={styles.image} source={{ uri: item?.photoURL }} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/>
     </TouchableOpacity>
   )
 }

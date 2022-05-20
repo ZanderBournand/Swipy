@@ -29,7 +29,7 @@ export default function ProfileNavBar({ user }) {
         <Feather name="search" size={20}/>
       </TouchableOpacity>
       <Text style={styles.text}>{user?.displayName}</Text>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => handleLogout()}>
         <Feather name="menu" size={24}/>
       </TouchableOpacity>
     </View>

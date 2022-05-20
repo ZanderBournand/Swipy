@@ -34,7 +34,7 @@ export default function EditProfileScreen() {
       <NavBarGeneral />
       <View style={styles.imageContainer}> 
         <TouchableOpacity style={styles.imageViewContainer} onPress={() => chooseImage()}>
-            <Image style={styles.image} source={{uri: auth.currentUser.photoURL}} onLoadStart={() => {setLoading(true)}} onLoadEnd={() => {setLoading(false)}} /> 
+            <Image style={styles.image} source={{ uri: auth.currentUser?.photoURL }} onLoadStart={() => {setLoading(true)}} onLoadEnd={() => {setLoading(false)}}/>
             <View style={styles.imageOverlay}/>
             {loading ?
                 <ActivityIndicator size="small" color="white"/>

@@ -1,5 +1,5 @@
 import { View, Text, TextInput, TouchableOpacity } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { Image } from 'react-native'
 import {useSelector} from 'react-redux'
 import styles from './styles'
@@ -8,12 +8,15 @@ import { addComment, clearCommentListener, commentListener } from '../../../serv
 import { FlatList } from 'react-native'
 import CommentItem from './item'
 import generalStyles from '../../../styles/generalStyles'
+import { CommentOffsetContext } from '../../../Context/CommentContext'
 
 const CommentModal = ({ post }) => {
 
   const [comment, setComment] = useState('')
   const [commentList, setCommentList] = useState('')
   const currentUser = useSelector(state => state.auth.currentUser)
+
+  const {commentOffset, setCommentOffset} = useContext(CommentOffsetContext)
 
   useEffect(() => {
     commentListener(post.id, setCommentList)
@@ -26,6 +29,7 @@ const CommentModal = ({ post }) => {
       }
       setComment('')
       addComment(post.id, currentUser.uid, comment)
+      setCommentOffset(commentOffset + 1)
   }
 
   const renderItem = ({item}) => {

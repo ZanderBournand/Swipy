@@ -1,6 +1,8 @@
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import React, {createContext, useState} from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import { useDispatch } from 'react-redux'
 import { Feather } from '@expo/vector-icons';
 import CameraScreen from '../../screens/camera';
 import ProfileScreen from '../../screens/profile';
@@ -12,7 +14,10 @@ import firebase from 'firebase'
 const Tab = createMaterialBottomTabNavigator();
 
 const EmptyScreen = () => {
-    return <View></View>
+
+    return (
+        <View></View>
+    )
 }
 
 export default function HomeScreen() {
