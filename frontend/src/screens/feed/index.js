@@ -9,7 +9,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/core'
 import * as Device from 'expo-device';
 import { hasNotch } from '../../services/notch'
-import { CurrentUserProfileItemInViewContext } from '../../navigation/feed'
+import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 
 export default function FeedScreen({route}) {
 

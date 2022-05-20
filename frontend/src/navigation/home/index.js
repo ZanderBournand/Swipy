@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React from 'react'
+import React, {createContext, useState} from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import { Feather } from '@expo/vector-icons';
 import CameraScreen from '../../screens/camera';

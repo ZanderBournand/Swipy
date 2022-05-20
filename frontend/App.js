@@ -9,11 +9,12 @@ import thunk from 'redux-thunk'
 import rootReducer from './src/redux/reducers'
 
 import Constants from 'expo-constants'
+import React, {createContext, useState} from 'react'
 import firebase from 'firebase/app'
 import AuthScreen from './src/screens/auth';
 import Route from "./src/navigation/main";
-import { AsyncStorage } from "react-native";
 import { QueryClient, QueryClientProvider } from "react-query";
+import {UserContext} from './src/Context/UserContext'
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -26,12 +27,15 @@ const queryClient = new QueryClient({
 })
 
 export default function App() {
+
   return (
     StatusBar.setBarStyle('default', true),
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <Route />
-      </QueryClientProvider>
+      <UserContext>
+        <QueryClientProvider client={queryClient}>
+          <Route />
+        </QueryClientProvider>
+      </UserContext>
     </Provider>
   );
 }
