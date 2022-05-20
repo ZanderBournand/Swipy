@@ -13,9 +13,9 @@ const FeedNavigation = () => {
   const [currentUserProfileItemInView, setCurrentUserProfileItemInView] = useState(null)
 
   return (
-    <CurrentUserProfileItemInViewContext.Provider value={currentUserProfileItemInView}>
-      <Navigator style={{backgroundColor:'red'}} sinitialRouteName="feedList" tabBar={() => <></>}>
-        <Screen name="feedList" component={FeedScreen} initialParams={{setCurrentUserProfileItemInView, profile: false}}/>
+    <CurrentUserProfileItemInViewContext.Provider value={{contextUser: currentUserProfileItemInView, setCurrentUserProfileItemInView}}>
+      <Navigator style={{backgroundColor:'red'}} initialRouteName="feedList" tabBar={() => <></>}>
+        <Screen name="feedList" component={FeedScreen} initialParams={{profile: false}}/>
         <Screen name="feedProfile" component={ProfileScreen} initialParams={{initialUserId: null}}/>
       </Navigator>
     </CurrentUserProfileItemInViewContext.Provider>

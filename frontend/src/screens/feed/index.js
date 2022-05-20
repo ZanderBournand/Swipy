@@ -1,5 +1,5 @@
 import { View, Text, StatusBar, TouchableOpacity } from 'react-native'
-import React, {useRef, useEffect, useState} from 'react'
+import React, {useRef, useEffect, useState, useContext} from 'react'
 import styles from './styles'
 import { FlatList } from 'react-native'
 import { Dimensions } from 'react-native'
@@ -9,10 +9,13 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/core'
 import * as Device from 'expo-device';
 import { hasNotch } from '../../services/notch'
+import { CurrentUserProfileItemInViewContext } from '../../navigation/feed'
 
 export default function FeedScreen({route}) {
 
-  const {setCurrentUserProfileItemInView, creator, profile} = route.params
+  const {creator, profile} = route.params
+
+  const { setCurrentUserProfileItemInView } = useContext(CurrentUserProfileItemInViewContext)
 
   const [posts, setPosts] = useState([])
 
