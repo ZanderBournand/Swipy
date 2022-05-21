@@ -10,6 +10,8 @@ import { useIsFocused } from '@react-navigation/core'
 import * as Device from 'expo-device';
 import { hasNotch } from '../../services/notch'
 import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
+import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export default function FeedScreen({route}) {
 
@@ -18,8 +20,7 @@ export default function FeedScreen({route}) {
   const { setCurrentUserProfileItemInView } = useContext(CurrentUserProfileItemInViewContext)
 
   const [posts, setPosts] = useState([])
-
-  const [offset, setOffset] = useState(Dimensions.get('window').height - 54)
+  
   const mediaRefs = useRef([])
 
   const isFocused = useIsFocused()
@@ -28,8 +29,6 @@ export default function FeedScreen({route}) {
 
   useEffect(() => {
     notch = hasNotch();
-    if (notch)
-        setOffset(Dimensions.get('window').height - 88)
     if(profile) {
       getPostsByUserId(creator).then(setPosts)
     }
@@ -61,10 +60,12 @@ export default function FeedScreen({route}) {
       })
   })
 
+  const feedItemListHeight = Dimensions.get('window').height - useMaterialNavBarHeight(profile)
+
   const renderItem = ({item, index}) => {
     return (
-        <View style={{ flex: 1, height: offset, backgroundColor: 'black'}}>
-            <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)}/>
+        <View style={{flex: 1, height: feedItemListHeight, backgroundColor: 'black' }}>
+          <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)}/>
         </View>
       )
   }

@@ -6,12 +6,41 @@ import styles from './styles'
 import { useNavigation } from '@react-navigation/native'
 import { Image } from 'react-native'
 import firebase from 'firebase'
+import {Feather} from '@expo/vector-icons'
+import { useFollowing } from '../../../hooks/useFollowing'
+import { useFollowingMutation } from '../../../hooks/useFollowingMutation'
 
 export default function ProfileHeader({ user }) {
   
   let [imageLoading, setImageLoading] = useState(false)
 
   const navigation = useNavigation();
+
+  const isFollowing = useFollowing(firebase.auth().currentUser.uid, user?.uid).data
+  const isFollowingMutation = useFollowingMutation()
+
+  const renderFollownButton = () => {
+
+    if(isFollowing) {
+      return (
+        <View style={{flexDirection: 'row'}}>
+          <TouchableOpacity style={buttonStyles.grayOutlinedButton}>
+            <Text style={buttonStyles.grayOutlinedButtonText}>Message</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={buttonStyles.grayOutlinedIconButton} onPress={() => isFollowingMutation.mutate({otherUserId: user.uid, isFollowing})}>
+            <Feather name='user-check' size={20}/>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+    else {
+      return (
+        <TouchableOpacity style={buttonStyles.filledButton} onPress={() => isFollowingMutation.mutate({otherUserId: user.uid, isFollowing})}>
+          <Text style={buttonStyles.filledButtonText}>Follow</Text>
+        </TouchableOpacity>
+      )
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -47,10 +76,10 @@ export default function ProfileHeader({ user }) {
       
       {user?.uid === firebase.auth().currentUser.uid ?
         <TouchableOpacity style={buttonStyles.grayOutlinedButton} onPress={() => navigation.navigate('editProfile')}>
-          <Text>Edit Profile</Text>
+          <Text style={buttonStyles.grayOutlinedButtonText}>Edit Profile</Text>
         </TouchableOpacity>
         :
-        <></>
+        renderFollownButton()
       }
       
     </View>
