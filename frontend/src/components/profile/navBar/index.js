@@ -7,7 +7,7 @@ import { logout } from '../../../redux/actions'
 import { useNavigation } from '@react-navigation/native'
 import {SafeAreaView} from 'react-native-safe-area-context'
 
-export default function ProfileNavBar({ user }) {
+export default function ProfileNavBar({ user, searched }) {
 
   const dispatch = useDispatch()
 
@@ -23,10 +23,16 @@ export default function ProfileNavBar({ user }) {
     })
   }
 
+  const handleNavigationGoBack = () => {
+    if(searched){
+      navigation.goBack();
+    }
+  }
+
   return (
     <View style={styles.container}> 
-      <TouchableOpacity>
-        <Feather name="search" size={20}/>
+      <TouchableOpacity onPress={() => {handleNavigationGoBack()}}>
+        <Feather name={searched ? "arrow-left" : "search"} size={20}/>
       </TouchableOpacity>
       <Text style={styles.text}>{user?.displayName}</Text>
       <TouchableOpacity onPress={() => handleLogout()}>

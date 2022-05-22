@@ -14,7 +14,7 @@ import { getPostsByUserId } from '../../services/posts'
 export default function ProfileScreen({route}) {
 
   const [userPosts, setUserPosts] = useState([])
-  const {initialUserId} = route.params;
+  const {initialUserId, searched} = route.params;
 
   const { contextUser } = useContext(CurrentUserProfileItemInViewContext)
 
@@ -29,7 +29,7 @@ export default function ProfileScreen({route}) {
 
   return (
     <View style={styles.container}>
-      <ProfileNavBar user={user}/>
+      <ProfileNavBar user={user} searched={searched != null ? searched : false}/>
       <ProfileHeader user={user}/>
       <ProfilePostList posts={userPosts}/>
     </View>

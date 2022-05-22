@@ -24,7 +24,7 @@ export default function ProfileHeader({ user }) {
     if(isFollowing) {
       return (
         <View style={{flexDirection: 'row'}}>
-          <TouchableOpacity style={buttonStyles.grayOutlinedButton}>
+          <TouchableOpacity style={buttonStyles.grayOutlinedButton} onPress={() => navigation.navigate('chatSingle', {contactId: user.uid})}>
             <Text style={buttonStyles.grayOutlinedButtonText}>Message</Text>
           </TouchableOpacity>
           <TouchableOpacity style={buttonStyles.grayOutlinedIconButton} onPress={() => isFollowingMutation.mutate({otherUserId: user.uid, isFollowing})}>

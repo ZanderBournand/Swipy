@@ -57,7 +57,7 @@ export default function PostSingleOverlay({user, post}) {
       </View>
 
       <View style={styles.leftContainer}>
-        <TouchableOpacity onPress={() => navigation.navigate('profileOther', {initialUserId: user?.uid})}>
+        <TouchableOpacity onPress={() => navigation.navigate('profileOther', {initialUserId: user?.uid, searched: true})}>
           <Image style={[styles.avatar]} source={{ uri: user?.photoURL}}/>
         </TouchableOpacity>
 
