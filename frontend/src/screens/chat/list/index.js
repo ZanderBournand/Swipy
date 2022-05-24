@@ -17,7 +17,7 @@ const ChatScreen = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: '#E4E4E4', flex: 1,}}>
         <NavBarGeneral leftButton={{display: false}} title='Direct messages'/>
         <FlatList 
             data={chats}

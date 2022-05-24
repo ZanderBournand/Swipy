@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import React, {useState, useEffect, useContext} from 'react'
 import { Image } from 'react-native'
 import {useSelector} from 'react-redux'
@@ -9,6 +9,8 @@ import { FlatList } from 'react-native'
 import CommentItem from './item'
 import generalStyles from '../../../styles/generalStyles'
 import { CommentOffsetContext } from '../../../Context/CommentContext'
+import {SafeAreaView} from 'react-native-safe-area-context'
+import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 
 const CommentModal = ({ post }) => {
 
@@ -37,20 +39,20 @@ const CommentModal = ({ post }) => {
   }
 
   return (
-    <View style={styles.container}>
-        <FlatList
+    <SafeAreaView style={styles.container}>
+      <FlatList
             data={commentList}
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-        />
+      />
       <View style={styles.containerInput}>
         <Image style={generalStyles.avatarSmall} source={{uri: currentUser.photoURL}}/>
-        <TextInput style={styles.input} value={comment} onChangeText={setComment} placeholder="Add comment..."/>
+        <BottomSheetTextInput style={styles.input} value={comment} onChangeText={setComment} placeholder="Add comment..."/>
         <TouchableOpacity onPress={() => handleCommentSend()}>
             <Ionicons name='arrow-up-circle' size={34} color={'crimson'}/>
         </TouchableOpacity>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

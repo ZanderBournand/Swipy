@@ -4,6 +4,7 @@ import styles from './styles'
 import {useUser} from '../../../../hooks/useUser'
 import firebase from 'firebase'
 import { useNavigation } from '@react-navigation/native'
+import truncateString from '../../../../hooks/truncateString'
 
 const ChatListItem = ({chat}) => {
 
@@ -16,7 +17,7 @@ const ChatListItem = ({chat}) => {
       <Image style={styles.image} source={{uri: userData?.photoURL}}/>
       <View style={{flex: 1}}>
         <Text style={styles.userDisplayName}>{userData?.displayName}</Text>
-        <Text style={styles.lastMessage}>{chat.lastMessage}</Text>
+        <Text style={styles.lastMessage}>{truncateString(chat.lastMessage)}</Text>
       </View>
       <Text style={styles.date}>{chat.lastUpdate ? new Date(chat.lastUpdate.seconds * 1000).toISOString().slice(0, 10) : 'Now'}</Text>
     </TouchableOpacity>

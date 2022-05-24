@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
 import React, {useState, useEffect, useContext} from 'react'
 import { Image } from 'react-native'
 import {useSelector} from 'react-redux'
@@ -34,17 +34,21 @@ const ChatSingleScreen = ({ route }) => {
   return (
     <SafeAreaView style={styles.container}>
       <NavBarGeneral title="Chat"/>
+      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{flex: 1}}>
         <FlatList
-            data={messages}
-            renderItem={renderItem}
-            keyExtractor={(item) => item.id}
+              data={messages}
+              inverted={-1}
+              removeClippedSubviews
+              renderItem={renderItem}
+              keyExtractor={(item) => item.id}
         />
-      <View style={styles.containerInput}>
-        <TextInput style={styles.input} value={message} onChangeText={setMessage} placeholder="Send a message..."/>
-        <TouchableOpacity onPress={() => handleCommentSend()}>
-            <Ionicons name='arrow-up-circle' size={34} color={'crimson'}/>
-        </TouchableOpacity>
-      </View>
+        <View style={styles.containerInput}>
+          <TextInput style={styles.input} value={message} onChangeText={setMessage} placeholder="Send a message..."/>
+          <TouchableOpacity onPress={() => handleCommentSend()}>
+              <Ionicons name='arrow-up-circle' size={34} color={'crimson'}/>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   )
 }

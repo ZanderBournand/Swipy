@@ -19,7 +19,7 @@ const ChatSingleItem = ({item}) => {
     <View style={isCurrentUser ? styles.containerCurrent : styles.containerOther}>
       <Image style={generalStyles.avatarSmall} source={{uri: userData?.photoURL}}/>
 
-      <View style={isCurrentUser ? styles.containerTextCurrent : styles.containerOther}>
+      <View style={isCurrentUser ? styles.containerTextCurrent : styles.containerTextOther}>
         <Text style={styles.text}>{item.message}</Text>
       </View>
 

@@ -1,14 +1,19 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
-        padding: 14,
+        paddingHorizontal: 20,
+        paddingVertical: 12,
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginHorizontal: 12,
+        marginVertical: 4,
+        backgroundColor: 'white',
+        borderRadius: 10,
     },
     image: {
-        height: 60,
+        height: 50,
         aspectRatio: 1,
-        borderRadius: 30,
+        borderRadius: 25,
         marginRight: 16,
         backgroundColor: 'gray',
     },
@@ -19,6 +24,10 @@ const styles = StyleSheet.create({
     lastMessage: {
         fontSize: 13,
         color: 'gray',
+    },
+    date: {
+        fontSize: 13,
+        
     }
 });
 
