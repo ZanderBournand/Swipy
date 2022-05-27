@@ -39,7 +39,7 @@ const ModalScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} resizeMode="contain" source={require("../../../assets/SWIPY.png")}/>
+      <Image style={styles.image} resizeMode="contain" source={require("../../../assets/swipy-pink-pink.png")}/>
       <Text style={styles.textWelcome}>Welcome to Swipy</Text>
       <Text style={styles.step}>Step 1: The Profile Pic</Text>
       <TouchableOpacity style={styles.imageViewContainer} onPress={() => chooseImage()}>

@@ -5,7 +5,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         paddingVertical: 15,
         borderBottomWidth: 1,
-        borderColor: 'lightgray'
+        borderColor: 'lightgray',
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     text: {
         fontSize: 16,
@@ -13,7 +15,12 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
         fontWeight: 'bold'
-    }
+    },
+    button: {
+        height: 25,
+        width: 25,
+        justifyContent: 'center'
+    },
 });
 
 export default styles;

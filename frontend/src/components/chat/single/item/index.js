@@ -13,7 +13,7 @@ const ChatSingleItem = ({item}) => {
     return <></>
   }
 
-  const isCurrentUser = item.creator === firebase.auth().currentUser.uid
+  const isCurrentUser = item.creator === firebase.auth().currentUser?.uid
 
   return (
     <View style={isCurrentUser ? styles.containerCurrent : styles.containerOther}>

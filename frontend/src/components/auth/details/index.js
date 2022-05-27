@@ -61,7 +61,7 @@ export default function AuthDetails({authPage, setDetailsPage}) {
           <Text style={styles.buttonText}>{authPage == 0 ? 'Sign In' : 'Sign Up'}</Text>
       </TouchableOpacity>
       {isLoading ? 
-        <ActivityIndicator size="large" color="red" style={styles.loadingIndicator} />
+        <ActivityIndicator size="large" color="#fd7aa3" style={styles.loadingIndicator} />
         :
         <></>
       }

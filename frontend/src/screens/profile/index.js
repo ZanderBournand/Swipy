@@ -1,5 +1,5 @@
 import { View, Text } from 'react-native'
-import React, {useContext, useEffect, useState} from 'react'
+import React, {useContext, useEffect, useState, useRef} from 'react'
 import { useSelector } from 'react-redux'
 import styles from './styles'
 import ProfileNavBar from '../../components/profile/navBar'

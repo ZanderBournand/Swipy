@@ -14,13 +14,16 @@ import ProfileScreen from '../../screens/profile';
 import FeedScreen from '../../screens/feed';
 import ChatSingleScreen from '../../screens/chat/single';
 import ModalScreen from '../../screens/modal';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import DrawerScreen from '../../screens/drawer';
 
 const Stack = createStackNavigator()
 const Stack2 = createStackNavigator()
+const Drawer = createDrawerNavigator()
 
 const Test = () => {
   return (
-    <Stack2.Navigator>
+    <Stack2.Navigator mode="card">
       <Stack.Screen name="home" component={HomeScreen} options={{headerShown: false}} />
       <Stack.Screen name="savePost" component={SavePostScreen} options={{headerShown: false}} />
       <Stack.Screen name="userPosts" component={FeedScreen} options={{headerShown: false}} />
@@ -29,6 +32,19 @@ const Test = () => {
       <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{headerShown: false}} />
       <Stack.Screen name="chatSingle" component={ChatSingleScreen} options={{headerShown: false}} />
     </Stack2.Navigator>
+  )
+}
+
+const Test2 = () => {
+  return (
+    <Drawer.Navigator 
+      screenOptions={{swipeEnabled: false}} 
+      drawerPosition="right" 
+      drawerContent={props => <DrawerScreen {...props}/> }
+      drawerStyle={{width: '60%'}}
+    >
+      <Drawer.Screen name="wow" component={Test}/>
+    </Drawer.Navigator>
   )
 }
 
@@ -51,11 +67,11 @@ export default function Route() {
     <NavigationContainer>
         <Stack.Navigator mode="modal" screenOptions={{cardOverlayEnabled: true, ...TransitionPresets.ModalPresentationIOS}}>
             {currentUserObj.currentUser == null ?       
-                <Stack.Screen name="auth" component={AuthScreen} options={{headerShown: false}} />
+                <Stack.Screen name="auth" component={AuthScreen} options={{headerShown: false, ...TransitionPresets.SlideFromRightIOS}} />
                 :
                 <>
-                  <Stack.Screen name="nav" component={Test} options={{headerShown: false}} />
-                  <Stack.Screen name="modalLogin" component={ModalScreen} options={{headerShown: false}}/>
+                  <Stack.Screen name="nav" component={Test2} options={{headerShown: false, ...TransitionPresets.DefaultTransition}} />
+                  <Stack.Screen name="modalLogin" component={ModalScreen} options={{headerShown: false,}}/>
                 </>
             }
         </Stack.Navigator>

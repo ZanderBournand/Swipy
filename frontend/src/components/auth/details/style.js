@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         alignItems: 'center',
-        backgroundColor: 'red',
+        backgroundColor: '#fd7aa3',
     },
     buttonText: {
         color: 'white',

@@ -24,7 +24,7 @@ const FeedNavigation = () => {
   return (
     <Navigator style={{backgroundColor:'red'}} initialRouteName="feedList" tabBar={() => <></>}>
       <Screen name="feedList" component={FeedScreen} initialParams={{profile: false}}/>
-      <Screen name="feedProfile" component={ProfileScreen} initialParams={{initialUserId: null}}/>
+      <Screen name="feedProfile" component={ProfileScreen} initialParams={{initialUserId: null, searched: true}}/>
     </Navigator>
   )
 }

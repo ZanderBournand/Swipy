@@ -72,7 +72,7 @@ export default function HomeScreen() {
                     <Feather name="user" size={24} color={color}/>
                 )
             }}
-            initialParams={{initialUserId: firebase.auth().currentUser.uid}}
+            initialParams={{initialUserId: firebase.auth().currentUser?.uid}}
         />
     </Tab.Navigator>
   )

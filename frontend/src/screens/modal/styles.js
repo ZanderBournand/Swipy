@@ -9,17 +9,18 @@ const styles = StyleSheet.create({
     },
     textWelcome: {
         fontWeight: "bold",
-        padding: 8,
+        paddingTop: 20,
         color: '#6B7280',
         fontSize: 25,
     },
     image: {
         width: '100%',
-        height: 80,
+        marginTop: 20,
+        height: 60,
     },
     step: {
-        padding: 20,
-        color: "#BB43FF",
+        padding: 25,
+        color: "#FEACC6",
         fontWeight: "700",
         textAlign: "center",
         fontSize: 15,

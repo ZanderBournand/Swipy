@@ -87,7 +87,7 @@ export const updateLike = (postId, uid, currentLikeState) => {
     }
   }
 
-  export const getPostsByUserId = (uid = firebase.auth().currentUser.uid) => new Promise((resolve, reject) => {
+  export const getPostsByUserId = (uid = firebase.auth().currentUser?.uid) => new Promise((resolve, reject) => {
     firebase.firestore()
       .collection('post')
       .where('creator', '==', uid)
