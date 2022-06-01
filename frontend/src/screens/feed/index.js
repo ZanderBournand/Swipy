@@ -1,4 +1,4 @@
-import { View, Text, StatusBar, TouchableOpacity } from 'react-native'
+import { View, Text, StatusBar, TouchableOpacity, RefreshControl } from 'react-native'
 import React, {useRef, useEffect, useState, useContext} from 'react'
 import styles from './styles'
 import { FlatList } from 'react-native'
@@ -8,7 +8,6 @@ import { getFeed, getPostsByUserId } from '../../services/posts'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { useIsFocused } from '@react-navigation/core'
 import * as Device from 'expo-device';
-import { hasNotch } from '../../services/notch'
 import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
@@ -16,26 +15,27 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 export default function FeedScreen({route}) {
 
   const {creator, profile} = route.params
-
   const { setCurrentUserProfileItemInView } = useContext(CurrentUserProfileItemInViewContext)
-
   const [posts, setPosts] = useState([])
-  
   const mediaRefs = useRef([])
-
   const isFocused = useIsFocused()
-
-  let notch = false;
+  const [listRefresh, setListRefresh] = useState(false)
 
   useEffect(() => {
-    notch = hasNotch();
+    getData()
+  }, [])
+
+  const getData = () => {
+    setListRefresh(true)
     if(profile) {
       getPostsByUserId(creator).then(setPosts)
+      .then(() => {setListRefresh(false)})
     }
     else {
       getFeed().then(setPosts)
+      .then(() => {setListRefresh(false)})
     }
-  }, [])
+  }
 
   function FocusAwareStatusBar(props) {
     const isFocused = useIsFocused();
@@ -87,6 +87,9 @@ export default function FeedScreen({route}) {
                 keyExtractor={item => item.id}
                 decelerationRate={'fast'}
                 onViewableItemsChanged={onViewableItemsChanged.current}
+                refreshControl = {
+                  <RefreshControl refreshing={listRefresh} onRefresh={getData} tintColor='#7C7A7A' color={['#7C7A7A', '#7C7A7A']}/>
+                }
             />
     </View>
   )

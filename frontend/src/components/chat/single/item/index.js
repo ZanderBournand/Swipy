@@ -4,6 +4,7 @@ import styles from './styles'
 import generalStyles from '../../../../styles/generalStyles'
 import {useUser} from '../../../../hooks/useUser'
 import firebase from 'firebase'
+import CachedImage from "react-native-expo-cached-image"
 
 const ChatSingleItem = ({item}) => {
 
@@ -17,8 +18,8 @@ const ChatSingleItem = ({item}) => {
 
   return (
     <View style={isCurrentUser ? styles.containerCurrent : styles.containerOther}>
-      <Image style={generalStyles.avatarSmall} source={{uri: userData?.photoURL}}/>
-
+      <CachedImage style={generalStyles.avatarSmall} source={{uri: userData?.photoURL}}/>
+      {/* <Image style={generalStyles.avatarSmall} source={{uri: userData?.photoURL}}/> */}
       <View style={isCurrentUser ? styles.containerTextCurrent : styles.containerTextOther}>
         <Text style={styles.text}>{item.message}</Text>
       </View>

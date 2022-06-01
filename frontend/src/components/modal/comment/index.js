@@ -11,6 +11,7 @@ import generalStyles from '../../../styles/generalStyles'
 import { CommentOffsetContext } from '../../../Context/CommentContext'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import BottomSheet, { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import CachedImage from 'react-native-expo-cached-image'
 
 const CommentModal = ({ post }) => {
 
@@ -46,7 +47,8 @@ const CommentModal = ({ post }) => {
             keyExtractor={(item) => item.id}
       />
       <View style={styles.containerInput}>
-        <Image style={generalStyles.avatarSmall} source={{uri: currentUser.photoURL}}/>
+        <CachedImage style={generalStyles.avatarSmall} source={{uri: currentUser?.photoURL}}/>
+        {/* <Image style={generalStyles.avatarSmall} source={{uri: currentUser.photoURL}}/> */}
         <BottomSheetTextInput style={styles.input} value={comment} onChangeText={setComment} placeholder="Add comment..."/>
         <TouchableOpacity onPress={() => handleCommentSend()}>
             <Ionicons name='arrow-up-circle' size={34} color={'crimson'}/>

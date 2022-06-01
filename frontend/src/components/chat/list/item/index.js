@@ -5,6 +5,7 @@ import {useUser} from '../../../../hooks/useUser'
 import firebase from 'firebase'
 import { useNavigation } from '@react-navigation/native'
 import truncateString from '../../../../hooks/truncateString'
+import CachedImage from "react-native-expo-cached-image"
 
 const ChatListItem = ({chat}) => {
 
@@ -14,7 +15,8 @@ const ChatListItem = ({chat}) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('chatSingle', {chatId: chat.id})}>
-      <Image style={styles.image} source={{uri: userData?.photoURL}}/>
+      <CachedImage style={styles.image} source={{uri: userData?.photoURL}}/>
+      {/* <Image style={styles.image} source={{uri: userData?.photoURL}}/> */}
       <View style={{flex: 1}}>
         <Text style={styles.userDisplayName}>{userData?.displayName}</Text>
         <Text style={styles.lastMessage}>{truncateString(chat.lastMessage)}</Text>
