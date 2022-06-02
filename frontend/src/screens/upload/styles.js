@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     uploadContainer: {
         backgroundColor: '#FFECFF',
         marginHorizontal: 30,
-        borderRadius: 5,
+        borderRadius: 15,
         marginVertical: 20,
         flexDirection: 'row'
     },
@@ -38,6 +38,9 @@ const styles = StyleSheet.create({
         flex: 1.5,
         flexDirection: 'column',
         marginRight: 10,
+        marginTop: 10,
+        marginBottom: 5,
+        justifyContent: 'space-between',
     },
     uploadButton: {
         flexDirection: 'row',
@@ -45,7 +48,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-around',
         backgroundColor: '#FEACC6',
         borderRadius: 5,
-        width: 100,
+        width: 110,
         height: 35
     },
     right: {
@@ -53,6 +56,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginRight: 10
+    },
+    subContainer: {
+        paddingHorizontal: 25,
+        paddingVertical: 10,
+    },
+    tracks: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginHorizontal: 25,
+    },
+    trackCount: {
+        paddingVertical: 35,
+    },
+    allTracksButton: {
+        borderWidth: 2,
+        borderColor: 'lightgray',
+        borderRadius: 10,
+        width: 75,
+        height: 40,
+        alignItems: 'center',
+        justifyContent: 'center',
     }
 });
 
