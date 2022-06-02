@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, Dimensions} from 'react-native'
 import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {Feather} from '@expo/vector-icons'
@@ -10,6 +10,8 @@ import {useNavigation} from "@react-navigation/native"
 import BestWorkItem from '../../components/upload/bestwork'
 
 const UploadScreen = () => {
+
+  const windowHeight = Dimensions.get('window').height;
 
   const currentUser = useSelector(state => state.auth.currentUser)
   const navigation = useNavigation()
@@ -44,6 +46,14 @@ const UploadScreen = () => {
       views: '156',
       interactions: '6',
     },
+    {
+        title: 'N95',
+        date: 'Oct 17, 2021',
+        length: '3:34',
+        artwork: 'https://media.pitchfork.com/photos/627c1023d3c744a67a846260/master/pass/Kendrick-Lamar-Mr-Morale-And-The-Big-Steppers.jpg',
+        views: '78',
+        interactions: '3',
+    }
   ]
 
   return (
@@ -77,7 +87,7 @@ const UploadScreen = () => {
         </View>
         <View>
             <FlatList
-                data={mockData}
+                data={(windowHeight > 840 ? mockData.slice(0, 3) : mockData.slice(0, 2))}
                 renderItem={({item}) => (<BestWorkItem item={item}/>)}
                 keyExtractor={(item) => item.title}
                 scrollEnabled={false}

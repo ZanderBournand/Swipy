@@ -23,7 +23,7 @@ const BestWorkItem = ({ item }) => {
         <CachedImage source={{uri: item.artwork}} style={styles.artwork}/>
         <View style={styles.description}>
           <Text style={{fontFamily: 'Inter_500Medium', fontSize: 18}}>{item.title}</Text>
-          <Text style={{paddingVertical: 10, fontSize: 16}}>{item.date}</Text>
+          <Text style={{paddingVertical: 5, fontSize: 16}}>{item.date}</Text>
           <View style={styles.stats}>
             <View style={styles.statsItem}>
               <Feather name="clock" size={24} color="gray" />

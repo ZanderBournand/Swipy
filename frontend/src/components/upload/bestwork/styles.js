@@ -8,8 +8,8 @@ const styles = StyleSheet.create({
        paddingVertical: 10,
     },
     artwork: {
-        height: 100,
-        width: 100,
+        height: 85,
+        width: 85,
         borderRadius: 15,
     },
     description: {
@@ -19,7 +19,7 @@ const styles = StyleSheet.create({
     stats: {
         width: 200,
         flexDirection: 'row', 
-        paddingTop: 15,
+        paddingTop: 5,
         justifyContent: 'space-between',
     },
     statsItem: {

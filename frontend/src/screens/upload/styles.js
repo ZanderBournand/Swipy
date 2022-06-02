@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFECFF',
         marginHorizontal: 30,
         borderRadius: 15,
-        marginVertical: 20,
+        marginVertical: 10,
         flexDirection: 'row'
     },
     left: {
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         paddingHorizontal: 25,
-        paddingVertical: 10,
+        paddingVertical: 5
     },
     tracks: {
         flexDirection: 'row',
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         marginHorizontal: 25,
     },
     trackCount: {
-        paddingVertical: 35,
+        paddingVertical: 25,
     },
     allTracksButton: {
         borderWidth: 2,
