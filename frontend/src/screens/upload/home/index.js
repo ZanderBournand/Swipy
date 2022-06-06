@@ -7,7 +7,7 @@ import { useFonts, Inter_900Black, Inter_500Medium, Inter_700Bold, Inter_300Ligh
 import {useSelector} from "react-redux"
 import CachedImage from 'react-native-expo-cached-image'
 import {useNavigation} from "@react-navigation/native"
-import BestWorkItem from '../../components/upload/bestwork'
+import BestWorkItem from '../../../components/upload/bestwork'
 
 const UploadScreen = () => {
 
@@ -60,7 +60,9 @@ const UploadScreen = () => {
     <SafeAreaView style={styles.container}>
         <View style={styles.topContainer}>
             <View style={styles.titleContainer}>
-                <Feather name="arrow-up" size={30} color="black" />
+                <TouchableOpacity onPress={() => {navigation.navigate("workUpload")}}>
+                    <Feather name="arrow-up" size={30} color="black" />
+                </TouchableOpacity>
                 <Text style={[styles.title, {fontFamily: 'Inter_900Black', fontSize: 30}]}>Upload</Text>
             </View>
             <TouchableOpacity style={styles.profileContainer} onPress={() => {navigation.navigate("Me")}}>
@@ -72,14 +74,14 @@ const UploadScreen = () => {
                 <Text style={{fontFamily: 'Inter_700Bold', fontSize: 18, paddingLeft: 20, paddingTop: 10}}>New Song / Beat</Text>
                 <Text style={{fontFamily: 'Inter_500Medium', paddingLeft: 20, paddingTop: 10}}>Upload your work and start collaborating with others!</Text>
                 <View style={{paddingLeft: 20, paddingTop: 20, paddingBottom: 20}}>
-                    <TouchableOpacity style={styles.uploadButton}>
+                    <TouchableOpacity style={styles.uploadButton} onPress={() => {navigation.navigate("workUpload")}}>
                         <Feather name="upload-cloud" size={28} color="white" />
                         <Text style={{color: 'white', fontWeight: 'bold', fontSize: 18}}>Upload</Text>
                     </TouchableOpacity>
                 </View>
             </View>
             <View style={styles.right}>
-                <Image source={require('../../../assets/Swipy_Left_P.png')}/>
+                <Image source={require('../../../../assets/Swipy_Left_P.png')}/>
             </View>
         </View>
         <View style={styles.subContainer}>
@@ -90,7 +92,7 @@ const UploadScreen = () => {
                 data={(windowHeight > 840 ? mockData.slice(0, 3) : mockData.slice(0, 2))}
                 renderItem={({item}) => (<BestWorkItem item={item}/>)}
                 keyExtractor={(item) => item.title}
-                scrollEnabled={false}
+                scrollEnabled={true}
             />
         </View>
         <View style={styles.tracks}>

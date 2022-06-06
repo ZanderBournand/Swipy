@@ -11,6 +11,7 @@ import * as Device from 'expo-device';
 import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import { usePosts } from '../../hooks/usePosts'
 
 export default function FeedScreen({route}) {
 
@@ -87,9 +88,9 @@ export default function FeedScreen({route}) {
                 keyExtractor={item => item.id}
                 decelerationRate={'fast'}
                 onViewableItemsChanged={onViewableItemsChanged.current}
-                refreshControl = {
-                  <RefreshControl refreshing={listRefresh} onRefresh={getData} tintColor='#7C7A7A' color={['#7C7A7A', '#7C7A7A']}/>
-                }
+                // refreshControl = {
+                //   <RefreshControl refreshing={listRefresh} onRefresh={getData} tintColor='#7C7A7A' color={['#7C7A7A', '#7C7A7A']}/>
+                // }
             />
     </View>
   )

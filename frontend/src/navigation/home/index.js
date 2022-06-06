@@ -12,16 +12,10 @@ import FeedNavigation from '../feed';
 import firebase from 'firebase'
 import ChatScreen from '../../screens/chat/list'
 import { useChats } from '../../hooks/useChats'
-import UploadScreen from '../../screens/upload'
+import UploadScreen from '../../screens/upload/home'
+import UploadNavigation from '../upload'
 
 const Tab = createMaterialBottomTabNavigator();
-
-const EmptyScreen = () => {
-
-    return (
-        <View></View>
-    )
-}
 
 export default function HomeScreen() {
 
@@ -49,7 +43,7 @@ export default function HomeScreen() {
         />
         <Tab.Screen 
             name="Upload" 
-            component={UploadScreen}
+            component={UploadNavigation}
             options={{
                 tabBarIcon: ({color}) => (
                     <Feather name="plus-circle" size={24} color={color}/>

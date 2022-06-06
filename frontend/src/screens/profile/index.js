@@ -9,6 +9,7 @@ import {SafeAreaView} from 'react-native-safe-area-context'
 import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 import { useIsFocused } from '@react-navigation/core'
 import { useUser } from '../../hooks/useUser'
+import { usePosts } from '../../hooks/usePosts'
 import { getPostsByUserId } from '../../services/posts'
 
 export default function ProfileScreen({route}) {
@@ -20,18 +21,19 @@ export default function ProfileScreen({route}) {
 
   const user = useUser(initialUserId ? initialUserId : contextUser).data
 
+  const userPostsTest = usePosts(user?.uid).data
+
   useEffect(() => {
     if(user === undefined) {
       return;
     }
-    getPostsByUserId(user?.uid).then(setUserPosts)
   }, [user])
 
   return (
     <View style={styles.container}>
       <ProfileNavBar user={user} searched={searched != null ? searched : false}/>
       <ProfileHeader user={user}/>
-      <ProfilePostList posts={userPosts}/>
+      <ProfilePostList posts={userPostsTest}/>
     </View>
   )
 }
