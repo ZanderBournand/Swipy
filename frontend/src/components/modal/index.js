@@ -32,7 +32,7 @@ const Modal = () => {
   }
   
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={["50%"]} index={-1} handleHeight={40} enablePanDownToClose onClose={onClose} keyboardBehavior={"extend"}>
+    <BottomSheet ref={bottomSheetRef} snapPoints={["55%"]} index={-1} handleHeight={40} enablePanDownToClose onClose={onClose} keyboardBehavior={"extend"}>
       {renderContent()}
     </BottomSheet>
   )

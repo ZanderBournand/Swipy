@@ -14,6 +14,7 @@ exports.newUser = functions.auth.user().onCreate((user) => {
             uid: user.uid,
             photoURL: null,
             displayName: null,
+            workCount: 0
         })
 })
 
@@ -50,5 +51,15 @@ exports.likeDelete = functions.firestore.document('post/{id}/{type}/{uid}').onDe
     return db
         .collection("post")
         .doc(context.params.id)
+        .update(updateObj)
+})
+
+exports.workCreated = functions.firestore.document('uploads/{type}/{uid}/{id}').onCreate((_, context) => {
+    let updateObj = {
+        workCount: admin.firestore.FieldValue.increment(1)
+    }
+    return db
+        .collection("user")
+        .doc(context.params.uid)
         .update(updateObj)
 })

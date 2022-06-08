@@ -20,25 +20,27 @@ const BestWorkItem = ({ item }) => {
 
   return (
     <View style={styles.container}>
+      <View style={{flex: 1, backgroundColor: 'row'}}>
         <CachedImage source={{uri: item.artwork}} style={styles.artwork}/>
-        <View style={styles.description}>
-          <Text style={{fontFamily: 'Inter_500Medium', fontSize: 18}}>{item.title}</Text>
-          <Text style={{paddingVertical: 5, fontSize: 16}}>{item.date}</Text>
-          <View style={styles.stats}>
-            <View style={styles.statsItem}>
-              <Feather name="clock" size={24} color="gray" />
-              <Text style={{fontWeight: '600', fontSize: 16}}>{item.length}</Text>
-            </View>
-            <View style={styles.statsItem}>
-              <Feather name="play-circle" size={24} color="gray" />
-              <Text style={{fontWeight: '600', fontSize: 16}}>{item.views}</Text>
-            </View>
-            <View style={styles.statsItem}>
-              <MaterialCommunityIcons name="handshake-outline" size={24} color="gray" />
-              <Text style={{fontWeight: '600', fontSize: 16}}>{item.interactions}</Text>
-            </View>
+      </View>
+      <View style={styles.description}>
+        <Text adjustsFontSizeToFit={true} numberOfLines={1} style={{fontFamily: 'Inter_500Medium', fontSize: 18, flex: 1}}>{item.title}</Text>
+        <Text style={{paddingBottom: 15, fontSize: 16, flex: 0.7}}>{item.date}</Text>
+        <View style={styles.stats}>
+          <View style={styles.statsItem}>
+            <Feather name="clock" size={24} color="gray" />
+            <Text style={styles.statsText}>{item.length}</Text>
+          </View>
+          <View style={styles.statsItem}>
+            <Feather name="play-circle" size={24} color="gray" />
+            <Text style={styles.statsText}>{item.views}</Text>
+          </View>
+          <View style={styles.statsItem}>
+            <MaterialCommunityIcons name="handshake-outline" size={24} color="gray" />
+            <Text style={styles.statsText}>{item.interactions}</Text>
           </View>
         </View>
+      </View>
     </View>
   )
 }

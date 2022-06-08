@@ -8,6 +8,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 8,
+        //
+        flex: 1,
     }, 
     titleContainer : {
         flexDirection: 'row',
@@ -32,7 +34,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'space-around'
+        justifyContent: 'space-around',
+        //
+        flex: 0.7,
     },
     typeButton: {
         alignItems: 'center',
@@ -61,7 +65,9 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: '#222020'
+        backgroundColor: '#222020',
+        //
+        flex: 8,
     },
     fileTypeUploadContainerTop: {
         flexDirection: 'row',
@@ -71,7 +77,9 @@ const styles = StyleSheet.create({
         marginTop: 15,
         marginBottom: 7,
         borderColor: 'gray',
-        borderStyle: 'dashed'
+        borderStyle: 'dashed',
+        flex: 1,
+        width: '92%'
     },
     fileTypeUploadContainerBottom: {
         flexDirection: 'row',
@@ -81,7 +89,9 @@ const styles = StyleSheet.create({
         marginTop: 7,
         marginBottom: 15,
         borderColor: 'gray',
-        borderStyle: 'dashed'
+        borderStyle: 'dashed',
+        flex: 1,
+        width: '92%'
     },
     fileIconContainer: {
         flex: 1,
@@ -104,15 +114,14 @@ const styles = StyleSheet.create({
     },
     artOrVideoContainer: {
         flexDirection: 'row',
-        paddingVertical: 45,
-        paddingHorizontal: 22,
         alignItems: 'center',
-        justifyContent: 'center',
+        flex: 1,
+        justifyContent: 'center'
     },
     artOrVideoButton: {
-        marginHorizontal: 20,
         backgroundColor: '#FFD7E3',
         borderRadius: 15,
+        marginHorizontal: 15
     },
     artOrVideoText: {
         color: 'black', 
@@ -124,6 +133,8 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         marginLeft: 20,
         marginRight: 30,
+        //
+        flex: 3,
     },
     trackInformationTitle: {
         flexDirection: 'row',
@@ -147,11 +158,17 @@ const styles = StyleSheet.create({
         borderRadius: 5,
     },
     uploadButtonContainer: {
+        flex: 2.5,
         alignItems: 'center',
-        marginHorizontal: 80,
-        marginVertical: 20,
-        paddingVertical: 10,
+        justifyContent: 'center'
+    },
+    uploadButton: {
+        width: '40%',
+        height: '50%',
         borderRadius: 5,
+        marginVertical: 20,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     uploadButtonText: {
         fontWeight: 'bold',
@@ -166,7 +183,9 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         backgroundColor: '#FFD7E3', 
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        flex: 1,
+        width: '92%'
     },
     fileTypeUploadContainerBottomModified: {
         flexDirection: 'row',
@@ -177,6 +196,8 @@ const styles = StyleSheet.create({
         backgroundColor: '#FFD7E3', 
         alignItems: 'center',
         justifyContent: 'center',
+        flex: 1,
+        width: '92%'
     },
     previewContainer: {
         flex: 2,
@@ -190,7 +211,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     mediaPreview: {
-        width: '55%',
+        height: '100%',
         aspectRatio: 1,
         borderRadius: 15,
         borderWidth: 3,

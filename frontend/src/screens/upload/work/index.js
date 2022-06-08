@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, TextInput, ActivityIndicator } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
 import React, {useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFonts, Inter_900Black, Inter_500Medium, Inter_700Bold, Inter_300Light, Inter_100Thin, Inter_200ExtraLight, Inter_800ExtraBold} from '@expo-google-fonts/inter';
@@ -15,6 +15,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker'
 import * as VideoThumbnails from 'expo-video-thumbnails';
 import { createUpload } from '../../../services/upload';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 const UploadWorkScreen = () => {
 
@@ -111,7 +112,8 @@ const UploadWorkScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.topContainer}>
+      <KeyboardAwareScrollView contentContainerStyle={{flex:1}}>
+        <View style={styles.topContainer}>
             <View style={styles.titleContainer}>
                 <TouchableOpacity onPress={() => {navigation.goBack()}}>
                     <Feather name="arrow-left" size={30} color="black" />
@@ -122,6 +124,7 @@ const UploadWorkScreen = () => {
                 <CachedImage style={styles.profileImage} source={{uri: currentUser?.photoURL}} />
             </TouchableOpacity>
         </View>
+
         <View style={styles.typeContainer}>
           <TouchableOpacity style={styles.typeButton} onPress={() => {setUploadType('song')}}>
             <Text style={(uploadType === 'song' ? styles.typeSelected : styles.typeNotSelected)}>
@@ -238,14 +241,16 @@ const UploadWorkScreen = () => {
           </View>
         </View>
 
-        <TouchableOpacity 
-          style={[styles.uploadButtonContainer, {backgroundColor: (incompleteUpload ? '#9CA3AF' : '#FF9FBC')}]}
-          disabled={incompleteUpload}
-          onPress={() => handleSaveUpload()}
-        >
-          <Text style={styles.uploadButtonText}>Upload Work</Text>
-        </TouchableOpacity>
-
+        <View style={styles.uploadButtonContainer}>
+          <TouchableOpacity 
+            style={[styles.uploadButton, {backgroundColor: (incompleteUpload ? '#9CA3AF' : '#FF9FBC')}]}
+            disabled={incompleteUpload}
+            onPress={() => handleSaveUpload()}
+          >
+            <Text style={styles.uploadButtonText}>Upload Work</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAwareScrollView>
     </SafeAreaView>
   )
 }

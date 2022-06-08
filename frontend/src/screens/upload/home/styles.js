@@ -1,4 +1,12 @@
 import { StyleSheet, Dimensions } from "react-native";
+import EStyleSheet from 'react-native-extended-stylesheet';
+
+const entireScreenWidth = Dimensions.get('window').width;
+EStyleSheet.build({$rem: entireScreenWidth / 380})
+
+const estyles = EStyleSheet.create({
+    
+})
 
 const styles = StyleSheet.create({
     container: {
@@ -8,6 +16,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         paddingVertical: 8,
+        //
+        flex: 0.5
     },  
     titleContainer : {
         flexDirection: 'row',
@@ -29,10 +39,12 @@ const styles = StyleSheet.create({
     },
     uploadContainer: {
         backgroundColor: '#FFECFF',
-        marginHorizontal: 30,
+        marginHorizontal: 20,
         borderRadius: 15,
         marginVertical: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        //
+        flex: 2.5
     },
     left: {
         flex: 1.5,
@@ -59,13 +71,16 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         paddingHorizontal: 25,
-        paddingVertical: 5
+        //
+        flex: 3,
     },
     tracks: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         marginHorizontal: 25,
+        //
+        flex: 1,
     },
     trackCount: {
         paddingVertical: 25,
