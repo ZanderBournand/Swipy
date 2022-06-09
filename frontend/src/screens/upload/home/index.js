@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native'
-import React from 'react'
+import React, {useEffect} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {Feather} from '@expo/vector-icons'
 import styles from './styles'
@@ -9,6 +9,8 @@ import CachedImage from 'react-native-expo-cached-image'
 import {useNavigation} from "@react-navigation/native"
 import BestWorkItem from '../../../components/upload/bestwork'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import { getBeats, getSongsByUserId, getSongs, getAllSongsByUserId} from '../../../services/upload'
+import { useUploads } from '../../../hooks/useUploads'
 
 const UploadScreen = () => {
 
@@ -16,6 +18,8 @@ const UploadScreen = () => {
 
   const currentUser = useSelector(state => state.auth.currentUser)
   const navigation = useNavigation()
+
+  const uploads = useUploads(currentUser?.uid).data
 
   let [fontsLoaded] = useFonts({
     Inter_900Black,
@@ -103,7 +107,7 @@ const UploadScreen = () => {
                     </Text>
                 </View>
                 <View>
-                    <TouchableOpacity style={styles.allTracksButton}>
+                    <TouchableOpacity style={styles.allTracksButton} onPress={() => {console.log(uploads)}}>
                         <Text style={{fontWeight: '600', fontSize: 15}}>See All</Text>
                     </TouchableOpacity>
                 </View>

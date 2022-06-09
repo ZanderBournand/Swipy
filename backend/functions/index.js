@@ -54,7 +54,7 @@ exports.likeDelete = functions.firestore.document('post/{id}/{type}/{uid}').onDe
         .update(updateObj)
 })
 
-exports.workCreated = functions.firestore.document('uploads/{type}/{uid}/{id}').onCreate((_, context) => {
+exports.workCreated = functions.firestore.document('uploads/{uid}/{type}/{id}').onCreate((_, context) => {
     let updateObj = {
         workCount: admin.firestore.FieldValue.increment(1)
     }
