@@ -4,7 +4,7 @@ import styles from './styles'
 import {useUser} from '../../../../hooks/useUser'
 import firebase from 'firebase'
 import { useNavigation } from '@react-navigation/native'
-import truncateString from '../../../../hooks/truncateString'
+import {truncateString} from '../../../../services/helpers'
 import CachedImage from "react-native-expo-cached-image"
 
 const ChatListItem = ({chat}) => {

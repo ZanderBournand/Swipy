@@ -13,6 +13,16 @@ export const createUpload = (type, title, audio, video, artwork) => new Promise(
     let r2 = Math.floor(Math.random() * (10000 - 0) + 0);
     let r3 = Math.floor(Math.random() * (10000 - 0) + 0);
 
+    const userDoc = firebase.firestore().collection('uploads').doc(firebase.auth().currentUser.uid);
+    userDoc.get()
+    .then((docSnapshot) => {
+        if(!docSnapshot.exists) {
+            userDoc.set({
+                uid: firebase.auth().currentUser.uid
+            })
+        }
+    })
+
     if (video == null) {
         allSavePromises = Promise.all([
             saveMediaToStorage(audio,`uploads/${firebase.auth().currentUser.uid}/${type+"s"}/${storageUploadId}/audio`),
@@ -36,6 +46,8 @@ export const createUpload = (type, title, audio, video, artwork) => new Promise(
                             3: r3
                         },
                         title: title,
+                        type: type,
+                        playsCount: 0,
                         likesCount: 0,
                         commentsCount: 0,
                         interactionsCount: 0,
@@ -71,6 +83,8 @@ export const createUpload = (type, title, audio, video, artwork) => new Promise(
                         3: r3
                     },
                     title: title,
+                    type: type,
+                    playsCount: 0,
                     likesCount: 0,
                     commentsCount: 0,
                     interactionsCount: 0,
@@ -317,8 +331,6 @@ export const getBeats = () => new Promise((resolve, reject) => {
 })
 
 export const getAllUploadsByUserId = (uid = firebase.auth().currentUser?.uid) => new Promise((resolve, reject) => {
-
-    console.log("getAllUploadsByUserId")
 
     const uploads = new Map();
     

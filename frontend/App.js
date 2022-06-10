@@ -6,12 +6,14 @@ import {createStore, applyMiddleware} from 'redux'
 import thunk from 'redux-thunk'
 import rootReducer from './src/redux/reducers'
 import Constants from 'expo-constants'
-import React, {createContext, useState} from 'react'
+import React, {createContext, useState, useEffect} from 'react'
 import firebase from 'firebase/app'
 import Route from "./src/navigation/main";
 import { QueryClient, QueryClientProvider } from "react-query";
 import {UserContext} from './src/Context/UserContext'
 import { CommentContext } from "./src/Context/CommentContext";
+import * as Font from 'expo-font';
+import useFonts from "./src/hooks/useFonts";
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -24,6 +26,23 @@ const queryClient = new QueryClient({
 })
 
 export default function App() {
+
+  const [fontLoaded, setFontLoaded] = useState(false)
+
+  const LoadFonts = async () => {
+    await useFonts()
+    .then(() => {setFontLoaded(true)})
+  };
+
+  useEffect(() => {
+    LoadFonts()
+  }, [])
+
+  if (!fontLoaded) {
+    return (
+      <></>
+    )
+  }
 
   return (
     StatusBar.setBarStyle('default', true),

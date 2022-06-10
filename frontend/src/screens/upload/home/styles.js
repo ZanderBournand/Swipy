@@ -71,8 +71,6 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         paddingHorizontal: 25,
-        //
-        flex: 3,
     },
     tracks: {
         flexDirection: 'row',

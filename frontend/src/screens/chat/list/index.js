@@ -1,10 +1,11 @@
 import { View, Text, FlatList } from 'react-native'
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import NavBarGeneral from '../../../components/general/navbar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import styles from './styles'
 import ChatListItem from '../../../components/chat/list/item'
 import { useSelector } from 'react-redux'
+import useFonts from "../../../hooks/useFonts"
 
 const ChatScreen = () => {
 

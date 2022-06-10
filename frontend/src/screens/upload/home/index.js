@@ -1,9 +1,8 @@
 import { View, Text, Image, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {Feather} from '@expo/vector-icons'
 import styles from './styles'
-import { useFonts, Inter_900Black, Inter_500Medium, Inter_700Bold, Inter_300Light, Inter_100Thin, Inter_200ExtraLight} from '@expo-google-fonts/inter';
 import {useSelector} from "react-redux"
 import CachedImage from 'react-native-expo-cached-image'
 import {useNavigation} from "@react-navigation/native"
@@ -11,6 +10,7 @@ import BestWorkItem from '../../../components/upload/bestwork'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { getBeats, getSongsByUserId, getSongs, getAllSongsByUserId} from '../../../services/upload'
 import { useUploads } from '../../../hooks/useUploads'
+import {getTrending} from "../../../services/helpers"
 
 const UploadScreen = () => {
 
@@ -18,40 +18,84 @@ const UploadScreen = () => {
 
   const currentUser = useSelector(state => state.auth.currentUser)
   const navigation = useNavigation()
+  const [trendings, setTrendings] = useState(null)
 
   const uploads = useUploads(currentUser?.uid).data
 
-  let [fontsLoaded] = useFonts({
-    Inter_900Black,
-    Inter_500Medium,
-    Inter_700Bold,
-    Inter_300Light,
-    Inter_100Thin,
-    Inter_200ExtraLight
-  });
-    
-  if (!fontsLoaded) {
-    return <></>;
+  useEffect(() => {
+    if(uploads != null) {
+        setTrendings(getTrending(uploads))
+    }
+  }, [uploads])
+  
+  const TrackCount = () => {
+      return (
+        <View style={styles.tracks}>
+            <View style={styles.trackCount}>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>
+                    My Tracks 
+                    <Text style={{fontFamily: 'inter_extra_light'}}> (</Text>
+                    <Text style={{fontFamily: 'inter_bold'}}>{currentUser?.workCount}</Text>
+                    <Text style={{fontFamily: 'inter_extra_light'}}>)</Text>
+                </Text>
+            </View>
+            <View>
+                <TouchableOpacity style={styles.allTracksButton} onPress={() => getAllSongs()}>
+                    <Text style={{fontWeight: '600', fontSize: 15}}>See All</Text>
+                </TouchableOpacity>
+            </View>
+        </View>
+      )
   }
 
-  const mockData = [
-    {
-      title: 'Hands To Myself',
-      date: 'Oct 15, 2021',
-      length: '3:05',
-      artwork: 'https://images.complex.com/complex/images/c_fill,f_auto,g_center,w_1200/fl_lossy,pg_1/hcjrqlvc6dfhpjxob9nt/cudi',
-      views: '220',
-      interactions: '11',
-    },
-    {
-      title: 'At My Worst (Feat. Kehlani)',
-      date: 'Oct 10, 2021',
-      length: '4:12',
-      artwork: 'https://blog.spoongraphics.co.uk/wp-content/uploads/2017/01/thumbnail-2.jpg',
-      views: '156',
-      interactions: '6',
-    },
-  ]
+  const TrendingItems = () => {
+    if (trendings.length == 2) {
+        return (
+            <>
+            <View style={[styles.subContainer, {flex: 3}]}>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>Your Trending Sounds</Text>
+                <View style={{paddingTop: 10, flex: 1}}>
+                    <BestWorkItem item={trendings[0]}/>
+                    <BestWorkItem item={trendings[1]}/>
+                </View>
+            </View>
+            <TrackCount/>
+            </>
+        )
+    }
+    else if (trendings.length == 1) {
+        return (
+            <>
+            <View style={[styles.subContainer, {flex: 2, paddingTop: 10}]}>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>Your Trending Sounds</Text>
+                <View style={{height: '65%', justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
+                    <BestWorkItem item={trendings[0]}/>
+                </View>
+            </View>
+            <TrackCount/>
+            <View style={{flex: 1}}>
+                <Text></Text>
+            </View>
+            </>
+        )
+    }
+    else {
+        return (
+            <>
+            <View style={[styles.subContainer, {flex: 1.5, paddingTop: 10}]}>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>Your Trending Sounds</Text>
+                <View style={{height: '65%', justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
+                    <Text style={{fontSize: 16, fontWeight: '500'}}>No Data Available</Text>
+                </View>
+            </View>
+            <TrackCount/>
+            <View style={{flex: 1}}>
+                <Text></Text>
+            </View>
+            </>
+        )
+    }
+  }
   
   return (
     <SafeAreaView style={styles.container}>
@@ -61,7 +105,7 @@ const UploadScreen = () => {
                     <TouchableOpacity onPress={() => {navigation.navigate("workUpload")}}>
                         <Feather name="arrow-up" size={30} color="black" />
                     </TouchableOpacity>
-                    <Text style={[styles.title, {fontFamily: 'Inter_900Black', fontSize: 30}]}>Upload</Text>
+                    <Text style={[styles.title, {fontFamily: 'inter_black', fontSize: 30}]}>Upload</Text>
                 </View>
                 <TouchableOpacity style={styles.profileContainer} onPress={() => {navigation.navigate("Me")}}>
                     <CachedImage style={styles.profileImage} source={{uri: currentUser?.photoURL}} />
@@ -70,8 +114,8 @@ const UploadScreen = () => {
 
             <View style={styles.uploadContainer}>
                 <View style={styles.left}>
-                    <Text style={{fontFamily: 'Inter_700Bold', fontSize: 18, paddingLeft: 20, paddingTop: 10}}>New Song / Beat</Text>
-                    <Text style={{fontFamily: 'Inter_500Medium', paddingLeft: 20, paddingTop: 10}}>Upload your work and start collaborating with others!</Text>
+                    <Text style={{fontFamily: 'inter_bold', fontSize: 18, paddingLeft: 20, paddingTop: 10}}>New Song / Beat</Text>
+                    <Text style={{fontFamily: 'inter_medium', paddingLeft: 20, paddingTop: 10}}>Upload your work and start collaborating with others!</Text>
                     <View style={{paddingLeft: 20, paddingTop: 20, paddingBottom: 20}}>
                         <TouchableOpacity style={styles.uploadButton} onPress={() => {navigation.navigate("workUpload")}}>
                             <Feather name="upload-cloud" size={28} color="white" />
@@ -84,34 +128,12 @@ const UploadScreen = () => {
                 </View>
             </View>
 
-            <View style={styles.subContainer}>
-                <Text style={{fontFamily: 'Inter_700Bold', fontSize: 22}}>Your Trending Sounds</Text>
-                <View style={{paddingTop: 10, flex: 1}}>
-                    {/* <FlatList
-                        data={mockData}
-                        renderItem={({item}) => (<BestWorkItem item={item}/>)}
-                        keyExtractor={(item) => item.title} 
-                    /> */}
-                    <BestWorkItem item={mockData[0]}/>
-                    <BestWorkItem item={mockData[1]}/>
-                </View>
-            </View>
+            {trendings != null ?
+                <TrendingItems/>
+                :
+                <></>
+            }
 
-            <View style={styles.tracks}>
-                <View style={styles.trackCount}>
-                    <Text style={{fontFamily: 'Inter_700Bold', fontSize: 22}}>
-                        My Tracks 
-                        <Text style={{fontFamily: 'Inter_200ExtraLight'}}> (</Text>
-                        <Text style={{fontFamily: 'Inter_700Bold'}}>{currentUser?.workCount}</Text>
-                        <Text style={{fontFamily: 'Inter_200ExtraLight'}}>)</Text>
-                    </Text>
-                </View>
-                <View>
-                    <TouchableOpacity style={styles.allTracksButton} onPress={() => {console.log(uploads)}}>
-                        <Text style={{fontWeight: '600', fontSize: 15}}>See All</Text>
-                    </TouchableOpacity>
-                </View>
-            </View>
         </KeyboardAwareScrollView>
     </SafeAreaView>
   )
