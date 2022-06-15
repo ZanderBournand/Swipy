@@ -24,6 +24,7 @@ export default function FeedScreen({route}) {
 
   useEffect(() => {
     getData()
+    console.log("geting data")
   }, [])
 
   const getData = () => {
@@ -75,23 +76,20 @@ export default function FeedScreen({route}) {
     <View style={styles.container}>
         <FocusAwareStatusBar barStyle="light-content" backgroundColor='black' />
         <FlatList
-                data={posts}
-                windowSize={5}
-                initialNumToRender={0}
-                maxToRenderPerBatch={2}
-                removeClippedSubviews={true}
-                viewabilityConfig={{
-                    itemVisiblePercentThreshold: 100
-                }}
-                renderItem={renderItem}
-                pagingEnabled
-                keyExtractor={item => item.id}
-                decelerationRate={'fast'}
-                onViewableItemsChanged={onViewableItemsChanged.current}
-                // refreshControl = {
-                //   <RefreshControl refreshing={listRefresh} onRefresh={getData} tintColor='#7C7A7A' color={['#7C7A7A', '#7C7A7A']}/>
-                // }
-            />
+          data={posts}
+          windowSize={5}
+          initialNumToRender={0}
+          maxToRenderPerBatch={2}
+          removeClippedSubviews={true}
+          viewabilityConfig={{
+              itemVisiblePercentThreshold: 100
+          }}
+          renderItem={renderItem}
+          pagingEnabled
+          keyExtractor={item => item.id}
+          decelerationRate={'fast'}
+          onViewableItemsChanged={onViewableItemsChanged.current}
+        />
     </View>
   )
 }

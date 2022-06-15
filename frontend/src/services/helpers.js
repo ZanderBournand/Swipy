@@ -7,9 +7,15 @@ export const truncateString = (lastMessage) => {
 }
 
 export const getTrending = (uploads) => {
+
     let songs = (uploads.has('songs') ? uploads.get('songs') : [])
     let beats = (uploads.has('beats') ? uploads.get('beats') : [])
     let totalWork = songs.concat(beats)
+
+    if (totalWork.length == 0) {
+        return []
+    }
+
     totalWork.sort((a, b) => {
         let aValue = a.interactionsCount * 0.5 + a.playsCount * 0.25 + a.likesCount * 0.25;
         let bValue = b.interactionsCount * 0.5 + b.playsCount * 0.25 + b.likesCount * 0.25;
@@ -21,6 +27,7 @@ export const getTrending = (uploads) => {
             return -1
         }
     })
+
     if (totalWork[0].interactionsCount == 0) {
         return []
     }
@@ -85,4 +92,39 @@ export const dateFormat = (date) => {
     newDate += date.substring(0, 4)
     
     return newDate
+}
+
+export const sortUploads = (uploads) => {
+
+    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
+    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+
+    songs.sort((a, b) => {
+        let aValue = a.interactionsCount * 0.5 + a.playsCount * 0.25 + a.likesCount * 0.25;
+        let bValue = b.interactionsCount * 0.5 + b.playsCount * 0.25 + b.likesCount * 0.25;
+        
+        if (bValue > aValue) {
+            return 1
+        }
+        else {
+            return -1
+        }
+    })
+
+    beats.sort((a, b) => {
+        let aValue = a.interactionsCount * 0.5 + a.playsCount * 0.25 + a.likesCount * 0.25;
+        let bValue = b.interactionsCount * 0.5 + b.playsCount * 0.25 + b.likesCount * 0.25;
+        
+        if (bValue > aValue) {
+            return 1
+        }
+        else {
+            return -1
+        }
+    })
+
+    uploads.set('songs', songs)
+    uploads.set('beats', beats)
+
+    return uploads;
 }

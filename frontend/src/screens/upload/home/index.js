@@ -40,7 +40,7 @@ const UploadScreen = () => {
                 </Text>
             </View>
             <View>
-                <TouchableOpacity style={styles.allTracksButton} onPress={() => getAllSongs()}>
+                <TouchableOpacity style={styles.allTracksButton} onPress={() => {navigation.navigate('myTracks')}}>
                     <Text style={{fontWeight: '600', fontSize: 15}}>See All</Text>
                 </TouchableOpacity>
             </View>

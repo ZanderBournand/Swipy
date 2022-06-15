@@ -53,6 +53,9 @@ export const PostSingle = forwardRef(({item}, parentRef) => {
       }
 
       const status = await ref.current.getStatusAsync()
+
+      console.log(status)
+
       if(status?.isPlaying) {
           return;
       }

@@ -14,6 +14,8 @@ import ChatScreen from '../../screens/chat/list'
 import { useChats } from '../../hooks/useChats'
 import UploadScreen from '../../screens/upload/home'
 import UploadNavigation from '../upload'
+import FeedTestScreen from '../../screens/feedTest'
+import NewFeedNavigation from '../newFeed'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -24,8 +26,8 @@ export default function HomeScreen() {
   return (
     <Tab.Navigator barStyle={{backgroundColor: 'black'}} initialRouteName="feed">
         <Tab.Screen 
-            name="feed" 
-            component={FeedNavigation}
+            name="Feed" 
+            component={NewFeedNavigation}
             options={{
                 tabBarIcon: ({color}) => (
                     <Feather name="home" size={24} color={color}/>

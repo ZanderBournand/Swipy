@@ -292,7 +292,7 @@ export const getBeatsByUserId = (uid = firebase.auth().currentUser?.uid) => new 
 
 export const getSongs = () => new Promise((resolve, reject) => {
 
-    const songs = new Map();
+    const songs = []
 
     firebase
     .firestore()
@@ -302,7 +302,10 @@ export const getSongs = () => new Promise((resolve, reject) => {
         const populate = async () => {
             for (const item of res.docs) {
                 let songsOfUser = await getSongsByUserId(item.id)
-                songs.set(item.id, songsOfUser)
+                songs.push({
+                    user: item.id,
+                    work: songsOfUser
+                })
             }
             resolve(songs)
         }
@@ -312,7 +315,7 @@ export const getSongs = () => new Promise((resolve, reject) => {
 
 export const getBeats = () => new Promise((resolve, reject) => {
 
-    const beats = new Map();
+    const beats = [];
 
     firebase
     .firestore()
@@ -322,7 +325,10 @@ export const getBeats = () => new Promise((resolve, reject) => {
         const populate = async () => {
             for (const item of res.docs) {
                 let beatsOfUser = await getBeatsByUserId(item.id)
-                beats.set(item.id, beatsOfUser)
+                beats.push({
+                    user: item.id,
+                    work: beatsOfUser
+                })
             }
             resolve(beats)
         }

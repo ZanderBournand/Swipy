@@ -5,8 +5,9 @@ import { TouchableOpacity } from 'react-native'
 import { Image } from 'react-native'
 import { ActivityIndicator } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
+import CachedImage from 'react-native-expo-cached-image'
 
-export default function SearchUserItem({ item }) {
+export default function FSearchUserItem({ item }) {
 
   const navigation = useNavigation()
 
@@ -14,8 +15,8 @@ export default function SearchUserItem({ item }) {
 
   return (
     <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('profileOther', {initialUserId: item?.uid, searched: true})}>
+      <CachedImage style={styles.image} source={{ uri: item?.photoURL }} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/>
       <Text style={styles.text}>{item.displayName}</Text>
-      <Image style={styles.image} source={{ uri: item?.photoURL }} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/>
     </TouchableOpacity>
   )
 }
