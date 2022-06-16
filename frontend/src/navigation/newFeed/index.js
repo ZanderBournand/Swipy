@@ -49,9 +49,9 @@ const NewFeedNavigation = () => {
   }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{flex: 1, backgroundColor: 'black'}}>
         <FocusAwareStatusBar barStyle="light-content"/>
-        <Tab.Navigator initialRouteName="Home" style={{width: '100%'}} tabBarOptions={tabBarOptions} swipeEnabled={false}>
+        <Tab.Navigator initialRouteName="Home" style={{width: '100%', backgroundColor: 'black'}} tabBarOptions={tabBarOptions} swipeEnabled={false}>
             <Tab.Screen name="Songs" component={NewFeedScreen} initialParams={{type: 'songs'}}/>
             <Tab.Screen name="Beats" component={NewFeedScreen} initialParams={{type: 'beats'}}/>
         </Tab.Navigator>

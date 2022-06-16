@@ -5,6 +5,7 @@ import {getBeats, getSongs} from '../../services/upload'
 import PostSingleTest from '../../components/postTest'
 import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
 import CachedImage from "react-native-expo-cached-image"
+import NewPostOverlay from '../../components/postTest/overlay'
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -15,6 +16,9 @@ const NewFeedScreen = ({route}) => {
   const [work, setWork] = useState([])
 
   const [fetching, setFetching] = useState(true)
+
+  const flatlistRef = useRef([])
+  const currentRow = useRef(0)
 
   const mediaRefsTest = useRef([])
   const testRow = useRef(0)
@@ -44,6 +48,44 @@ const NewFeedScreen = ({route}) => {
     }
   }, [])
 
+  const scrollLeft = () => {
+    let index = flatlistRef.current[currentRow.current].currIndex + 1;
+    try {
+      flatlistRef.current[currentRow.current].scrollToIndex({animated: true, index: index})
+    }
+    catch (e) {
+      return;
+    }
+  }
+
+  const scrollRight = () => {
+    let index = flatlistRef.current[currentRow.current].currIndex - 1;
+    try {
+      flatlistRef.current[currentRow.current].scrollToIndex({animated: true, index: index})
+    }
+    catch (e) {
+      return;
+    }
+  }
+
+  const togglePlay = () => {
+    let row = currentRow.current
+    let column = flatlistRef.current[currentRow.current].currIndex
+    const cell = mediaRefsTest.current[row][column]
+    if (cell) {
+      cell.play()
+    }
+  }
+
+  const togglePause = () => {
+    let row = currentRow.current
+    let column = flatlistRef.current[currentRow.current].currIndex
+    const cell = mediaRefsTest.current[row][column]
+    if (cell) {
+      cell.pause()
+    }
+  }
+
   const feedItemListHeight = Dimensions.get('window').height - useMaterialNavBarHeight(false)
 
   const onViewableItemsChanged2 = ({changed}) => {
@@ -51,6 +93,7 @@ const NewFeedScreen = ({route}) => {
       const cell = mediaRefsTest.current[testRow.current][element.index]
       if(cell){
           if(element.isViewable){
+            flatlistRef.current[currentRow.current].currIndex = element.index
             cell.play()
           }
           else{
@@ -64,6 +107,10 @@ const NewFeedScreen = ({route}) => {
     changed.forEach(element => {
       if (element.isViewable == true) {
         testRow.current = element.index
+        currentRow.current = element.index
+        if (flatlistRef.current[currentRow.current].currIndex == null) {
+          flatlistRef.current[currentRow.current].currIndex = 0
+        }
         let played = false
         for (let i = 0; i < mediaRefsTest.current[element.index].length; i++) {
           const cell = mediaRefsTest.current[element.index][i]
@@ -101,24 +148,30 @@ const NewFeedScreen = ({route}) => {
 
   const RenderUserWork = ({item, currentIndex}) => {
     return (
+      <>
+      <NewPostOverlay scrollLeft={scrollLeft} scrollRight={scrollRight} play={togglePlay} pause={togglePause}/>
       <View style={{flex: 1, height: feedItemListHeight, backgroundColor: 'black', alignItems: 'center', justifyContent: 'center'}}>
         <FlatList 
           data={item.work}
           horizontal={true}
           viewabilityConfig={{
-            itemVisiblePercentThreshold: 100
+            itemVisiblePercentThreshold: 100,
           }}
           pagingEnabled
           renderItem={({item, index}) => (<RenderWork item={item} currentIndex={index} topIndex={currentIndex}/>)}
           decelerationRate={'fast'}
           keyExtractor={item => item.id}
-          windowSize={5}
+          windowSize={4}
           initialNumToRender={0}
           maxToRenderPerBatch={2}
           removeClippedSubviews={true}
+          ref={(fRef) => {
+            flatlistRef.current[currentIndex] = fRef
+          }}
           onViewableItemsChanged={onViewableItemsChanged2}
         />
       </View>
+      </>
     )
   }
 
@@ -137,10 +190,11 @@ const NewFeedScreen = ({route}) => {
   }
 
   return (
+    <>
     <View style={{flex: 1, backgroundColor: 'black'}}>
         <FlatList 
           data={work}
-          windowSize={5}
+          windowSize={4}
           initialNumToRender={0}
           maxToRenderPerBatch={2}
           removeClippedSubviews={true}
@@ -154,6 +208,7 @@ const NewFeedScreen = ({route}) => {
           decelerationRate={'fast'}
         />
     </View>
+    </>
   )
 }
 

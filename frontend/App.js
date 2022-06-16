@@ -14,6 +14,7 @@ import {UserContext} from './src/Context/UserContext'
 import { CommentContext } from "./src/Context/CommentContext";
 import * as Font from 'expo-font';
 import useFonts from "./src/hooks/useFonts";
+import { TrackContext } from "./src/Context/TrackContext";
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -48,11 +49,13 @@ export default function App() {
     StatusBar.setBarStyle('default', true),
     <Provider store={store}>
       <UserContext>
-        <CommentContext>
-          <QueryClientProvider client={queryClient}>
-            <Route />
-          </QueryClientProvider>
-        </CommentContext>
+        <TrackContext>
+          <CommentContext>
+            <QueryClientProvider client={queryClient}>
+              <Route />
+            </QueryClientProvider>
+          </CommentContext>
+        </TrackContext>
       </UserContext>
     </Provider>
   );
