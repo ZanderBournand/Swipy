@@ -21,6 +21,8 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
   const [waiting, setWaiting] = useState(false)
 
   let outOfBounds = useRef(false)
+  let paused = useRef(false)
+  let waitingPause = useRef(false)
 
   const isFocused = useIsFocused()
 
@@ -35,7 +37,8 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
 
     const createSound = async () => {
       const {sound} = await Audio.Sound.createAsync(
-        {uri: item.media.audio}
+        {uri: item.media.audio},
+        {isLooping: true}
       )
       setSound(sound)
     }
@@ -56,14 +59,19 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
       if (sound != null) {
         status2 = await sound.getStatusAsync()
       }
+
+      if (paused.current && !isFocused) {
+        waitingPause.current = true;
+      }
       
-      if (!isFocused && status2?.isPlaying) {
+      if (!isFocused && (status2?.isPlaying || paused.current)) {
         stop();
         outOfBounds.current = true;
       }
-      else if (isFocused && !status2?.isPlaying && outOfBounds.current) {
+      else if (isFocused && (!status2?.isPlaying || waitingPause.current) && outOfBounds.current) {
         play();
         outOfBounds.current = false;
+        waitingPause.current = false;
       }
 
     }
@@ -76,6 +84,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
     if (waiting) {
       if (sound?._loaded) {
         sound.playAsync()
+        paused.current = false
         setCurrentTrackInViewContext(item)
       }
     }
@@ -96,6 +105,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
         return;
       }
       setCurrentTrackInViewContext(item)
+      paused.current = false
       sound.playAsync()
     }
     else {
@@ -129,6 +139,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
       }
       try {
         sound.pauseAsync()
+        paused.current = true
       }
       catch (e) {
         console.log(e)
@@ -160,14 +171,16 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
 
       const soundStatus = await sound.getStatusAsync()
 
-      if (!soundStatus?.isPlaying) {
+      if (soundStatus?.isPlaying || paused.current) {
+        try {
+          sound.stopAsync()
+        }
+        catch (e) {
+          console.log(e)
+        }
+      }
+      else {
         return false;
-      }
-      try {
-        sound.stopAsync()
-      }
-      catch (e) {
-        console.log(e)
       }
 
     }
@@ -176,15 +189,18 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
 
       const status = await ref.current.getStatusAsync()
 
-      if(!status?.isPlaying) {
+      if(status?.isPlaying || paused.current) {
+        try{
+          await ref.current.stopAsync()
+          paused.current = false
+          return true
+        }
+        catch(e) {
+            console.log(e)
+        }
+      }
+      else {
         return false;
-      }
-      try{
-        await ref.current.stopAsync()
-        return true
-      }
-      catch(e) {
-          console.log(e)
       }
     }
 

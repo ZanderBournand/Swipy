@@ -6,6 +6,7 @@ import PostSingleTest from '../../components/postTest'
 import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
 import CachedImage from "react-native-expo-cached-image"
 import NewPostOverlay from '../../components/postTest/overlay'
+import { useIsFetching } from 'react-query'
 
 const windowWidth = Dimensions.get('window').width;
 
@@ -110,17 +111,16 @@ const NewFeedScreen = ({route}) => {
         currentRow.current = element.index
         if (flatlistRef.current[currentRow.current].currIndex == null) {
           flatlistRef.current[currentRow.current].currIndex = 0
+          flatlistRef.current[currentRow.current].wasPlaying = -1
         }
         let played = false
-        for (let i = 0; i < mediaRefsTest.current[element.index].length; i++) {
-          const cell = mediaRefsTest.current[element.index][i]
-          if (cell && cell.hasOwnProperty("wasPlaying") && cell.wasPlaying == true) {
-            played = true
-            const cell = mediaRefsTest.current[element.index][i]
-            if (cell) {
-              cell.play()
-              mediaRefsTest.current[element.index][i].wasPlaying = false
-            }
+        const fRef = flatlistRef.current[currentRow.current]
+        if (fRef && fRef.wasPlaying != -1) {
+          played = true
+          const cell = mediaRefsTest.current[element.index][fRef.wasPlaying]
+          if (cell) {
+            cell.play()
+            flatlistRef.current[currentRow.current].wasPlaying = -1
           }
         }
         if (played == false) {
@@ -137,7 +137,7 @@ const NewFeedScreen = ({route}) => {
             cell.stop()
             .then((resp) => {
               if (resp != false) {
-                mediaRefsTest.current[element.index][i].wasPlaying = true
+              flatlistRef.current[currentRow.current].wasPlaying = i
               }
             })
           }
