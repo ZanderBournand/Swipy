@@ -11,12 +11,12 @@ import BestWorkItemBlack from '../../upload/bestWorkBlack'
 
 const ShowAllTracks = ({route}) => {
 
-  const {user, work} = route.params
+  const {user, songs, beats} = route.params
 
   const [workType, setWorkType] = useState("song")
   const [data, setData] = useState(null)
 
-  const workSorted = sortUploads(work)
+  const workSorted = sortUploads(new Map([["songs", songs], ["beats", beats]]))
 
   const navigation = useNavigation()
 

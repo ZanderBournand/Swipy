@@ -25,7 +25,7 @@ export default function HomeScreen() {
   useChats();
 
   return (
-    <Tab.Navigator barStyle={{backgroundColor: 'black'}} initialRouteName="feed">
+    <Tab.Navigator barStyle={{backgroundColor: '#030303'}} initialRouteName="feed">
         <Tab.Screen 
             name="Feed" 
             component={NewFeedNavigation}
