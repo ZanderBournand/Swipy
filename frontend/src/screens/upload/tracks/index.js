@@ -31,7 +31,6 @@ const MyTracksScreen = () => {
   }, [uploads, uploadType])
 
   const renderItem = ({item}) => {
-
     return (
         <View style={{paddingVertical: 0, paddingLeft: 20}}>
           <BestWorkItem item={item} />

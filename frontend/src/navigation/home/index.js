@@ -16,6 +16,7 @@ import UploadScreen from '../../screens/upload/home'
 import UploadNavigation from '../upload'
 import FeedTestScreen from '../../screens/feedTest'
 import NewFeedNavigation from '../newFeed'
+import NewProfileScreen from '../../screens/newProfile'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -63,7 +64,7 @@ export default function HomeScreen() {
         /> 
         <Tab.Screen 
             name="Me" 
-            component={ProfileScreen}
+            component={NewProfileScreen}
             options={{
                 tabBarIcon: ({color}) => (
                     <Feather name="user" size={24} color={color}/>

@@ -85,6 +85,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
       if (sound?._loaded) {
         sound.playAsync()
         paused.current = false
+        setCurrentTrackInViewContext(null)
         setCurrentTrackInViewContext(item)
       }
     }
@@ -104,6 +105,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
       if (soundStatus.isPlaying == true) {
         return;
       }
+      setCurrentTrackInViewContext(null)
       setCurrentTrackInViewContext(item)
       paused.current = false
       sound.playAsync()

@@ -39,6 +39,78 @@ export const getTrending = (uploads) => {
     }
 }
 
+export const getPopular = (uploads) => {
+
+    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
+    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let totalWork = songs.concat(beats)
+
+    if (totalWork.length == 0) {
+        return []
+    }
+
+    totalWork.sort((a, b) => {
+        let aValue = a.interactionsCount * 0.5 + a.playsCount * 0.25 + a.likesCount * 0.25;
+        let bValue = b.interactionsCount * 0.5 + b.playsCount * 0.25 + b.likesCount * 0.25;
+        
+        if (bValue > aValue) {
+            return 1
+        }
+        else {
+            return -1
+        }
+    })
+
+    if (totalWork[0].interactionsCount == 0) {
+        return []
+    }
+    else if (totalWork[1].interactionsCount == 0) {
+        return totalWork.slice(0, 1)
+    }
+    else if (totalWork[2].interactionsCount == 0) {
+        return totalWork.slice(0, 2)
+    }
+    else if (totalWork[3].interactionsCount == 0) {
+        return totalWork.slice(0, 3)
+    }
+    else if (totalWork[4].interactionsCount == 0) {
+        return totalWork.slice(0, 4)
+    }
+    else {
+        return totalWork.slice(0, 5)
+    }
+}
+
+export const getPreview = (uploads) => {
+
+    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
+    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let totalWork = songs.concat(beats)
+
+    if (totalWork.length == 0) {
+        return []
+    }
+
+    totalWork.sort((a, b) => {
+        let tempA = new Date(a.creation.seconds * 1000)
+        let tempB = new Date(b.creation.seconds * 1000)
+
+        if (tempA > tempB) {
+            return 1
+        }
+        else {
+            return -1
+        }
+    })
+
+    if (totalWork.length > 10) {
+        return totalWork.slice(0, 10)
+    }
+    else {
+        return totalWork
+    }
+}
+
 export const dateFormat = (date) => {
     let newDate = ""
 
