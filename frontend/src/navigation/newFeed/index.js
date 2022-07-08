@@ -3,6 +3,7 @@ import React from 'react'
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
 import { useIsFocused } from '@react-navigation/core'
 import NewFeedScreen from '../../screens/feedTest';
+import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -41,12 +42,6 @@ const emptyScreen = () => {
 const NewFeedNavigation = () => {
 
   const isFocused = useIsFocused()
-
-  function FocusAwareStatusBar(props) {
-    const isFocused = useIsFocused();
-  
-    return isFocused ? <StatusBar {...props} /> : null;
-  }
 
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>

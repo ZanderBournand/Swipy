@@ -8,7 +8,8 @@ import { useIsFocused } from '@react-navigation/core'
 import styles from './style'
 import {Feather} from '@expo/vector-icons'
 import {useNavigation} from '@react-navigation/native'
-import * as VideoThumbnails from 'expo-video-thumbnails';
+import * as VideoThumbnails from 'expo-video-thumbnails'
+import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 
 export default function CameraScreen() {
     
@@ -27,13 +28,6 @@ export default function CameraScreen() {
     const isFocused = useIsFocused()
 
     const navigation = useNavigation()
-
-    //Function to change status bar color
-    function FocusAwareStatusBar(props) {
-        const isFocused = useIsFocused();
-      
-        return isFocused ? <StatusBar {...props} /> : null;
-    }
   
     useEffect(() => {
         (async () => {

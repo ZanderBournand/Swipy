@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, FlatList, Dimensions, ScrollView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, Dimensions, ScrollView, StatusBar} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {Feather} from '@expo/vector-icons'
@@ -11,6 +11,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { getBeats, getSongsByUserId, getSongs, getAllSongsByUserId} from '../../../services/upload'
 import { useUploads } from '../../../hooks/useUploads'
 import {getTrending} from "../../../services/helpers"
+import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 
 const UploadScreen = () => {
 
@@ -32,7 +33,7 @@ const UploadScreen = () => {
       return (
         <View style={styles.tracks}>
             <View style={styles.trackCount}>
-                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>
                     My Tracks 
                     <Text style={{fontFamily: 'inter_extra_light'}}> (</Text>
                     <Text style={{fontFamily: 'inter_bold'}}>{currentUser?.workCount}</Text>
@@ -41,7 +42,7 @@ const UploadScreen = () => {
             </View>
             <View>
                 <TouchableOpacity style={styles.allTracksButton} onPress={() => {navigation.navigate('myTracks')}}>
-                    <Text style={{fontWeight: '600', fontSize: 15}}>See All</Text>
+                    <Text style={{fontWeight: '600', fontSize: 15, color: 'white'}}>See All</Text>
                 </TouchableOpacity>
             </View>
         </View>
@@ -53,7 +54,7 @@ const UploadScreen = () => {
         return (
             <>
             <View style={[styles.subContainer, {flex: 3}]}>
-                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>Your Trending Sounds</Text>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>Your Trending Sounds</Text>
                 <View style={{paddingTop: 10, flex: 1}}>
                     <BestWorkItem item={trendings[0]}/>
                     <BestWorkItem item={trendings[1]}/>
@@ -67,7 +68,7 @@ const UploadScreen = () => {
         return (
             <>
             <View style={[styles.subContainer, {flex: 2, paddingTop: 10}]}>
-                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>Your Trending Sounds</Text>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>Your Trending Sounds</Text>
                 <View style={{height: '65%', justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
                     <BestWorkItem item={trendings[0]}/>
                 </View>
@@ -83,7 +84,7 @@ const UploadScreen = () => {
         return (
             <>
             <View style={[styles.subContainer, {flex: 1.5, paddingTop: 10}]}>
-                <Text style={{fontFamily: 'inter_bold', fontSize: 22}}>Your Trending Sounds</Text>
+                <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>Your Trending Sounds</Text>
                 <View style={{height: '65%', justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
                     <Text style={{fontSize: 16, fontWeight: '500'}}>No Data Available</Text>
                 </View>
@@ -99,11 +100,12 @@ const UploadScreen = () => {
   
   return (
     <SafeAreaView style={styles.container}>
+        <FocusAwareStatusBar barStyle="light-content"/>
         <KeyboardAwareScrollView contentContainerStyle={{flex:1}}>
             <View style={styles.topContainer}>
                 <View style={styles.titleContainer}>
                     <TouchableOpacity onPress={() => {navigation.navigate("workUpload")}}>
-                        <Feather name="arrow-up" size={30} color="black" />
+                        <Feather name="arrow-up" size={30} color="lightgray" />
                     </TouchableOpacity>
                     <Text style={[styles.title, {fontFamily: 'inter_black', fontSize: 30}]}>Upload</Text>
                 </View>
@@ -124,7 +126,7 @@ const UploadScreen = () => {
                     </View>
                 </View>
                 <View style={styles.right}>
-                    <Image source={require('../../../../assets/Swipy_Left_P.png')}/>
+                    <Image source={require('../../../../assets/Swipy_Left_B.png')}/>
                 </View>
             </View>
 

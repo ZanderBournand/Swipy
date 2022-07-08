@@ -11,6 +11,7 @@ const estyles = EStyleSheet.create({
 const styles = StyleSheet.create({
     container: {
        flex: 1,
+       backgroundColor: "#121212"
     },
     topContainer: {
         flexDirection: 'row',
@@ -26,6 +27,7 @@ const styles = StyleSheet.create({
     },
     title: {
         paddingLeft: 4,
+        color: 'lightgray'
     },
     profileContainer: {
         paddingRight: 25,
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
         borderRadius: 25,
     },
     uploadContainer: {
-        backgroundColor: '#FFECFF',
+        backgroundColor: '#E6D9E6',
         marginHorizontal: 20,
         borderRadius: 15,
         marginVertical: 10,
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
     },
     subContainer: {
         paddingHorizontal: 25,
+        paddingTop: 10,
     },
     tracks: {
         flexDirection: 'row',

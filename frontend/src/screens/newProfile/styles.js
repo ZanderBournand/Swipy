@@ -2,7 +2,7 @@ import { StyleSheet, Dimensions } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'black'
+        backgroundColor: '#121212'
     },
     profileHeaderContainer: {
         height: Dimensions.get('window').height * 0.35,

@@ -33,28 +33,58 @@ const ProfileWorks = ({work, user}) => {
     )
   }
 
+  const RenderPopularTracks = () => {
+    if (popularTracks.length != 0) {
+      return (
+        popularTracks.map((Object, index) => (
+          <View key={Object.title} style={styles.popularTrackContainer}>
+              <Text style={styles.popularTrackIndex}>{index}</Text>
+              <CachedImage style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
+              <View style={styles.popularTrackInfo}>
+                  <Text style={styles.popularTrackTitle}>{Object.title}</Text>
+                  <Text style={styles.popularTrackType}>{Object.type}</Text>
+              </View>
+              <TouchableOpacity style={styles.popularTrackButton}>
+                  <Feather name="heart" size={20} color="lightgray" />
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.popularTrackButton} >
+                  <Entypo name="dots-three-horizontal" size={20} color="lightgray" />
+              </TouchableOpacity>
+          </View>
+        ))
+      )
+    }
+    else {
+      return (
+        <View style={{alignItems: "center", justifyContent: "center"}}>
+          <Text style={{color: 'white', paddingTop: 25}}>NO DATA AVAILABLE</Text>
+        </View>
+      )
+    }
+  }
+
+  const NoTracks = () => {
+    if (previewTracks == null) {
+      return (
+        <></>
+      )
+    }
+    else {
+      return (
+        <View style={{alignItems: "center", justifyContent: "center"}}>
+          <Text style={{color: 'white', paddingTop: 25}}>NO TRACKS UPLOADED</Text>
+        </View>
+      )
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.sectionContainer}>
         <Text style={styles.sectionTitle}>Popular</Text>
         <View style={styles.popularTracksContainer}>
             {popularTracks != null ?    
-                popularTracks.map((Object, index) => (
-                    <View key={Object.title} style={styles.popularTrackContainer}>
-                        <Text style={styles.popularTrackIndex}>{index}</Text>
-                        <CachedImage style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
-                        <View style={styles.popularTrackInfo}>
-                            <Text style={styles.popularTrackTitle}>{Object.title}</Text>
-                            <Text style={styles.popularTrackType}>{Object.type}</Text>
-                        </View>
-                        <TouchableOpacity style={styles.popularTrackButton}>
-                            <Feather name="heart" size={20} color="lightgray" />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={styles.popularTrackButton} >
-                            <Entypo name="dots-three-horizontal" size={20} color="lightgray" />
-                        </TouchableOpacity>
-                    </View>
-                ))
+                <RenderPopularTracks />
                 :
                 <Text style={{color: 'white'}}>LOADING...</Text>
             }
@@ -67,7 +97,7 @@ const ProfileWorks = ({work, user}) => {
             <Text style={styles.showButtonText}>Show all</Text>
           </TouchableOpacity>
         </View>
-            {previewTracks != null ?
+            {previewTracks != null && previewTracks.length > 0 ?
               <FlatList 
                 data={previewTracks}
                 keyExtractor={item => item.title}
@@ -81,7 +111,7 @@ const ProfileWorks = ({work, user}) => {
                 decelerationRate={'normal'}
               />
               :
-              <></>
+              <NoTracks />
             }
       </View>
     </View>

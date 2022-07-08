@@ -1,13 +1,16 @@
-import { View, Text, TouchableOpacity, Image, ActivityIndicator  } from 'react-native'
+import { View, Text, TouchableOpacity, Image, ActivityIndicator, StatusBar } from 'react-native'
 import React, {useState} from 'react'
 import NavBarGeneral from '../../../components/general/navbar'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import styles from './styles'
 import {Feather} from '@expo/vector-icons'
 import * as ImagePicker from 'expo-image-picker'
+import { useIsFocused } from '@react-navigation/core'
 import { saveUserProfileImage } from '../../../services/user'
 import {useSelector} from 'react-redux'
 import {useNavigation} from '@react-navigation/native'
+import NavBarGeneralBlack from '../../../components/general/navbarBlack'
+import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 
 export default function EditProfileScreen() {
 
@@ -31,7 +34,8 @@ export default function EditProfileScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <NavBarGeneral />
+      <FocusAwareStatusBar barStyle="light-content"/>
+      <NavBarGeneralBlack title={"Edit Profile"}/>
       <View style={styles.imageContainer}> 
         <TouchableOpacity style={styles.imageViewContainer} onPress={() => chooseImage()}>
             <Image style={styles.image} source={{ uri: auth.currentUser?.photoURL }} onLoadStart={() => {setLoading(true)}} onLoadEnd={() => {setLoading(false)}}/>
@@ -48,9 +52,9 @@ export default function EditProfileScreen() {
                 style={styles.fieldItemContainer}
                 onPress={() => navigation.navigate('editProfileField', { title: 'Display Name', field: 'displayName', value: auth.currentUser.displayName })}
             >
-                <Text>Display Name</Text>
+                <Text style={{color: 'white'}}>Display Name</Text>
                 <View style={styles.fieldValueContainer}>
-                    <Text>{auth.currentUser.displayName}</Text>
+                    <Text style={{color: 'white'}}>{auth.currentUser.displayName}</Text>
                     <Feather name='chevron-right' size={20} color='gray'/>
                 </View>
             </TouchableOpacity>

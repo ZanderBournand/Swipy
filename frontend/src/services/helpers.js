@@ -200,3 +200,25 @@ export const sortUploads = (uploads) => {
 
     return uploads;
 }
+
+export const getStats = (uploads) => {
+    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
+    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let totalWork = songs.concat(beats)
+
+    if (totalWork.length == 0) {
+        return []
+    }
+
+    let views = 0;
+    let connections = 0;
+    
+    for (let i = 0; i < totalWork.length; i++) {
+        views += totalWork[i].playsCount
+        connections += totalWork[i].interactionsCount
+    }
+
+    let newViews = Math.abs(views) > 999 ? Math.sign(views) * ((Math.abs(views) / 1000).toFixed(1)) + 'k' : Math.sign(views) * Math.abs(views)
+
+    return new Array(newViews, connections)
+}

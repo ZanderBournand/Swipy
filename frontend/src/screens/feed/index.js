@@ -12,6 +12,7 @@ import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { usePosts } from '../../hooks/usePosts'
+import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 
 export default function FeedScreen({route}) {
 
@@ -37,12 +38,6 @@ export default function FeedScreen({route}) {
       getFeed().then(setPosts)
       .then(() => {setListRefresh(false)})
     }
-  }
-
-  function FocusAwareStatusBar(props) {
-    const isFocused = useIsFocused();
-  
-    return isFocused ? <StatusBar {...props} /> : null;
   }
 
   const onViewableItemsChanged = useRef(({changed}) => {

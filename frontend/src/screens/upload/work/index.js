@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, TextInput, ActivityIndicator, KeyboardAvoidingView } from 'react-native'
+import { View, Text, Image, TouchableOpacity, TextInput, ActivityIndicator, KeyboardAvoidingView, StatusBar } from 'react-native'
 import React, {useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useFonts, Inter_900Black, Inter_500Medium, Inter_700Bold, Inter_300Light, Inter_100Thin, Inter_200ExtraLight, Inter_800ExtraBold} from '@expo-google-fonts/inter';
@@ -16,6 +16,7 @@ import * as ImagePicker from 'expo-image-picker'
 import * as VideoThumbnails from 'expo-video-thumbnails';
 import { createUpload } from '../../../services/upload';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import FocusAwareStatusBar from '../../../components/general/lightStatusBar';
 
 const UploadWorkScreen = () => {
 
@@ -112,11 +113,12 @@ const UploadWorkScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FocusAwareStatusBar barStyle="light-content"/>
       <KeyboardAwareScrollView contentContainerStyle={{flex:1}}>
         <View style={styles.topContainer}>
             <View style={styles.titleContainer}>
                 <TouchableOpacity onPress={() => {navigation.goBack()}}>
-                    <Feather name="arrow-left" size={30} color="black" />
+                    <Feather name="arrow-left" size={30} color="lightgray" />
                 </TouchableOpacity>
                 <Text style={[styles.title, {fontFamily: 'Inter_900Black', fontSize: 28}]}>Add Work</Text>
             </View>
@@ -223,18 +225,19 @@ const UploadWorkScreen = () => {
 
         <View style={styles.trackInformationContainer}>
           <View style={styles.trackInformationTitle}>
-            <Text style={{fontFamily: 'Inter_700Bold', fontSize: 22}}>Track Information</Text>
+            <Text style={{fontFamily: 'Inter_700Bold', fontSize: 22, color: 'white'}}>Track Information</Text>
             <TouchableOpacity style={styles.moreIconContainer}>
-              <MaterialCommunityIcons name="unfold-more-horizontal" size={30} color="black" />
+              <MaterialCommunityIcons name="unfold-more-horizontal" size={30} color="lightgray" />
             </TouchableOpacity>
           </View>
-          <Text style={{color: 'gray', paddingTop: 8, fontSize: 15, fontWeight: '600'}}>
+          <Text style={{color: 'lightgray', paddingTop: 8, fontSize: 15, fontWeight: '600'}}>
             {(uploadType == 'song' ? "Song" : "Production")} Title
           </Text>
           <View style={styles.textInputContainer}>
             <TextInput 
               style={styles.textInput} 
               placeholder="Enter a Title..."
+              placeholderTextColor="lightgray"
               onChangeText={setTitle}
               value={title}
             />

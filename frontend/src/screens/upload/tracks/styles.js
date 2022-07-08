@@ -3,6 +3,7 @@ import { StyleSheet, Dimensions } from "react-native";
 const styles = StyleSheet.create({
     container: {
        flex: 1,
+       backgroundColor: '#121212'
     },
     topContainer: {
         flexDirection: 'row',
@@ -43,7 +44,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     typeSelected: {
-        color: 'black',
+        color: 'white',
         fontWeight: 'bold',
         fontSize: 20,
     },

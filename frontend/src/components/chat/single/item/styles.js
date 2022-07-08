@@ -8,7 +8,7 @@ const styles = StyleSheet.create({
     },
     containerTextOther: {
         marginHorizontal: 14,
-        backgroundColor: 'gray',
+        backgroundColor: '#303030',
         borderRadius: 8,
         paddingVertical: 4,
         paddingHorizontal: 8,
@@ -22,14 +22,17 @@ const styles = StyleSheet.create({
     },
     containerTextCurrent: {
         marginHorizontal: 14,
-        backgroundColor: '#2596be',
+        backgroundColor: '#DBDBDB',
         borderRadius: 8,
         paddingVertical: 4,
         paddingHorizontal: 8,
         alignItems: 'center',
         justifyContent: 'center'
     },
-    text: {
+    textCurrent: {
+        color: 'black'
+    },
+    textOther: {
         color: 'white'
     },
     displayName: {

@@ -14,7 +14,7 @@ const ChatListItem = ({chat}) => {
   const navigation = useNavigation()
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('chatSingle', {chatId: chat.id})}>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('chatSingle', {chatId: chat.id, user: userData})}>
       <CachedImage style={styles.image} source={{uri: userData?.photoURL}}/>
       {/* <Image style={styles.image} source={{uri: userData?.photoURL}}/> */}
       <View style={{flex: 1}}>

@@ -18,9 +18,9 @@ const BestWorkItem = ({ item }) => {
         <CachedImage source={{uri: item.media.artwork}} style={styles.artwork}/>
       </View>
       <View style={styles.description}>
-        <Text adjustsFontSizeToFit={true} numberOfLines={1} style={{fontFamily: 'inter_medium', fontSize: 18, flex: 1}}>{item.title}</Text>
-        <Text style={{paddingBottom: 15, fontSize: 16, flex: 0.7}}>
-          {dateFormat(new Date(item.creation.seconds * 1000).toISOString().slice(0, 10))} - <Text style={{fontWeight: '500'}}>{capitalizeFirstLetter(item.type)}</Text>
+        <Text adjustsFontSizeToFit={true} numberOfLines={1} style={{fontFamily: 'inter_medium', fontSize: 18, flex: 1, color: 'white'}}>{item.title}</Text>
+        <Text style={{paddingBottom: 15, fontSize: 16, flex: 0.7, color: 'lightgray'}}>
+          {dateFormat(new Date(item.creation.seconds * 1000).toISOString().slice(0, 10))} - <Text style={{fontWeight: '500', color: 'white'}}>{capitalizeFirstLetter(item.type)}</Text>
         </Text>
         <View style={styles.stats}>
           <View style={styles.statsItem}>

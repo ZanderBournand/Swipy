@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     statsText: {
         fontWeight: '600', 
         fontSize: 16, 
-        paddingLeft: 2
+        paddingLeft: 2, 
+        color: 'white',
     }
 });
 

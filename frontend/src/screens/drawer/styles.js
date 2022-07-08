@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#202020'
     },
     buttonContainer: {
         flexDirection: 'row',
@@ -9,7 +10,9 @@ const styles = StyleSheet.create({
         padding: 20,
     },
     buttonText: {
-        marginLeft: 20
+        marginLeft: 20,
+        color: 'white',
+        fontWeight: '600',
     },
     logo: {
         resizeMode: 'contain',

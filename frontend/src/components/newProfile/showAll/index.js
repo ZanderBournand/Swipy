@@ -8,6 +8,7 @@ import styles from './styles'
 import {sortUploads} from "../../../services/helpers"
 import { useIsFocused } from '@react-navigation/core'
 import BestWorkItemBlack from '../../upload/bestWorkBlack'
+import FocusAwareStatusBar from '../../general/lightStatusBar'
 
 const ShowAllTracks = ({route}) => {
 
@@ -37,17 +38,11 @@ const ShowAllTracks = ({route}) => {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
-  function FocusAwareStatusBar(props) {
-    const isFocused = useIsFocused();
   
-    return isFocused ? <StatusBar {...props} /> : null;
-  }
-
   return (
-    <SafeAreaView style={{backgroundColor: 'black', height: '100%'}}>
+    <SafeAreaView style={{backgroundColor: '#121212', height: '100%'}}>
       <FocusAwareStatusBar barStyle="light-content"/>
-      
+  
       <View style={styles.topContainer}>
         <View style={styles.titleContainer}>
             <TouchableOpacity onPress={() => {navigation.goBack()}}>

@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginHorizontal: 12,
         marginVertical: 4,
-        backgroundColor: 'white',
+        backgroundColor: '#252525',
         borderRadius: 10,
     },
     image: {
@@ -20,14 +20,15 @@ const styles = StyleSheet.create({
     userDisplayName: {
         fontSize: 16,
         fontWeight: 'bold',
+        color: 'white'
     },
     lastMessage: {
         fontSize: 13,
-        color: 'gray',
+        color: 'lightgray',
     },
     date: {
         fontSize: 13,
-        
+        color: 'lightgray',
     }
 });
 

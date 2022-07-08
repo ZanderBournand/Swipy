@@ -17,6 +17,7 @@ import ModalScreen from '../../screens/modal';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerScreen from '../../screens/drawer';
 import ShowAllTracks from '../../components/newProfile/showAll';
+import NewProfileScreen from '../../screens/newProfile';
 
 const Stack = createStackNavigator()
 const Stack2 = createStackNavigator()
@@ -28,7 +29,7 @@ const Test = () => {
       <Stack.Screen name="home" component={HomeScreen} options={{headerShown: false}} />
       <Stack.Screen name="savePost" component={SavePostScreen} options={{headerShown: false}} />
       <Stack.Screen name="userPosts" component={FeedScreen} options={{headerShown: false}} />
-      <Stack.Screen name="profileOther" component={ProfileScreen} options={{headerShown: false}} />
+      <Stack.Screen name="profileOther" component={NewProfileScreen} options={{headerShown: false}} />
       <Stack.Screen name="editProfile" component={EditProfileScreen} options={{headerShown: false}} />
       <Stack.Screen name="showAllTracks" component={ShowAllTracks} options={{headerShown: false}} />
       <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{headerShown: false}} />

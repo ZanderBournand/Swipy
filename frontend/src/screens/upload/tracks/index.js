@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, StatusBar } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import styles from './styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -11,6 +11,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import BestWorkItem from '../../../components/upload/bestwork'
 import { useUploads } from '../../../hooks/useUploads'
 import {sortUploads} from "../../../services/helpers"
+import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -44,12 +45,13 @@ const MyTracksScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
+      <FocusAwareStatusBar barStyle="light-content"/>
       <View style={styles.topContainer}>
         <View style={styles.titleContainer}>
             <TouchableOpacity onPress={() => {navigation.goBack()}}>
-                <Feather name="arrow-left" size={30} color="black" />
+                <Feather name="arrow-left" size={30} color="lightgray" />
             </TouchableOpacity>
-            <Text style={[styles.title, {fontFamily: 'inter_black', fontSize: 28}]}>My Tracks</Text>
+            <Text style={[styles.title, {fontFamily: 'inter_black', fontSize: 28, color: 'lightgray'}]}>My Tracks</Text>
         </View>
         <TouchableOpacity style={styles.profileContainer} onPress={() => {navigation.navigate("Me")}}>
             <CachedImage style={styles.profileImage} source={{uri: currentUser?.photoURL}} />

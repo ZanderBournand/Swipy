@@ -1,4 +1,4 @@
-import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native'
+import { View, Text, TextInput, TouchableOpacity, KeyboardAvoidingView, StatusBar} from 'react-native'
 import React, {useState, useEffect, useContext} from 'react'
 import { Image } from 'react-native'
 import {useSelector} from 'react-redux'
@@ -11,10 +11,12 @@ import { useMessages } from '../../../hooks/useMessages'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import NavBarGeneral from '../../../components/general/navbar'
 import { sendMessage } from '../../../services/chat'
+import NavBarGeneralBlack from '../../../components/general/navbarBlack'
+import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 
 const ChatSingleScreen = ({ route }) => {
 
-  const {chatId, contactId} = route.params
+  const {chatId, contactId, user} = route.params
   const [message, setMessage] = useState('')
 
   const {messages, chatIdInst} = useMessages(chatId, contactId)
@@ -33,19 +35,23 @@ const ChatSingleScreen = ({ route }) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <NavBarGeneral title="Chat"/>
+      <FocusAwareStatusBar barStyle="light-content"/>
+      <NavBarGeneralBlack title={user.displayName}/>
       <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{flex: 1}}>
         <FlatList
               data={messages}
               inverted={-1}
-              removeClippedSubviews
+              // removeClippedSubviews
               renderItem={renderItem}
+              // initialNumToRender={10}
+              // windowSize={10}
+              // maxToRenderPerBatch={5}
               keyExtractor={(item) => item.id}
         />
         <View style={styles.containerInput}>
-          <TextInput style={styles.input} value={message} onChangeText={setMessage} placeholder="Send a message..."/>
+          <TextInput style={styles.input} value={message} onChangeText={setMessage} placeholder="Send a message..." placeholderTextColor="white"/>
           <TouchableOpacity onPress={() => handleCommentSend()}>
-              <Ionicons name='arrow-up-circle' size={34} color={'crimson'}/>
+              <Ionicons name='arrow-up-circle' size={34} color={'#FEACC6'}/>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

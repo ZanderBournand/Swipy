@@ -11,8 +11,12 @@ import { useUploads } from '../../hooks/useUploads'
 import NewProfileNavBar from '../../components/newProfile/navBar'
 import ProfileWorks from '../../components/newProfile/mainContent'
 import { useNavigation } from '@react-navigation/native'
+import FocusAwareStatusBar from '../../components/general/lightStatusBar'
+import { getStats } from '../../services/helpers'
 
 const NewProfileScreen = ({route}) => {
+
+  const [stats, setStats] = useState(null)
 
   const {initialUserId, searched} = route.params;
 
@@ -24,17 +28,17 @@ const NewProfileScreen = ({route}) => {
 
   const navigation = useNavigation();
 
-  function FocusAwareStatusBar(props) {
-    const isFocused = useIsFocused();
-  
-    return isFocused ? <StatusBar {...props} /> : null;
-  }
-
   useEffect(() => {
     if(user === undefined) {
       return;
     }
   }, [user])
+
+  useEffect(() => {
+    if (uploads != null) {
+      setStats(getStats(uploads))
+    }
+  }, [uploads])
 
   return (
     <ScrollView bounces={true} style={styles.container}> 
@@ -47,11 +51,11 @@ const NewProfileScreen = ({route}) => {
       <View style={styles.subHeaderContainer}>
         <View style={styles.statsContainer}>
             <View style={styles.stats}>
-                <Text style={styles.statsNumber}>15.6K</Text>
+                <Text style={styles.statsNumber}>{(stats != null ? stats[0] : 0)}</Text>
                 <Text style={styles.statsText}>Views</Text>
             </View>
             <View style={styles.stats}>
-                <Text style={styles.statsNumber}>26</Text>
+                <Text style={styles.statsNumber}>{(stats != null ? stats[1] : 0)}</Text>
                 <Text style={styles.statsText}>Connections</Text>
             </View>
         </View>
