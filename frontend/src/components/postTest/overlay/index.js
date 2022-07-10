@@ -3,9 +3,11 @@ import React, {useState, useEffect, useMemo, useContext} from 'react'
 import {useNavigation} from '@react-navigation/native'
 import styles from './styles'
 import {Ionicons} from '@expo/vector-icons'
+import {throttle} from 'throttle-debounce'
 import {useDispatch, useSelector} from 'react-redux'
 import {CurrentTrackInViewContext} from "../../../Context/TrackContext"
 import {useUser} from "../../../hooks/useUser"
+import { getLikeByUpload, updateLike } from '../../../services/upload'
 
 const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
@@ -15,13 +17,32 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
   const {contextTrack} = useContext(CurrentTrackInViewContext)
 
+  const [currentLikeState, setCurrentLikeState] = useState(false)
+
   const user = useUser(contextTrack?.creator).data
   
   const navigation = useNavigation()
 
   useEffect(() => {
     setPlaying(true)
+    if (contextTrack != null) {
+      getLikeByUpload(contextTrack, currentUser.uid).then((res) => {
+        setCurrentLikeState(res)
+      })
+      .catch((err) => {
+        return
+      })
+    }
   }, [contextTrack])
+
+  const handleUpdateLike = useMemo(
+    () =>
+      throttle(500, (currentLikeStateInst) => {
+        setCurrentLikeState(!currentLikeStateInst);
+        updateLike(contextTrack, currentUser.uid, currentLikeStateInst);
+      }, {noTrailing: true}),
+    [contextTrack]
+  );
 
   const togglePlayback = () => {
     if (playing) {
@@ -49,8 +70,8 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
         </View>
 
         <View style={styles.likeContainer}>
-          <TouchableOpacity style={styles.like}>
-            <Ionicons size={26} name={'heart-outline'} color={'lightgray'}/>
+          <TouchableOpacity style={styles.like} onPress={() => handleUpdateLike(currentLikeState)}>
+            <Ionicons size={26} name={currentLikeState ? 'heart' :  'heart-outline'} color='white'/>
           </TouchableOpacity>
         </View>
 

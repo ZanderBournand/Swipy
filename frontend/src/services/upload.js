@@ -367,9 +367,52 @@ export const getAllUploadsByUserId = (uid = firebase.auth().currentUser?.uid) =>
             uploads.set("beats", beats)
             resolve(uploads)
         })
-    
-
 })
+
+export const getLikeByUpload = (upload, uid) =>
+
+  new Promise((resolve, reject) => {
+
+    if (upload == null) {
+        reject()
+    }
+
+    firebase.firestore()
+      .collection("uploads")
+      .doc(upload.creator)
+      .collection(upload.type + "s")
+      .doc(upload.id)
+      .collection('likes')
+      .doc(uid)
+      .get()
+      .then((res) => resolve(res.exists));
+});
+
+export const updateLike = (upload, uid, currentLikeState) => {
+
+    if (upload == null) {
+        return;
+    }
+
+    if (currentLikeState) {
+        firebase.firestore()
+            .collection("uploads")
+            .doc(upload.creator)
+            .collection(upload.type + "s")
+            .doc(upload.id)
+            .collection('likes')
+            .doc(uid)
+            .delete();
+    } else {
+        firebase.firestore()
+            .collection("uploads")
+            .doc(upload.creator)
+            .collection(upload.type + "s")
+            .doc(upload.id)
+            .collection('likes')
+            .doc(uid)
+            .set({});
+}};
 
 
 

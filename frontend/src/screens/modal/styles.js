@@ -5,12 +5,12 @@ const styles = StyleSheet.create({
        flex: 1,
        alignItems: "center",
        paddingTop: 8,
-       backgroundColor: 'white'
+       backgroundColor: '#252525'
     },
     textWelcome: {
         fontWeight: "bold",
         paddingTop: 20,
-        color: '#6B7280',
+        color: 'lightgray',
         fontSize: 25,
     },
     image: {
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
         paddingBottom: 8,
         fontSize: 20,
         textAlign: "center",
+        color: "white",
     },
     imagePicker: {
         height: 100,

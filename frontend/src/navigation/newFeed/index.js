@@ -1,9 +1,11 @@
 import { View, Text, StatusBar } from 'react-native'
-import React from 'react'
+import React, {useLayoutEffect} from 'react'
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
 import { useIsFocused } from '@react-navigation/core'
 import NewFeedScreen from '../../screens/feedTest';
+import {useSelector} from 'react-redux'
 import FocusAwareStatusBar from '../../components/general/lightStatusBar'
+import { useNavigation } from '@react-navigation/native'
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -42,6 +44,16 @@ const emptyScreen = () => {
 const NewFeedNavigation = () => {
 
   const isFocused = useIsFocused()
+
+  const navigation = useNavigation()
+
+  const currentUser = useSelector(state => state.auth.currentUser)
+
+  useLayoutEffect(() => {
+    if(currentUser.displayName == null || currentUser.photoURL == null) {
+      navigation.navigate('modalLogin')
+    }
+  }, [])
 
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>

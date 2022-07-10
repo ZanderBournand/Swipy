@@ -12,6 +12,7 @@ import BestWorkItem from '../../../components/upload/bestwork'
 import { useUploads } from '../../../hooks/useUploads'
 import {sortUploads} from "../../../services/helpers"
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
+import BestWorkItemBlack from '../../../components/upload/bestWorkBlack'
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -34,7 +35,7 @@ const MyTracksScreen = () => {
   const renderItem = ({item}) => {
     return (
         <View style={{paddingVertical: 0, paddingLeft: 20}}>
-          <BestWorkItem item={item} />
+          <BestWorkItemBlack item={item} />
         </View>
     )
   }

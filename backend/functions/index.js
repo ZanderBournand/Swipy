@@ -36,6 +36,18 @@ exports.likeCreate = functions.firestore.document('post/{id}/{type}/{uid}').onCr
         .update(updateObj)
 })
 
+exports.likeCreateNew = functions.firestore.document('uploads/{uid1}/{type}/{id}/likes/{uid2}').onCreate((_, context) => {
+    let updateObj = {
+        likesCount: admin.firestore.FieldValue.increment(1) 
+    }
+    return db
+        .collection("uploads")
+        .doc(context.params.uid1)
+        .collection(context.params.type)
+        .doc(context.params.id)
+        .update(updateObj)
+})
+
 exports.likeDelete = functions.firestore.document('post/{id}/{type}/{uid}').onDelete((_, context) => {
     let updateObj = {}
     if(context.params.type == 'comments'){
@@ -50,6 +62,18 @@ exports.likeDelete = functions.firestore.document('post/{id}/{type}/{uid}').onDe
     }
     return db
         .collection("post")
+        .doc(context.params.id)
+        .update(updateObj)
+})
+
+exports.likeDeleteNew = functions.firestore.document('uploads/{uid1}/{type}/{id}/likes/{uid2}').onDelete((_, context) => {
+    let updateObj = {
+        likesCount: admin.firestore.FieldValue.increment(-1) 
+    }
+    return db
+        .collection("uploads")
+        .doc(context.params.uid1)
+        .collection(context.params.type)
         .doc(context.params.id)
         .update(updateObj)
 })

@@ -6,7 +6,7 @@ import styles from './styles'
 import {useSelector} from "react-redux"
 import CachedImage from 'react-native-expo-cached-image'
 import {useNavigation} from "@react-navigation/native"
-import BestWorkItem from '../../../components/upload/bestwork'
+import BestWorkItemBlack from '../../../components/upload/bestWorkBlack'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { getBeats, getSongsByUserId, getSongs, getAllSongsByUserId} from '../../../services/upload'
 import { useUploads } from '../../../hooks/useUploads'
@@ -56,8 +56,8 @@ const UploadScreen = () => {
             <View style={[styles.subContainer, {flex: 3}]}>
                 <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>Your Trending Sounds</Text>
                 <View style={{paddingTop: 10, flex: 1}}>
-                    <BestWorkItem item={trendings[0]}/>
-                    <BestWorkItem item={trendings[1]}/>
+                    <BestWorkItemBlack item={trendings[0]}/>
+                    <BestWorkItemBlack item={trendings[1]}/>
                 </View>
             </View>
             <TrackCount/>
@@ -70,7 +70,7 @@ const UploadScreen = () => {
             <View style={[styles.subContainer, {flex: 2, paddingTop: 10}]}>
                 <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>Your Trending Sounds</Text>
                 <View style={{height: '65%', justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
-                    <BestWorkItem item={trendings[0]}/>
+                    <BestWorkItemBlack item={trendings[0]}/>
                 </View>
             </View>
             <TrackCount/>

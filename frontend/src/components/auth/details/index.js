@@ -48,10 +48,10 @@ export default function AuthDetails({authPage, setDetailsPage}) {
   return (
     <View style={styles.container}>
         <TouchableOpacity>
-            <Feather name="arrow-left" size={24} color="black" onPress={() => setDetailsPage(false)}/>
+            <Feather name="arrow-left" size={24} color="white" onPress={() => setDetailsPage(false)}/>
         </TouchableOpacity>
-      <TextInput onChangeText={(text) => setEmail(text)} style={styles.textInput} placeholder="Email"/>
-      <TextInput onChangeText={(text) => setPassword(text)} style={styles.textInput} secureTextEntry placeholder="Password"/>
+      <TextInput onChangeText={(text) => setEmail(text)} style={styles.textInput} placeholder="Email" placeholderTextColor='lightgray'/>
+      <TextInput onChangeText={(text) => setPassword(text)} style={styles.textInput} secureTextEntry placeholder="Password" placeholderTextColor='lightgray'/>
       {invalidCredentials ?
         <Text style={styles.invalidCredentials}>Invalid Credentials! Please try again</Text>
         :

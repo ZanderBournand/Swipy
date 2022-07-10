@@ -39,7 +39,7 @@ const ModalScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} resizeMode="contain" source={require("../../../assets/swipy-pink-pink.png")}/>
+      <Image style={styles.image} resizeMode="contain" source={require("../../../assets/Swipy_Full_B.png")}/>
       <Text style={styles.textWelcome}>Welcome to Swipy</Text>
       <Text style={styles.step}>Step 1: The Profile Pic</Text>
       <TouchableOpacity style={styles.imageViewContainer} onPress={() => chooseImage()}>
@@ -61,6 +61,7 @@ const ModalScreen = () => {
       <TextInput
         style={styles.input} 
         placeholder="Enter a Display Name"
+        placeholderTextColor="lightgray"
         onChangeText={setTextInputValue}
         value={textInputValue}
       />

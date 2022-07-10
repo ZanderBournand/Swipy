@@ -1,15 +1,21 @@
 import { View, Text, TouchableOpacity, FlatList} from 'react-native'
-import React, {useEffect, useState} from 'react'
+import React, {useEffect, useState, useMemo} from 'react'
 import styles from './styles'
 import { Feather, Entypo } from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons'
+import {throttle} from 'throttle-debounce'
 import {useNavigation} from "@react-navigation/native"
+import {useSelector} from 'react-redux'
 import {getPopular, getPreview} from '../../../services/helpers'
 import CachedImage from "react-native-expo-cached-image"
+import { getLikeByUpload, updateLike } from '../../../services/upload';
 
 const ProfileWorks = ({work, user}) => {
 
   const [popularTracks, setPopularTracks] = useState(null)
   const [previewTracks, setPreviewTracks] = useState(null)
+
+  const currentUser = useSelector((state) => state.auth.currentUser)
 
   const navigation = useNavigation()
 
@@ -33,24 +39,53 @@ const ProfileWorks = ({work, user}) => {
     )
   }
 
+  const RenderPopularTrack = ({Object, index}) => {
+
+    const [currentLikeState, setCurrentLikeState] = useState(false)
+
+    useEffect(() => {
+      if (Object != null) {
+        getLikeByUpload(Object, currentUser.uid).then((res) => {
+          setCurrentLikeState(res)
+        })
+        .catch((err) => {
+          return
+        })
+      }
+    }, [])
+
+    const handleUpdateLike = useMemo(
+      () =>
+        throttle(500, (currentLikeStateInst) => {
+          setCurrentLikeState(!currentLikeStateInst);
+          updateLike(Object, currentUser.uid, currentLikeStateInst);
+        }, {noTrailing: true}),
+      [Object]
+    );
+
+    return (
+      <View style={styles.popularTrackContainer}>
+          <Text style={styles.popularTrackIndex}>{index}</Text>
+          <CachedImage style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
+          <View style={styles.popularTrackInfo}>
+              <Text style={styles.popularTrackTitle}>{Object.title}</Text>
+              <Text style={styles.popularTrackType}>{Object.type}</Text>
+          </View>
+          <TouchableOpacity style={styles.popularTrackButton} onPress={() => handleUpdateLike(currentLikeState)}>
+          <Ionicons size={20} name={currentLikeState ? 'heart' :  'heart-outline'} color='white'/>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.popularTrackButton} >
+              <Entypo name="dots-three-horizontal" size={20} color="lightgray" />
+          </TouchableOpacity>
+      </View>
+    )
+  }
+
   const RenderPopularTracks = () => {
     if (popularTracks.length != 0) {
       return (
         popularTracks.map((Object, index) => (
-          <View key={Object.title} style={styles.popularTrackContainer}>
-              <Text style={styles.popularTrackIndex}>{index}</Text>
-              <CachedImage style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
-              <View style={styles.popularTrackInfo}>
-                  <Text style={styles.popularTrackTitle}>{Object.title}</Text>
-                  <Text style={styles.popularTrackType}>{Object.type}</Text>
-              </View>
-              <TouchableOpacity style={styles.popularTrackButton}>
-                  <Feather name="heart" size={20} color="lightgray" />
-              </TouchableOpacity>
-              <TouchableOpacity style={styles.popularTrackButton} >
-                  <Entypo name="dots-three-horizontal" size={20} color="lightgray" />
-              </TouchableOpacity>
-          </View>
+          <RenderPopularTrack key={Object.title} Object={Object} index={index}/>
         ))
       )
     }

@@ -15,6 +15,7 @@ import { CommentContext } from "./src/Context/CommentContext";
 import * as Font from 'expo-font';
 import useFonts from "./src/hooks/useFonts";
 import { TrackContext } from "./src/Context/TrackContext";
+import { AsyncStorage } from "react-native";
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -44,7 +45,7 @@ export default function App() {
       <></>
     )
   }
-
+  
   return (
     StatusBar.setBarStyle('default', true),
     <Provider store={store}>

@@ -1,17 +1,51 @@
-import { View, Text } from 'react-native'
-import React from 'react'
+import { View, Text, TouchableOpacity } from 'react-native'
+import React, {useState, useEffect, useMemo} from 'react'
 import styles from './styles'
 import CachedImage from 'react-native-expo-cached-image'
-import { Feather } from '@expo/vector-icons'; 
+import { Feather, Ionicons } from '@expo/vector-icons'; 
+import {useSelector} from 'react-redux'
+import {throttle} from 'throttle-debounce'
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import {dateFormat} from "../../../services/helpers"
+import { getLikeByUpload, updateLike } from '../../../services/upload';
 
 const BestWorkItemBlack = ({ item }) => {
+
+  const currentUser = useSelector((state) => state.auth.currentUser)
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   
+  const [currentLikeState, setCurrentLikeState] = useState({state: false, counter: item.likesCount})
+
+  useEffect(() => {
+    if (item != null) {
+      getLikeByUpload(item, currentUser.uid).then((res) => {
+        setCurrentLikeState({
+          ...currentLikeState,
+          state: res,
+        })
+      })
+      .catch((err) => {
+        return
+      })
+    }
+  }, [])
+
+  const handleUpdateLike = useMemo(
+    () =>
+      throttle(500, (currentLikeStateInst) => {
+        setCurrentLikeState({
+          state: !currentLikeStateInst.state,
+          counter:
+            currentLikeStateInst.counter +
+            (currentLikeStateInst.state ? -1 : 1),
+        });
+        updateLike(item, currentUser.uid, currentLikeStateInst.state);
+      }, {noTrailing: true}),
+    [item]
+  );
 
   return (
     <View style={styles.container}>
@@ -29,8 +63,10 @@ const BestWorkItemBlack = ({ item }) => {
             <Text style={styles.statsText}>{item.playsCount}</Text>
           </View>
           <View style={styles.statsItem}>
-            <Feather name="heart" size={23} color="gray" />
-            <Text style={styles.statsText}>{item.likesCount}</Text>
+            <TouchableOpacity onPress={() => handleUpdateLike(currentLikeState)}>
+              <Ionicons size={23} name={currentLikeState.state ? 'heart' :  'heart-outline'} color='white'/>
+            </TouchableOpacity>
+            <Text style={styles.statsText}>{currentLikeState.counter}</Text>
           </View>
           <View style={styles.statsItem}>
             <MaterialCommunityIcons name="handshake-outline" size={24} color="gray" />

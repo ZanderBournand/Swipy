@@ -1,19 +1,30 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, Dimensions } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: '#121212', 
+        marginTop: 30,
     },
     containerMain: {
-        flex: 1,
+        flex: 4,
         padding: 30,
     },
     headerText: {
         fontWeight: 'bold',
         fontSize: 25,
         marginBottom: 25,
-        color: 'darkslategray',
-        textAlign: 'center',
+        color: 'white',
+        fontFamily: 'inter_black'
+    },
+    logoContainer: {
+        flex: 1.5,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    logo: {
+        resizeMode: 'contain',
+        height: 70,
     },
     providerButton: {
         borderColor: 'lightgray',
@@ -26,13 +37,13 @@ const styles = StyleSheet.create({
     },
     providerButtonText: {
         paddingRight: 22,
+        color: "white",
     },
     containerBottomButton: {
-        backgroundColor: 'ghostwhite',
+        backgroundColor: '#303030',
         padding: 30,
         alignItems: "center",
         borderStyle: 'solid',
-        borderWidth: 1,
         borderColor: 'lightgray',
     },
     bottomButtonText: {
