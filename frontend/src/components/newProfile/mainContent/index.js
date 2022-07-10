@@ -65,7 +65,7 @@ const ProfileWorks = ({work, user}) => {
 
     return (
       <View style={styles.popularTrackContainer}>
-          <Text style={styles.popularTrackIndex}>{index}</Text>
+          <Text style={styles.popularTrackIndex}>{index + 1}</Text>
           <CachedImage style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
           <View style={styles.popularTrackInfo}>
               <Text style={styles.popularTrackTitle}>{Object.title}</Text>

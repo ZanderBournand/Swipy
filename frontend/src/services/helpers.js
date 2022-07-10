@@ -28,10 +28,10 @@ export const getTrending = (uploads) => {
         }
     })
 
-    if (totalWork[0].interactionsCount == 0) {
+    if (totalWork[0].interactionsCount == 0 && totalWork[0].likesCount == 0 && totalWork[0].playsCount == 0) {
         return []
     }
-    else if (totalWork[1].interactionsCount == 0) {
+    else if (totalWork[1].interactionsCount == 0 && totalWork[1].likesCount == 0 && totalWork[1].playsCount == 0) {
         return totalWork.slice(0, 1)
     }
     else {
@@ -61,19 +61,19 @@ export const getPopular = (uploads) => {
         }
     })
 
-    if (totalWork[0].interactionsCount == 0) {
+    if (totalWork[0].interactionsCount == 0 && totalWork[0].likesCount == 0 && totalWork[0].playsCount == 0) {
         return []
     }
-    else if (totalWork[1].interactionsCount == 0) {
+    else if (totalWork[1].interactionsCount == 0 && totalWork[1].likesCount == 0 && totalWork[1].playsCount == 0) {
         return totalWork.slice(0, 1)
     }
-    else if (totalWork[2].interactionsCount == 0) {
+    else if (totalWork[2].interactionsCount == 0 && totalWork[2].likesCount == 0 && totalWork[2].playsCount == 0) {
         return totalWork.slice(0, 2)
     }
-    else if (totalWork[3].interactionsCount == 0) {
+    else if (totalWork[3].interactionsCount == 0 && totalWork[3].likesCount == 0 && totalWork[3].playsCount == 0) {
         return totalWork.slice(0, 3)
     }
-    else if (totalWork[4].interactionsCount == 0) {
+    else if (totalWork[4].interactionsCount == 0 && totalWork[4].likesCount == 0 && totalWork[4].playsCount == 0) {
         return totalWork.slice(0, 4)
     }
     else {

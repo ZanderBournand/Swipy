@@ -411,8 +411,23 @@ export const updateLike = (upload, uid, currentLikeState) => {
             .doc(upload.id)
             .collection('likes')
             .doc(uid)
-            .set({});
+            .set({}); 
 }};
 
+export const updateViews = (upload) => {
+    
+    if (upload == null) {
+        return
+    }
 
+    firebase.firestore()
+        .collection("uploads")
+        .doc(upload.creator)
+        .collection(upload.type + "s")
+        .doc(upload.id)
+        .update({
+            playsCount: firebase.firestore.FieldValue.increment(1)
+        })
+
+}
 

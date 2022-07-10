@@ -9,6 +9,7 @@ import PostSingleOverlay from '../post/overlay'
 import CachedImage from "react-native-expo-cached-image"
 import NewPostOverlay from './overlay'
 import { CurrentTrackInViewContext } from '../../Context/TrackContext'
+import { updateViews } from '../../services/upload'
 
 export const PostSingleTest = forwardRef(({item}, parentRef) => {
  
@@ -18,6 +19,11 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
   const {setCurrentTrackInViewContext} = useContext(CurrentTrackInViewContext)
 
   const [sound, setSound] = useState(null);
+
+  const [songDuration, setSongDuration] = useState(null);
+  const [songPosition, setSongPosition] = useState(null)
+  const [viewed, setViewed] = useState(false)
+
   const [waiting, setWaiting] = useState(false)
 
   let outOfBounds = useRef(false)
@@ -40,6 +46,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
         {uri: item.media.audio},
         {isLooping: true}
       )
+      sound.setOnPlaybackStatusUpdate(getStatus)
       setSound(sound)
     }
 
@@ -49,6 +56,20 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
       unload()
     };
   }, [])
+
+  const getStatus = (playbackStatus) => {
+    setSongDuration(playbackStatus.playableDurationMillis)
+    setSongPosition(playbackStatus.positionMillis)
+  }
+
+  useEffect(() => {
+    if (viewed == false) {
+      if (songPosition > songDuration * 0.2) {
+        setViewed(true)
+        updateViews(item)
+      }
+    }
+  }, [songPosition])
 
   useEffect(() => {
   
