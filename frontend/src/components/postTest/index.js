@@ -64,7 +64,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
 
   useEffect(() => {
     if (viewed == false) {
-      if (songPosition > songDuration * 0.2) {
+      if (songPosition > songDuration * 0.35) {
         setViewed(true)
         updateViews(item)
       }

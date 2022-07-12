@@ -36,6 +36,54 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         width: '60%'
+    },
+    titleContainer: {
+        alignItems: 'center',
+        marginBottom: 10,
+    },
+    titleText: {
+        color: 'lightgray',
+        fontFamily: 'inter_bold',
+        fontSize: 18,
+    },
+    subheaderContainer: {
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    descriptionText: {
+        textAlign: 'center',
+        color: 'gray'
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        paddingRight: 5
+    },
+    buttonContainer: {
+        paddingHorizontal: 10,
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+    buttonCancel: {
+        flex: 1,
+        alignItems: 'center',
+        borderRadius: 10,
+    },
+    buttonConfirm: {
+        flex: 1,
+        alignItems: 'center',
+        backgroundColor: '#E6D9E6',
+        borderRadius: 5,
+    },
+    buttonCancelText: {
+        color: 'white',
+        paddingVertical: 5,
+    },
+    buttonConfirmText: {
+        color: 'black',
+        paddingVertical: 5,
+        fontWeight: 'bold',
     }
 });
 
