@@ -41,6 +41,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 10,
     },
+    titleContainer2: {
+        alignItems: 'center',
+        marginBottom: 10,
+    },
     titleText: {
         color: 'lightgray',
         fontFamily: 'inter_bold',
@@ -50,6 +54,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         marginBottom: 20,
     },
+    subheaderContainer2: {
+        alignItems: 'center',
+        marginVertical: 10,
+    },
     descriptionText: {
         textAlign: 'center',
         color: 'gray'
@@ -58,6 +66,20 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingRight: 5
     },
+    buttonsContainer2: {
+        marginTop: 5,
+    },
+    buttonsContainer3: {
+        flexDirection: 'row',
+        paddingRight: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    okButtonText: {
+        color: 'white',
+        fontSize: 15,
+        fontWeight: '600',
+    },  
     buttonContainer: {
         paddingHorizontal: 10,
     },
@@ -75,6 +97,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#E6D9E6',
         borderRadius: 5,
+    },
+    buttonMessages: {
+        alignItems: 'center',
+        backgroundColor: '#E6D9E6',
+        borderRadius: 5,
+        paddingHorizontal: 10,
     },
     buttonCancelText: {
         color: 'white',

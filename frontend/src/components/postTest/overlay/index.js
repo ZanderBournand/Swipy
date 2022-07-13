@@ -2,14 +2,15 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import React, {useState, useEffect, useMemo, useContext} from 'react'
 import {useNavigation} from '@react-navigation/native'
 import styles from './styles'
-import {Ionicons, MaterialCommunityIcons} from '@expo/vector-icons'
+import {Ionicons, MaterialCommunityIcons, Feather} from '@expo/vector-icons'
 import {throttle} from 'throttle-debounce'
 import {useDispatch, useSelector} from 'react-redux'
 import {CurrentTrackInViewContext} from "../../../Context/TrackContext"
 import {useUser} from "../../../hooks/useUser"
 import { getLikeByUpload, updateLike } from '../../../services/upload'
+import { useConnected } from '../../../hooks/useConnected'
 import ConfirmationModal from './modal'
-import { sendConnectRequest } from '../../../services/connect'
+import { checkConnectStatus, sendConnectRequest } from '../../../services/connect'
 
 const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
@@ -17,10 +18,16 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
   const [playing, setPlaying] = useState(true)
   const [modalVisible, setModalVisible] = useState(false)
+  const [modal2Visible, setModal2Visible] = useState(false)
+  const [modal3Visible, setModal3Visible] = useState(false)
+
+  const [connected, setConnected] = useState(false)
 
   const {contextTrack} = useContext(CurrentTrackInViewContext)
 
   const [currentLikeState, setCurrentLikeState] = useState(false)
+
+  const newConnected = useConnected(currentUser.uid, contextTrack?.creator).data
 
   const user = useUser(contextTrack?.creator).data
   
@@ -34,6 +41,14 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
       })
       .catch((err) => {
         return
+      })
+      checkConnectStatus(currentUser.uid, contextTrack.creator).then((res) => {
+        if ((res[0] == true && res[1].status == 'complete') || contextTrack.creator === currentUser.uid) {
+          setConnected(true)
+        }
+        else {
+          setConnected(false)
+        }
       })
     }
   }, [contextTrack])
@@ -60,7 +75,18 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
   const sendInvitation = () => {
     if (currentUser != null && contextTrack != null) {
-      sendConnectRequest(currentUser.uid, contextTrack?.creator, contextTrack)
+      sendConnectRequest(currentUser.uid, contextTrack?.creator, contextTrack).then((res) => {
+        if (res === 'sent') {
+          setTimeout(() => {
+            setModal2Visible(true)
+          }, 200)
+        }
+        else if (res === 'complete') {
+          setTimeout(() => {
+            setModal3Visible(true)
+          }, 200)
+        }
+      })
     }
   }
 
@@ -87,6 +113,37 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
         </View>
       </ConfirmationModal>
 
+      <ConfirmationModal visible={modal2Visible}>
+        <View style={styles.titleContainer2}>
+          <Text style={styles.titleText}>ERROR</Text>
+          <View style={styles.subheaderContainer2}>
+            <Text style={styles.descriptionText}>You have already sent a connect request to the {contextTrack?.type == 'song' ? "artist" : "producer"} of this song. Please wait until they answer your invitation before sending another request.</Text>
+          </View>
+          <View style={styles.buttonsContainer2}>
+            <TouchableOpacity onPress={() => {setModal2Visible(false)}}>
+              <Text style={styles.okButtonText}>OK</Text>
+            </TouchableOpacity>
+          </View>
+          </View>
+      </ConfirmationModal>
+
+      <ConfirmationModal visible={modal3Visible}>
+        <View style={styles.titleContainer}>
+          <Text style={styles.titleText}>You Matched!</Text>
+        </View>
+        <View style={styles.subheaderContainer}>
+          <Text style={styles.descriptionText}>You just matched with your desired {contextTrack?.type == 'song' ? "artist" : "producer"}. Feel free to start you conversation by sending the first message!</Text>
+        </View>
+        <View style={styles.buttonsContainer3}>
+          <TouchableOpacity style={styles.buttonMessages} onPress={() => {
+              setModal3Visible(false)
+              navigation.navigate('Inbox')
+            }}>
+              <Text style={styles.buttonConfirmText}>GO TO MESSAGES</Text>
+          </TouchableOpacity>
+        </View>
+      </ConfirmationModal>
+
       <View style={styles.top}>
 
         <View style={styles.trackInfo}>
@@ -100,9 +157,15 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.like} onPress={() => {setModalVisible(true)}}>
-              <MaterialCommunityIcons name="handshake-outline" size={30} color="lightgray" />
-            </TouchableOpacity>
+            {newConnected == true || currentUser.uid == contextTrack?.creator ?
+              <View>
+                <Feather name="user-check" size={28} color="lightgray" />
+              </View>
+              :
+              <TouchableOpacity style={styles.like} onPress={() => {setModalVisible(true)}}>
+                <MaterialCommunityIcons name="handshake-outline" size={30} color="lightgray" />
+              </TouchableOpacity>
+            }
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.like} onPress={() => handleUpdateLike(currentLikeState)}>

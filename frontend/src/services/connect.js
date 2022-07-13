@@ -4,7 +4,7 @@ import uuid from 'uuid-random'
 require('firebase/firebase-auth')
 require('firebase/firestore')
 
-export const sendConnectRequest = (user1, user2, upload) => {
+export const sendConnectRequest = (user1, user2, upload) => new Promise((resolve, reject) => {
 
     if (user1 == null || user2 == null || upload == null) {
         return;
@@ -16,7 +16,11 @@ export const sendConnectRequest = (user1, user2, upload) => {
             return;
         }
         else if (res[0] == true && res[1].status != 'waiting') {
-            console.log("cant send another request, current status: ", res[1].status)
+            resolve('sent')
+        }
+        else if (res[0] == true && res[1].status == 'waiting') {
+            createConnection(user1, user2)
+            resolve('complete')
         }
         else {
             firebase.firestore()
@@ -46,7 +50,7 @@ export const sendConnectRequest = (user1, user2, upload) => {
 
     })
 
-}
+})
 
 export const checkConnectStatus = (user1, user2) => new Promise((resolve, reject) => {
 
@@ -66,6 +70,34 @@ export const checkConnectStatus = (user1, user2) => new Promise((resolve, reject
             }
             else {
                 resolve([res.exists, null])
+            }
+        })
+
+})
+
+export const checkConnected = (user1, user2) => new Promise((resolve, reject) => {
+
+    if (user1 == null || user2 == null) {
+        resolve([])
+    }
+
+    firebase.firestore()
+        .collection('user')
+        .doc(user1)
+        .collection('connections')
+        .doc(user2)
+        .get()
+        .then((res) => {
+            if (res.exists) {
+                if (res.data().status == 'complete') {
+                    resolve(true)
+                }
+                else {
+                    resolve(false)
+                }
+            }
+            else {
+                resolve(false)
             }
         })
 
@@ -115,7 +147,7 @@ export const deleteInvitation = (user, invite) =>  {
 
 }
 
-const generateID = (id1, id2) => {
+export const generateID = (id1, id2) => {
     if (id1 > id2) {
         return id1 + id2;
     }
@@ -124,9 +156,9 @@ const generateID = (id1, id2) => {
     }
 }
 
-export const createConnection = (user, invite) => {
+export const createConnection = (user, user2) => {
 
-    if (user == null || invite == null) {
+    if (user == null || user2 == null) {
         return
     }
 
@@ -134,30 +166,65 @@ export const createConnection = (user, invite) => {
         .collection('user')
         .doc(user)
         .collection('connections')
-        .doc(invite.user)
+        .doc(user2)
         .update({
             status: 'complete',
-            connectID: generateID(user, invite.user)
+            connectID: generateID(user, user2)
         });
 
     firebase.firestore()
         .collection('user')
-        .doc(invite.user)
+        .doc(user2)
         .collection('connections')
         .doc(user)
         .update({
             status: 'complete',
-            connectID: generateID(user, invite.user)
+            connectID: generateID(user, user2)
         });
 
 
     firebase.firestore()
         .collection('connects')
-        .doc(generateID(user, invite.user))
+        .doc(generateID(user, user2))
         .set({
             lastUpdate: firebase.firestore.FieldValue.serverTimestamp(),
-            lastMessage: 'Send a first message',
-            members: [user, invite.user]
+            lastMessage: 'Send a first message!',
+            members: [user, user2]
         })
 }
 
+export const connectsListener = (listener) => {
+    firebase.firestore()
+        .collection('connects')
+        .where('members', 'array-contains', firebase.auth().currentUser.uid)
+        .orderBy('lastUpdate', 'desc')
+        .onSnapshot(listener)
+}
+
+export const messagesListener = (listener, connectId) => {
+    firebase.firestore()
+    .collection('connects')
+    .doc(connectId)
+    .collection('messages')
+    .orderBy('creation', 'desc')
+    .onSnapshot(listener)
+}
+
+export const sendMessage = (connectId, message) => {
+    firebase.firestore()
+    .collection('connects')
+    .doc(connectId)
+    .collection('messages')
+    .add({
+        creator: firebase.auth().currentUser.uid,
+        message,
+        creation: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    firebase.firestore()
+    .collection('connects')
+    .doc(connectId)
+    .update({
+        lastUpdate: firebase.firestore.FieldValue.serverTimestamp(),
+        lastMessage: message,
+    })
+}

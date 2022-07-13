@@ -7,22 +7,27 @@ import {Feather} from '@expo/vector-icons'
 import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 import CachedImage from "react-native-expo-cached-image"
 import { useIsFocused } from '@react-navigation/core'
+import {useSelector} from 'react-redux'
 import { useUploads } from '../../hooks/useUploads'
 import NewProfileNavBar from '../../components/newProfile/navBar'
 import ProfileWorks from '../../components/newProfile/mainContent'
 import { useNavigation } from '@react-navigation/native'
 import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 import { getStats } from '../../services/helpers'
+import { useConnected } from '../../hooks/useConnected'
 
 const NewProfileScreen = ({route}) => {
 
   const [stats, setStats] = useState(null)
+
+  const currentUser = useSelector((state) => state.auth.currentUser)
 
   const {initialUserId, searched} = route.params;
 
   const { contextUser } = useContext(CurrentUserProfileItemInViewContext)
 
   const user = useUser(initialUserId ? initialUserId : contextUser).data
+  const connected = useConnected(currentUser.uid, user?.uid).data
 
   const uploads = useUploads(user?.uid).data
 
@@ -39,6 +44,22 @@ const NewProfileScreen = ({route}) => {
       setStats(getStats(uploads))
     }
   }, [uploads])
+
+  const RenderConnectButton = () => {
+    return (
+      <View>
+        {connected ? 
+          <View style={styles.followContainer}>
+            <Feather style={styles.followButton} name="user-check" size={24} color="#E9E9E9" />
+          </View>
+          :
+          <TouchableOpacity style={styles.followContainer}>
+            <Feather style={styles.followButton} name="user-plus" size={24} color="#E9E9E9" />
+          </TouchableOpacity>
+        }
+      </View>
+    )
+  }
 
   return (
     <ScrollView bounces={true} style={styles.container}> 
@@ -60,10 +81,8 @@ const NewProfileScreen = ({route}) => {
             </View>
         </View>
         <View style={styles.buttonsContainer}>
-            {searched != null ? 
-                <TouchableOpacity style={styles.followContainer}>
-                    <Feather style={styles.followButton} name="user-plus" size={24} color="#E9E9E9" />
-                </TouchableOpacity>
+            {user?.uid != currentUser.uid ? 
+                <RenderConnectButton />
             :
                 <TouchableOpacity style={styles.followContainer} onPress={() => navigation.navigate('editProfile')}>
                     <Feather style={styles.followButton} name="edit-2" size={24} color="#E9E9E9" />

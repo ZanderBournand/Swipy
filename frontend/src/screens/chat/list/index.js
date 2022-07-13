@@ -17,6 +17,7 @@ const ChatScreen = () => {
 
   const currentUser = useSelector(state => state.auth.currentUser)
   const chats = useSelector(state => state.chat.list)
+  const connects = useSelector(state => state.connects.list)
 
   const renderItem = ({item}) => {
       return (
@@ -33,9 +34,8 @@ const ChatScreen = () => {
             <Feather name="user-plus" size={24} color="lightgray" />
           </TouchableOpacity>
         </View>
-        {/* <NavBarGeneralBlack leftButton={{display: false}} title='Direct messages'/> */}
         <FlatList 
-            data={chats}
+            data={connects}
             removeClippedSubviews
             renderItem={renderItem}
             keyExtractor={(item) => item.id}

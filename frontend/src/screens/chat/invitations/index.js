@@ -37,7 +37,7 @@ const InvitationsScreen = ({route}) => {
         setData(data.filter((index) => index.id != item.id))
     }
     else {
-        createConnection(currentUser.uid, item)
+        createConnection(currentUser.uid, item?.user)
         setData(data.filter((index) => index.id != item.id))
     }
   }

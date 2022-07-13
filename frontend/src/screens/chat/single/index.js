@@ -8,9 +8,10 @@ import { addComment } from '../../../services/posts'
 import { FlatList } from 'react-native'
 import ChatSingleItem from '../../../components/chat/single/item'
 import { useMessages } from '../../../hooks/useMessages'
+import { useNewMessages } from '../../../hooks/useNewMessages'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import NavBarGeneral from '../../../components/general/navbar'
-import { sendMessage } from '../../../services/chat'
+import { sendMessage } from '../../../services/connect'
 import NavBarGeneralBlack from '../../../components/general/navbarBlack'
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 
@@ -19,14 +20,14 @@ const ChatSingleScreen = ({ route }) => {
   const {chatId, contactId, user} = route.params
   const [message, setMessage] = useState('')
 
-  const {messages, chatIdInst} = useMessages(chatId, contactId)
+  const {messages, connectIdInst} = useNewMessages(chatId, contactId)
 
   const handleCommentSend = () => {
       if(message.length == 0) {
           return;
       }
       setMessage('')
-      sendMessage(chatIdInst, message)
+      sendMessage(connectIdInst, message)
   }
 
   const renderItem = ({item}) => {
