@@ -17,6 +17,7 @@ import UploadNavigation from '../upload'
 import FeedTestScreen from '../../screens/feedTest'
 import NewFeedNavigation from '../newFeed'
 import NewProfileScreen from '../../screens/newProfile'
+import MessagesNavigation from '../messages'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -55,7 +56,7 @@ export default function HomeScreen() {
         />
         <Tab.Screen 
             name="Inbox" 
-            component={ChatScreen}
+            component={MessagesNavigation}
             options={{
                 tabBarIcon: ({color}) => (
                     <Feather name="message-square" size={24} color={color}/>

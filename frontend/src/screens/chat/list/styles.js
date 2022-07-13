@@ -6,6 +6,9 @@ const styles = StyleSheet.create({
     topContainer: {
         paddingVertical: 8,
         paddingHorizontal: 25,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between'
     },
 });
 

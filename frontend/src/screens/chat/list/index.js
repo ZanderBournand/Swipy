@@ -1,4 +1,4 @@
-import { View, Text, FlatList } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import React, {useEffect, useState} from 'react'
 import NavBarGeneralBlack from '../../../components/general/navbarBlack'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -6,10 +6,16 @@ import styles from './styles'
 import ChatListItem from '../../../components/chat/list/item'
 import { useSelector } from 'react-redux'
 import useFonts from "../../../hooks/useFonts"
+import { Feather } from '@expo/vector-icons';
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
+import { useNavigation } from '@react-navigation/native'
+import { getPendingConnects } from '../../../services/connect'
 
 const ChatScreen = () => {
+  
+  const navigation = useNavigation()
 
+  const currentUser = useSelector(state => state.auth.currentUser)
   const chats = useSelector(state => state.chat.list)
 
   const renderItem = ({item}) => {
@@ -23,6 +29,9 @@ const ChatScreen = () => {
         <FocusAwareStatusBar barStyle="light-content"/>
         <View style={styles.topContainer}>
           <Text style={{fontFamily: 'inter_black', fontSize: 30, color: 'lightgray'}}>Messages</Text>
+          <TouchableOpacity onPress={() => {navigation.navigate('invitations')}}>
+            <Feather name="user-plus" size={24} color="lightgray" />
+          </TouchableOpacity>
         </View>
         {/* <NavBarGeneralBlack leftButton={{display: false}} title='Direct messages'/> */}
         <FlatList 

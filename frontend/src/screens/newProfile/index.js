@@ -45,8 +45,8 @@ const NewProfileScreen = ({route}) => {
       <FocusAwareStatusBar barStyle="light-content"/>
       <View style={styles.profileHeaderContainer}>
         <NewProfileNavBar user={user} searched={searched != null ? searched : false}/>
-        <CachedImage style={styles.profileImage} source={{uri: user.photoURL}}/>
-        <Text style={styles.username}>{user.displayName}</Text>
+        <CachedImage style={styles.profileImage} source={{uri: user?.photoURL}}/>
+        <Text style={styles.username}>{user?.displayName}</Text>
       </View>
       <View style={styles.subHeaderContainer}>
         <View style={styles.statsContainer}>

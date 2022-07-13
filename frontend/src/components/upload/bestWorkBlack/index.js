@@ -21,7 +21,7 @@ const BestWorkItemBlack = ({ item }) => {
 
   useEffect(() => {
     if (item != null) {
-      getLikeByUpload(item, currentUser.uid).then((res) => {
+      getLikeByUpload(item, currentUser?.uid).then((res) => {
         setCurrentLikeState({
           ...currentLikeState,
           state: res,
@@ -42,7 +42,7 @@ const BestWorkItemBlack = ({ item }) => {
             currentLikeStateInst.counter +
             (currentLikeStateInst.state ? -1 : 1),
         });
-        updateLike(item, currentUser.uid, currentLikeStateInst.state);
+        updateLike(item, currentUser?.uid, currentLikeStateInst.state);
       }, {noTrailing: true}),
     [item]
   );

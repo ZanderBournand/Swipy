@@ -45,7 +45,7 @@ const ProfileWorks = ({work, user}) => {
 
     useEffect(() => {
       if (Object != null) {
-        getLikeByUpload(Object, currentUser.uid).then((res) => {
+        getLikeByUpload(Object, currentUser?.uid).then((res) => {
           setCurrentLikeState(res)
         })
         .catch((err) => {
@@ -58,7 +58,7 @@ const ProfileWorks = ({work, user}) => {
       () =>
         throttle(500, (currentLikeStateInst) => {
           setCurrentLikeState(!currentLikeStateInst);
-          updateLike(Object, currentUser.uid, currentLikeStateInst);
+          updateLike(Object, currentUser?.uid, currentLikeStateInst);
         }, {noTrailing: true}),
       [Object]
     );
