@@ -2,19 +2,19 @@ import { useMutation, useQuery, useQueryClient } from 'react-query'
 import { changeFollowState, getIsFollowing } from '../services/user'
 import { keys } from './queryKeys'
 import firebase from 'firebase'
+import { changeLikeState, updateLike } from '../services/upload'
 
-
-export const useFollowingMutation = (options = {}) => {
+export const useLikedMutation = (options = {}) => {
 
     const queryClient = useQueryClient()
 
-    return useMutation(changeFollowState, {
+    return useMutation(changeLikeState, {
         ...options,
         onMutate: variables => {
             queryClient.setQueryData(
-                keys.userFollowing(firebase.auth().currentUser.uid, variables.otherUserId), !variables.isFollowing
+                keys.liked(variables.upload, variables.user), !variables.isLiked
             )
         }
     })
-    
+
 }

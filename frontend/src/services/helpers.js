@@ -1,3 +1,5 @@
+import uploadSong from "../components/upload/uploadSong";
+
 export const truncateString = (lastMessage) => {
     var maxLength = 60;
     if (lastMessage.length < maxLength) return lastMessage;
@@ -8,8 +10,8 @@ export const truncateString = (lastMessage) => {
 
 export const getTrending = (uploads) => {
 
-    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
-    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let songs = (uploads.songs != null ? uploads.songs : [])
+    let beats = (uploads.beats != null ? uploads.beats : [])
     let totalWork = songs.concat(beats)
 
     if (totalWork.length == 0) {
@@ -41,8 +43,8 @@ export const getTrending = (uploads) => {
 
 export const getPopular = (uploads) => {
 
-    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
-    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let songs = (uploads.songs != null ? uploads.songs : [])
+    let beats = (uploads.beats != null ? uploads.beats : [])
     let totalWork = songs.concat(beats)
 
     if (totalWork.length == 0) {
@@ -83,8 +85,8 @@ export const getPopular = (uploads) => {
 
 export const getPreview = (uploads) => {
 
-    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
-    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let songs = (uploads.songs != null ? uploads.songs : [])
+    let beats = (uploads.beats != null ? uploads.beats : [])
     let totalWork = songs.concat(beats)
 
     if (totalWork.length == 0) {
@@ -168,8 +170,8 @@ export const dateFormat = (date) => {
 
 export const sortUploads = (uploads) => {
 
-    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
-    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let songs = (uploads.songs != null ? uploads.songs : [])
+    let beats = (uploads.beats != null ? uploads.beats : [])
 
     songs.sort((a, b) => {
         let aValue = a.interactionsCount * 0.5 + a.playsCount * 0.25 + a.likesCount * 0.25;
@@ -195,15 +197,15 @@ export const sortUploads = (uploads) => {
         }
     })
 
-    uploads.set('songs', songs)
-    uploads.set('beats', beats)
+    uploads.songs = songs
+    uploads.beats = beats
 
     return uploads;
 }
 
 export const getStats = (uploads) => {
-    let songs = (uploads.has('songs') ? uploads.get('songs') : [])
-    let beats = (uploads.has('beats') ? uploads.get('beats') : [])
+    let songs = (uploads.songs != null ? uploads.songs : [])
+    let beats = (uploads.beats != null ? uploads.beats : [])
     let totalWork = songs.concat(beats)
 
     if (totalWork.length == 0) {

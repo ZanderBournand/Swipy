@@ -128,7 +128,7 @@ const ProfileWorks = ({work, user}) => {
       <View style={styles.sectionContainer}>
         <View style={styles.sectionContainerHeader}> 
           <Text style={styles.sectionTitle}>Tracks</Text>
-          <TouchableOpacity style={styles.showButton} onPress={() => navigation.navigate("showAllTracks", {user: user, songs: work.get("songs"), beats: work.get("beats")})}> 
+          <TouchableOpacity style={styles.showButton} onPress={() => navigation.navigate("showAllTracks", {user: user, uploads: work})}> 
             <Text style={styles.showButtonText}>Show all</Text>
           </TouchableOpacity>
         </View>

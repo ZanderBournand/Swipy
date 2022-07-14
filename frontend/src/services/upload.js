@@ -338,7 +338,7 @@ export const getBeats = () => new Promise((resolve, reject) => {
 
 export const getAllUploadsByUserId = (uid = firebase.auth().currentUser?.uid) => new Promise((resolve, reject) => {
 
-    const uploads = new Map();
+    const uploads = {};
     
     firebase.firestore()
         .collection('uploads')
@@ -351,7 +351,7 @@ export const getAllUploadsByUserId = (uid = firebase.auth().currentUser?.uid) =>
                 const data = value.data();
                 return {id, ...data}
             })
-            uploads.set("songs", songs)
+            uploads.songs = songs
         })
     firebase.firestore()
         .collection('uploads')
@@ -364,7 +364,7 @@ export const getAllUploadsByUserId = (uid = firebase.auth().currentUser?.uid) =>
                 const data = value.data();
                 return {id, ...data}
             })
-            uploads.set("beats", beats)
+            uploads.beats = beats
             resolve(uploads)
         })
 })
@@ -374,7 +374,7 @@ export const getLikeByUpload = (upload, uid) =>
   new Promise((resolve, reject) => {
 
     if (upload == null) {
-        reject()
+        resolve(false)
     }
 
     firebase.firestore()
@@ -430,4 +430,32 @@ export const updateViews = (upload) => {
         })
 
 }
+
+export const changeLikeState = ({upload, user, isLiked}) => new Promise((resolve, reject) => {
+
+    if (isLiked) {
+        firebase.firestore()
+            .collection("uploads")
+            .doc(upload.creator)
+            .collection(upload.type + "s")
+            .doc(upload.id)
+            .collection('likes')
+            .doc(user)
+            .delete()
+            .then(() => resolve())
+            .catch(() => reject())
+    }
+    else {
+        firebase.firestore()
+            .collection("uploads")
+            .doc(upload.creator)
+            .collection(upload.type + "s")
+            .doc(upload.id)
+            .collection('likes')
+            .doc(user)
+            .set({})
+            .then(() => resolve())
+            .catch(() => reject())
+    }
+})
 

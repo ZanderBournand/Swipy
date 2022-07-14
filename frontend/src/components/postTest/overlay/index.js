@@ -11,6 +11,8 @@ import { getLikeByUpload, updateLike } from '../../../services/upload'
 import { useConnected } from '../../../hooks/useConnected'
 import ConfirmationModal from './modal'
 import { checkConnectStatus, sendConnectRequest } from '../../../services/connect'
+import { useLiked } from '../../../hooks/useLiked'
+import { useLikedMutation } from '../../../hooks/useLikedMutation'
 
 const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
@@ -21,13 +23,12 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
   const [modal2Visible, setModal2Visible] = useState(false)
   const [modal3Visible, setModal3Visible] = useState(false)
 
-  const [connected, setConnected] = useState(false)
-
   const {contextTrack} = useContext(CurrentTrackInViewContext)
 
-  const [currentLikeState, setCurrentLikeState] = useState(false)
-
   const newConnected = useConnected(currentUser.uid, contextTrack?.creator).data
+
+  const isLiked = useLiked(contextTrack, currentUser?.uid).data
+  const isLikedMutation = useLikedMutation()
 
   const user = useUser(contextTrack?.creator).data
   
@@ -35,29 +36,12 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
   useEffect(() => {
     setPlaying(true)
-    if (contextTrack != null) {
-      getLikeByUpload(contextTrack, currentUser.uid).then((res) => {
-        setCurrentLikeState(res)
-      })
-      .catch((err) => {
-        return
-      })
-      checkConnectStatus(currentUser.uid, contextTrack.creator).then((res) => {
-        if ((res[0] == true && res[1].status == 'complete') || contextTrack.creator === currentUser.uid) {
-          setConnected(true)
-        }
-        else {
-          setConnected(false)
-        }
-      })
-    }
   }, [contextTrack])
 
   const handleUpdateLike = useMemo(
     () =>
       throttle(500, (currentLikeStateInst) => {
-        setCurrentLikeState(!currentLikeStateInst);
-        updateLike(contextTrack, currentUser.uid, currentLikeStateInst);
+        isLikedMutation.mutate({upload: contextTrack, user: currentUser.uid, isLiked: currentLikeStateInst})
       }, {noTrailing: true}),
     [contextTrack]
   );
@@ -168,8 +152,8 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
             }
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.like} onPress={() => handleUpdateLike(currentLikeState)}>
-              <Ionicons size={26} name={currentLikeState ? 'heart' :  'heart-outline'} color='white'/>
+            <TouchableOpacity style={styles.like} onPress={() => handleUpdateLike(isLiked)}>
+              <Ionicons size={26} name={isLiked ? 'heart' :  'heart-outline'} color='white'/>
             </TouchableOpacity>
           </View>
         </View>

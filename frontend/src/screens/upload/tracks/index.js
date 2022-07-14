@@ -14,21 +14,26 @@ import {sortUploads} from "../../../services/helpers"
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 import BestWorkItemBlack from '../../../components/upload/bestWorkBlack'
 
-const Tab = createMaterialTopTabNavigator();
+const MyTracksScreen = ({route}) => {
 
-const MyTracksScreen = () => {
-
+  const {allUploads} = route.params
+  
   const currentUser = useSelector(state => state.auth.currentUser)
   const navigation = useNavigation()
 
   const [uploadType, setUploadType] = useState("song")
   const [data, setData] = useState(null)
 
-  const uploads = sortUploads(useUploads(currentUser?.uid).data)
+  const uploads = sortUploads(allUploads)
 
   useEffect(() => {
     if (uploads != null) {
-      setData(uploads.get(uploadType + "s"))
+      if (uploadType + "s" == "songs") {
+        setData(uploads.songs)
+      }
+      else {
+        setData(uploads.beats)
+      }
     }
   }, [uploads, uploadType])
 

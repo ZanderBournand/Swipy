@@ -12,18 +12,23 @@ import FocusAwareStatusBar from '../../general/lightStatusBar'
 
 const ShowAllTracks = ({route}) => {
 
-  const {user, songs, beats} = route.params
+  const {user, uploads} = route.params
 
   const [workType, setWorkType] = useState("song")
   const [data, setData] = useState(null)
 
-  const workSorted = sortUploads(new Map([["songs", songs], ["beats", beats]]))
+  const workSorted = sortUploads(uploads)
 
   const navigation = useNavigation()
 
   useEffect(() => {
     if (workSorted != null) {
-      setData(workSorted.get(workType + "s"))
+      if (workType + "s" == "songs") {
+        setData(workSorted.songs)
+      }
+      else {
+        setData(workSorted.beats)
+      }
     }
   }, [workSorted, workType])
 

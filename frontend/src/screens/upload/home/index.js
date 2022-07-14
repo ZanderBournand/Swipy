@@ -15,8 +15,6 @@ import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 
 const UploadScreen = () => {
 
-  const windowHeight = Dimensions.get('window').height;
-
   const currentUser = useSelector(state => state.auth.currentUser)
   const navigation = useNavigation()
   const [trendings, setTrendings] = useState(null)
@@ -41,7 +39,7 @@ const UploadScreen = () => {
                 </Text>
             </View>
             <View>
-                <TouchableOpacity style={styles.allTracksButton} onPress={() => {navigation.navigate('myTracks')}}>
+                <TouchableOpacity style={styles.allTracksButton} onPress={() => {navigation.navigate('myTracks', {allUploads: uploads})}}>
                     <Text style={{fontWeight: '600', fontSize: 15, color: 'white'}}>See All</Text>
                 </TouchableOpacity>
             </View>
