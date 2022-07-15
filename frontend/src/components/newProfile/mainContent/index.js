@@ -52,6 +52,9 @@ const ProfileWorks = ({work, user}) => {
           return
         })
       }
+      return () => {
+        setCurrentLikeState(null)
+      }
     }, [])
 
     const handleUpdateLike = useMemo(

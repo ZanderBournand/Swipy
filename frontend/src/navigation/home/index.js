@@ -19,6 +19,7 @@ import NewFeedNavigation from '../newFeed'
 import NewProfileScreen from '../../screens/newProfile'
 import MessagesNavigation from '../messages'
 import { useConnects } from '../../hooks/useConnects'
+import { useUploadsNew } from '../../hooks/useUploadsNew'
 
 const Tab = createMaterialBottomTabNavigator();
 
@@ -26,6 +27,7 @@ export default function HomeScreen() {
 
   useChats();
   useConnects();
+  useUploadsNew()
 
   return (
     <Tab.Navigator barStyle={{backgroundColor: '#030303'}} initialRouteName="feed">

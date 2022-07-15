@@ -13,6 +13,7 @@ import ConfirmationModal from './modal'
 import { checkConnectStatus, sendConnectRequest } from '../../../services/connect'
 import { useLiked } from '../../../hooks/useLiked'
 import { useLikedMutation } from '../../../hooks/useLikedMutation'
+import { useConnectedMutation } from '../../../hooks/useConnectedMutation'
 
 const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
@@ -23,9 +24,12 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
   const [modal2Visible, setModal2Visible] = useState(false)
   const [modal3Visible, setModal3Visible] = useState(false)
 
+  const [likeState, setLikeState] = useState(false)
+
   const {contextTrack} = useContext(CurrentTrackInViewContext)
 
   const newConnected = useConnected(currentUser.uid, contextTrack?.creator).data
+  const newConnectedMutation = useConnectedMutation()
 
   const isLiked = useLiked(contextTrack, currentUser?.uid).data
   const isLikedMutation = useLikedMutation()
@@ -45,6 +49,12 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
       }, {noTrailing: true}),
     [contextTrack]
   );
+
+  useEffect(() => {
+    if (isLiked != null) {
+      setLikeState(isLiked)
+    }
+  }, [isLiked])
 
   const togglePlayback = () => {
     if (playing) {
@@ -66,6 +76,7 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
           }, 200)
         }
         else if (res === 'complete') {
+          newConnectedMutation.mutate({userId: currentUser?.uid, otherUserId: contextTrack?.creator, isConnected: newConnected})
           setTimeout(() => {
             setModal3Visible(true)
           }, 200)
@@ -153,7 +164,7 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
           </View>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.like} onPress={() => handleUpdateLike(isLiked)}>
-              <Ionicons size={26} name={isLiked ? 'heart' :  'heart-outline'} color='white'/>
+              <Ionicons size={26} name={likeState ? 'heart' :  'heart-outline'} color='white'/>
             </TouchableOpacity>
           </View>
         </View>

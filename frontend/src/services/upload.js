@@ -374,7 +374,7 @@ export const getLikeByUpload = (upload, uid) =>
   new Promise((resolve, reject) => {
 
     if (upload == null) {
-        resolve(false)
+        resolve()
     }
 
     firebase.firestore()
@@ -459,3 +459,51 @@ export const changeLikeState = ({upload, user, isLiked}) => new Promise((resolve
     }
 })
 
+export const userSongsListener = (listener) => {   
+    firebase.firestore()
+        .collection('uploads')
+        .doc(firebase.auth().currentUser?.uid)
+        .collection('songs')
+        .onSnapshot(listener)
+}
+
+export const userBeatsListener = (listener) => {   
+    firebase.firestore()
+        .collection('uploads')
+        .doc(firebase.auth().currentUser?.uid)
+        .collection('beats')
+        .onSnapshot(listener)
+}
+
+// export const getAllUploadsByUserId = (uid = firebase.auth().currentUser?.uid) => new Promise((resolve, reject) => {
+
+//     const uploads = {};
+    
+//     firebase.firestore()
+//         .collection('uploads')
+//         .doc(uid)
+//         .collection('songs')
+//         .get()
+//         .then((res) => {
+//             const songs = res.docs.map((value) => {
+//                 const id = value.id;
+//                 const data = value.data();
+//                 return {id, ...data}
+//             })
+//             uploads.songs = songs
+//         })
+//     firebase.firestore()
+//         .collection('uploads')
+//         .doc(uid)
+//         .collection('beats')
+//         .get()
+//         .then((res) => {
+//             const beats = res.docs.map((value) => {
+//                 const id = value.id;
+//                 const data = value.data();
+//                 return {id, ...data}
+//             })
+//             uploads.beats = beats
+//             resolve(uploads)
+//         })
+// })

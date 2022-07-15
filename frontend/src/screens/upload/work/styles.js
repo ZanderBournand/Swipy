@@ -231,7 +231,8 @@ const styles = StyleSheet.create({
     uploadingContainer: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+        backgroundColor: '#121212'
     },
 });
 

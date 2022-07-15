@@ -29,7 +29,7 @@ const NewProfileScreen = ({route}) => {
   const user = useUser(initialUserId ? initialUserId : contextUser).data
   const connected = useConnected(currentUser.uid, user?.uid).data
 
-  const uploads = useUploads(user?.uid).data
+  const uploads = useUploads(user?.uid)
 
   const navigation = useNavigation();
 

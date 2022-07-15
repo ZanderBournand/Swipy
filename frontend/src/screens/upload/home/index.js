@@ -19,7 +19,7 @@ const UploadScreen = () => {
   const navigation = useNavigation()
   const [trendings, setTrendings] = useState(null)
 
-  const uploads = useUploads(currentUser?.uid).data
+  const uploads = useSelector(state => state.uploads)
 
   useEffect(() => {
     if(uploads != null) {

@@ -228,3 +228,12 @@ export const sendMessage = (connectId, message) => {
         lastMessage: message,
     })
 }
+
+export const useless = ({userId, otherUserId, isConnected}) => new Promise((resolve, reject) => {
+    if (userId != null && otherUserId != null && isConnected != null) {
+        resolve()
+    }
+    else {
+        reject()
+    }
+})
