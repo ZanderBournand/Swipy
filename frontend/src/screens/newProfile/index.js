@@ -7,7 +7,7 @@ import {Feather} from '@expo/vector-icons'
 import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 import CachedImage from "react-native-expo-cached-image"
 import { useIsFocused } from '@react-navigation/core'
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { useUploads } from '../../hooks/useUploads'
 import NewProfileNavBar from '../../components/newProfile/navBar'
 import ProfileWorks from '../../components/newProfile/mainContent'
@@ -15,6 +15,7 @@ import { useNavigation } from '@react-navigation/native'
 import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 import { getStats } from '../../services/helpers'
 import { useConnected } from '../../hooks/useConnected'
+import { openConnectModal } from '../../redux/actions/modal'
 
 const NewProfileScreen = ({route}) => {
 
@@ -29,8 +30,9 @@ const NewProfileScreen = ({route}) => {
   const user = useUser(initialUserId ? initialUserId : contextUser).data
   const connected = useConnected(currentUser.uid, user?.uid).data
 
-  const uploads = useUploads(user?.uid)
+  const uploads = useUploads(initialUserId ? initialUserId : contextUser)
 
+  const dispatch = useDispatch()
   const navigation = useNavigation();
 
   useEffect(() => {
@@ -53,7 +55,7 @@ const NewProfileScreen = ({route}) => {
             <Feather style={styles.followButton} name="user-check" size={24} color="#E9E9E9" />
           </View>
           :
-          <TouchableOpacity style={styles.followContainer}>
+          <TouchableOpacity style={styles.followContainer} onPress={() => dispatch(openConnectModal(true, uploads))}>
             <Feather style={styles.followButton} name="user-plus" size={24} color="#E9E9E9" />
           </TouchableOpacity>
         }

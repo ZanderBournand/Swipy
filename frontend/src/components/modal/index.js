@@ -4,6 +4,7 @@ import BottomSheet from '@gorhom/bottom-sheet'
 import { useSelector, useDispatch } from 'react-redux'
 import { clearModal } from '../../redux/actions/modal'
 import CommentModal from './comment'
+import ConnectModal from './connect'
 
 const Modal = () => {
   
@@ -16,23 +17,30 @@ const Modal = () => {
     if(modalState.open && bottomSheetRef.current) {
       bottomSheetRef.current.expand()
     }
+    else if (!modalState.open) {
+      bottomSheetRef.current.close()
+    }
   }, [modalState])
 
   const onClose = () => {
-    dispatch(clearModal())
+    if (modalState.open) {
+      dispatch(clearModal())
+    }
   }
 
   const renderContent = () => {
     switch(modalState.modalType) {
       case 0:
         return (<CommentModal post={modalState.data}/>)
+      case 1: 
+        return (<ConnectModal uploads={modalState.data}/>)
       default:
         return (<></>)
     }
   }
   
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={["55%"]} index={-1} handleHeight={40} enablePanDownToClose onClose={onClose} keyboardBehavior={"extend"}>
+    <BottomSheet ref={bottomSheetRef} snapPoints={["45%"]} index={-1} handleHeight={40} enablePanDownToClose onClose={onClose} keyboardBehavior={"extend"} backgroundStyle={{backgroundColor: '#303030'}}>
       {renderContent()}
     </BottomSheet>
   )
