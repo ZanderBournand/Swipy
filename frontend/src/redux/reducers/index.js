@@ -5,6 +5,7 @@ import {modal} from "./modal"
 import {chat} from './chat'
 import {connects} from './connects'
 import {uploads} from './uploads'
+import {popup} from './popup'
 
 const Reducers = combineReducers({
     auth,
@@ -12,7 +13,8 @@ const Reducers = combineReducers({
     modal,
     chat,
     connects,
-    uploads
+    uploads,
+    popup
 })
 
 export default Reducers;

@@ -8,7 +8,7 @@ export const userAuthStateListener = () => dispatch => {
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             dispatch(getCurrentUserData())
-            dispatch(getPostsByUser(firebase.auth().currentUser.uid))
+            dispatch(getPostsByUser(firebase.auth().currentUser?.uid))
         } else {
             dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true})
         }
@@ -18,7 +18,7 @@ export const userAuthStateListener = () => dispatch => {
 export const getCurrentUserData = () => dispatch => {
     firebase.firestore()
         .collection('user')
-        .doc(firebase.auth().currentUser.uid)
+        .doc(firebase.auth().currentUser?.uid)
         .onSnapshot((res) => {
             if(res.exists){
                 return dispatch({

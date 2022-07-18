@@ -21,6 +21,7 @@ const NewProfileScreen = ({route}) => {
 
   const [stats, setStats] = useState(null)
 
+  const connects = useSelector(state => state.connects.list)
   const currentUser = useSelector((state) => state.auth.currentUser)
 
   const {initialUserId, searched} = route.params;
@@ -28,7 +29,9 @@ const NewProfileScreen = ({route}) => {
   const { contextUser } = useContext(CurrentUserProfileItemInViewContext)
 
   const user = useUser(initialUserId ? initialUserId : contextUser).data
-  const connected = useConnected(currentUser.uid, user?.uid).data
+  const connected = useConnected(currentUser?.uid, user?.uid).data
+
+  const [connectionsCount, setConnectionsCount] = useState(user.connections)
 
   const uploads = useUploads(initialUserId ? initialUserId : contextUser)
 
@@ -40,6 +43,12 @@ const NewProfileScreen = ({route}) => {
       return;
     }
   }, [user])
+
+  useEffect(() => {
+    if (user?.uid === currentUser?.uid && connects.length > connectionsCount) {
+      setConnectionsCount(connectionsCount + (connects.length - connectionsCount))
+    }
+  }, [connects])
 
   useEffect(() => {
     if (uploads != null) {
@@ -55,7 +64,7 @@ const NewProfileScreen = ({route}) => {
             <Feather style={styles.followButton} name="user-check" size={24} color="#E9E9E9" />
           </View>
           :
-          <TouchableOpacity style={styles.followContainer} onPress={() => dispatch(openConnectModal(true, uploads))}>
+          <TouchableOpacity style={styles.followContainer} onPress={() => dispatch(openConnectModal(true, {uploads: uploads, user: user?.uid}))}>
             <Feather style={styles.followButton} name="user-plus" size={24} color="#E9E9E9" />
           </TouchableOpacity>
         }
@@ -78,12 +87,12 @@ const NewProfileScreen = ({route}) => {
                 <Text style={styles.statsText}>Views</Text>
             </View>
             <View style={styles.stats}>
-                <Text style={styles.statsNumber}>{(stats != null ? stats[1] : 0)}</Text>
+                <Text style={styles.statsNumber}>{connectionsCount}</Text>
                 <Text style={styles.statsText}>Connections</Text>
             </View>
         </View>
         <View style={styles.buttonsContainer}>
-            {user?.uid != currentUser.uid ? 
+            {user?.uid != currentUser?.uid ? 
                 <RenderConnectButton />
             :
                 <TouchableOpacity style={styles.followContainer} onPress={() => navigation.navigate('editProfile')}>

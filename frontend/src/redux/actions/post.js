@@ -9,15 +9,15 @@ import { CURENT_USER_POSTS_UPDATE } from '../constants'
 export const createPost = (description, video, thumbnail) => dispatch => new Promise((resolve, reject) => {
     let storagePostId = uuid()
     let allSavePromises = Promise.all([
-        saveMediaToStorage(video, `post/${firebase.auth().currentUser.uid}/${storagePostId}/video`),
-        saveMediaToStorage(thumbnail, `post/${firebase.auth().currentUser.uid}/${storagePostId}/thumbnail`)
+        saveMediaToStorage(video, `post/${firebase.auth().currentUser?.uid}/${storagePostId}/video`),
+        saveMediaToStorage(thumbnail, `post/${firebase.auth().currentUser?.uid}/${storagePostId}/thumbnail`)
     ])
     allSavePromises
         .then((media) => {
             firebase.firestore()
                 .collection('post')
                 .add({
-                    creator: firebase.auth().currentUser.uid,
+                    creator: firebase.auth().currentUser?.uid,
                     media,
                     description,
                     likesCount: 0,
@@ -30,7 +30,7 @@ export const createPost = (description, video, thumbnail) => dispatch => new Pro
         .catch(() => reject())
 })
 
-export const getPostsByUser = (uid = firebase.auth().currentUser.uid) => dispatch => new Promise((resolve, reject) => {
+export const getPostsByUser = (uid = firebase.auth().currentUser?.uid) => dispatch => new Promise((resolve, reject) => {
     firebase.firestore()
     .collection('post')
     .where('creator', '==', uid)

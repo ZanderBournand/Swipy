@@ -20,7 +20,7 @@ const InvitationsScreen = ({route}) => {
   const [data, setData] = useState([])
 
   useEffect(() => {
-    getPendingConnects(currentUser.uid).then((res) => {
+    getPendingConnects(currentUser?.uid).then((res) => {
         setData(res)
     })
   }, [])
@@ -33,11 +33,11 @@ const InvitationsScreen = ({route}) => {
 
   const updateInvitations = (item, newStatus) => {
     if (newStatus === 'decline') {
-        deleteInvitation(currentUser.uid, item)
+        deleteInvitation(currentUser?.uid, item)
         setData(data.filter((index) => index.id != item.id))
     }
     else {
-        createConnection(currentUser.uid, item?.user)
+        createConnection(currentUser?.uid, item?.user)
         setData(data.filter((index) => index.id != item.id))
     }
   }

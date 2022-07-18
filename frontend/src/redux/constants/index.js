@@ -13,3 +13,11 @@ export const UPLOADS_BEATS_SET = 'UPLOADS_BEATS_SET';
 export const MODAL_OPEN_COMMENT_SECTION = 'MODAL_OPEN_COMMENT_SECTION';
 
 export const CLEAR_MODAL = 'CLEAR_MODAL';
+
+export const POPUP_1_OPEN = 'POPUP_1_OPEN';
+
+export const POPUP_2_OPEN = 'POPUP_1_OPEN';
+
+export const POPUP_3_OPEN = 'POPUP_1_OPEN';
+
+export const CLEAR_POPUP = 'CLEAR_POPUP';

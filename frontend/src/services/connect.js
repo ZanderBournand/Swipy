@@ -20,6 +20,9 @@ export const sendConnectRequest = (user1, user2, upload) => new Promise((resolve
         }
         else if (res[0] == true && res[1].status == 'waiting') {
             createConnection(user1, user2)
+            if (upload.id != 'n/a') {
+                updateInteractionCounter(upload)
+            }
             resolve('complete')
         }
         else {
@@ -46,11 +49,26 @@ export const sendConnectRequest = (user1, user2, upload) => new Promise((resolve
                     track: upload,
                     creation: firebase.firestore.FieldValue.serverTimestamp()
                 })
-                }
+        }
 
     })
 
 })
+
+export const updateInteractionCounter = (upload) => {
+    
+    if (upload != null) {
+        firebase.firestore()
+            .collection('uploads')
+            .doc(upload.creator)
+            .collection(upload.type + "s")
+            .doc(upload.id)
+            .update({
+                interactionsCount: upload.interactionsCount + 1
+            })
+    }
+
+}
 
 export const checkConnectStatus = (user1, user2) => new Promise((resolve, reject) => {
 
@@ -196,7 +214,7 @@ export const createConnection = (user, user2) => {
 export const connectsListener = (listener) => {
     firebase.firestore()
         .collection('connects')
-        .where('members', 'array-contains', firebase.auth().currentUser.uid)
+        .where('members', 'array-contains', firebase.auth().currentUser?.uid)
         .orderBy('lastUpdate', 'desc')
         .onSnapshot(listener)
 }
@@ -216,7 +234,7 @@ export const sendMessage = (connectId, message) => {
     .doc(connectId)
     .collection('messages')
     .add({
-        creator: firebase.auth().currentUser.uid,
+        creator: firebase.auth().currentUser?.uid,
         message,
         creation: firebase.firestore.FieldValue.serverTimestamp()
     })

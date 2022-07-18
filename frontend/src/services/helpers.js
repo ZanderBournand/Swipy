@@ -83,6 +83,31 @@ export const getPopular = (uploads) => {
     }
 }
 
+export const getPopularNoSlice = (uploads) => {
+
+    let songs = (uploads.songs != null ? uploads.songs : [])
+    let beats = (uploads.beats != null ? uploads.beats : [])
+    let totalWork = songs.concat(beats)
+
+    if (totalWork.length == 0) {
+        return []
+    }
+
+    totalWork.sort((a, b) => {
+        let aValue = a.interactionsCount * 0.5 + a.playsCount * 0.25 + a.likesCount * 0.25;
+        let bValue = b.interactionsCount * 0.5 + b.playsCount * 0.25 + b.likesCount * 0.25;
+        
+        if (bValue > aValue) {
+            return 1
+        }
+        else {
+            return -1
+        }
+    })
+
+    return totalWork
+}
+
 export const getPreview = (uploads) => {
 
     let songs = (uploads.songs != null ? uploads.songs : [])

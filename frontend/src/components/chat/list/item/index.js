@@ -9,7 +9,7 @@ import CachedImage from "react-native-expo-cached-image"
 
 const ChatListItem = ({chat}) => {
 
-  const {data: userData} = useUser(chat.members[0] === firebase.auth().currentUser.uid ? chat.members[1] : chat.members[0])
+  const {data: userData} = useUser(chat.members[0] === firebase.auth().currentUser?.uid ? chat.members[1] : chat.members[0])
 
   const navigation = useNavigation()
 

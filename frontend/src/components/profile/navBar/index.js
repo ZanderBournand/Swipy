@@ -40,7 +40,7 @@ export default function ProfileNavBar({ user, searched }) {
       </TouchableOpacity>
       <Text style={styles.text}>{user?.displayName}</Text>
       <TouchableOpacity style={styles.button} onPress={() => {navigation.openDrawer()}}>
-        {user?.uid === firebase.auth().currentUser.uid &&
+        {user?.uid === firebase.auth().currentUser?.uid &&
           <Feather name="menu" size={24}/>
         }
       </TouchableOpacity>

@@ -13,29 +13,29 @@ export const createUpload = (type, title, audio, video, artwork) => new Promise(
     let r2 = Math.floor(Math.random() * (10000 - 0) + 0);
     let r3 = Math.floor(Math.random() * (10000 - 0) + 0);
 
-    const userDoc = firebase.firestore().collection('uploads').doc(firebase.auth().currentUser.uid);
+    const userDoc = firebase.firestore().collection('uploads').doc(firebase.auth().currentUser?.uid);
     userDoc.get()
     .then((docSnapshot) => {
         if(!docSnapshot.exists) {
             userDoc.set({
-                uid: firebase.auth().currentUser.uid
+                uid: firebase.auth().currentUser?.uid
             })
         }
     })
 
     if (video == null) {
         allSavePromises = Promise.all([
-            saveMediaToStorage(audio,`uploads/${firebase.auth().currentUser.uid}/${type+"s"}/${storageUploadId}/audio`),
-            saveMediaToStorage(artwork,`uploads/${firebase.auth().currentUser.uid}/${type+"s"}/${storageUploadId}/artwork`),
+            saveMediaToStorage(audio,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/audio`),
+            saveMediaToStorage(artwork,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/artwork`),
         ])
         allSavePromises
             .then((media) => {
                 firebase.firestore()
                     .collection("uploads")
-                    .doc(firebase.auth().currentUser.uid)
+                    .doc(firebase.auth().currentUser?.uid)
                     .collection(type+"s")
                     .add({
-                        creator: firebase.auth().currentUser.uid,
+                        creator: firebase.auth().currentUser?.uid,
                         media: {
                             audio: media[0],
                             artwork: media[1]
@@ -60,18 +60,18 @@ export const createUpload = (type, title, audio, video, artwork) => new Promise(
     }
     else {
         allSavePromises = Promise.all([
-            saveMediaToStorage(audio,`uploads/${firebase.auth().currentUser.uid}/${type+"s"}/${storageUploadId}/audio`),
-            saveMediaToStorage(artwork,`uploads/${firebase.auth().currentUser.uid}/${type+"s"}/${storageUploadId}/artwork`),
-            saveMediaToStorage(video,`uploads/${firebase.auth().currentUser.uid}/${type+"s"}/${storageUploadId}/video`)
+            saveMediaToStorage(audio,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/audio`),
+            saveMediaToStorage(artwork,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/artwork`),
+            saveMediaToStorage(video,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/video`)
         ])
         allSavePromises
         .then((media) => {
             firebase.firestore()
                 .collection("uploads")
-                .doc(firebase.auth().currentUser.uid)
+                .doc(firebase.auth().currentUser?.uid)
                 .collection(type+"s")
                 .add({
-                    creator: firebase.auth().currentUser.uid,
+                    creator: firebase.auth().currentUser?.uid,
                     media: {
                         audio: media[0],
                         artwork: media[1],

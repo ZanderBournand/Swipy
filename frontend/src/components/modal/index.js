@@ -33,14 +33,14 @@ const Modal = () => {
       case 0:
         return (<CommentModal post={modalState.data}/>)
       case 1: 
-        return (<ConnectModal uploads={modalState.data}/>)
+        return (<ConnectModal uploads={modalState.data.uploads} user={modalState.data.user}/>)
       default:
         return (<></>)
     }
   }
   
   return (
-    <BottomSheet ref={bottomSheetRef} snapPoints={["45%"]} index={-1} handleHeight={40} enablePanDownToClose onClose={onClose} keyboardBehavior={"extend"} backgroundStyle={{backgroundColor: '#303030'}}>
+    <BottomSheet ref={bottomSheetRef} snapPoints={["45%"]} index={-1} handleHeight={40} enablePanDownToClose onClose={onClose} keyboardBehavior={"extend"} backgroundStyle={{backgroundColor: '#252525'}}>
       {renderContent()}
     </BottomSheet>
   )

@@ -18,6 +18,7 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import DrawerScreen from '../../screens/drawer';
 import ShowAllTracks from '../../components/newProfile/showAll';
 import NewProfileScreen from '../../screens/newProfile';
+import PopUp from '../../components/popup';
 
 const Stack = createStackNavigator()
 const Stack2 = createStackNavigator()
@@ -25,16 +26,19 @@ const Drawer = createDrawerNavigator()
 
 const Test = () => {
   return (
-    <Stack2.Navigator mode="card">
-      <Stack.Screen name="home" component={HomeScreen} options={{headerShown: false}} />
-      <Stack.Screen name="savePost" component={SavePostScreen} options={{headerShown: false}} />
-      <Stack.Screen name="userPosts" component={FeedScreen} options={{headerShown: false}} />
-      <Stack.Screen name="profileOther" component={NewProfileScreen} options={{headerShown: false}} />
-      <Stack.Screen name="editProfile" component={EditProfileScreen} options={{headerShown: false}} />
-      <Stack.Screen name="showAllTracks" component={ShowAllTracks} options={{headerShown: false}} />
-      <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{headerShown: false}} />
-      <Stack.Screen name="chatSingle" component={ChatSingleScreen} options={{headerShown: false}} />
-    </Stack2.Navigator>
+    <>
+      <Stack2.Navigator mode="card">
+        <Stack.Screen name="home" component={HomeScreen} options={{headerShown: false}} />
+        <Stack.Screen name="savePost" component={SavePostScreen} options={{headerShown: false}} />
+        <Stack.Screen name="userPosts" component={FeedScreen} options={{headerShown: false}} />
+        <Stack.Screen name="profileOther" component={NewProfileScreen} options={{headerShown: false}} />
+        <Stack.Screen name="editProfile" component={EditProfileScreen} options={{headerShown: false}} />
+        <Stack.Screen name="showAllTracks" component={ShowAllTracks} options={{headerShown: false}} />
+        <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{headerShown: false}} />
+        <Stack.Screen name="chatSingle" component={ChatSingleScreen} options={{headerShown: false}} />
+      </Stack2.Navigator>
+      <PopUp/>
+    </>
   )
 }
 

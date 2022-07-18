@@ -17,7 +17,7 @@ export default function ProfileHeader({ user }) {
 
   const navigation = useNavigation();
 
-  const isFollowing = useFollowing(firebase.auth().currentUser.uid, user?.uid).data
+  const isFollowing = useFollowing(firebase.auth().currentUser?.uid, user?.uid).data
   const isFollowingMutation = useFollowingMutation()
 
   const renderFollownButton = () => {

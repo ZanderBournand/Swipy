@@ -3,7 +3,7 @@ import firebase from 'firebase'
 export const chatsListener = (listener) => {
     firebase.firestore()
     .collection('chats')
-    .where('members', 'array-contains', firebase.auth().currentUser.uid)
+    .where('members', 'array-contains', firebase.auth().currentUser?.uid)
     .orderBy('lastUpdate', 'desc')
     .onSnapshot(listener)
 }
@@ -23,7 +23,7 @@ export const sendMessage = (chatId, message) => {
     .doc(chatId)
     .collection('messages')
     .add({
-        creator: firebase.auth().currentUser.uid,
+        creator: firebase.auth().currentUser?.uid,
         message,
         creation: firebase.firestore.FieldValue.serverTimestamp()
     })
@@ -43,7 +43,7 @@ export const createChat = (contactId) => new Promise((resolve, reject) => {
     .add({
         lastUpdate: firebase.firestore.FieldValue.serverTimestamp(),
         lastMessage: 'Send a first message',
-        members: [contactId, firebase.auth().currentUser.uid]
+        members: [contactId, firebase.auth().currentUser?.uid]
     })
     .then(resolve)
     .catch(reject)

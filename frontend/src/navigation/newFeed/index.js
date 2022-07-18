@@ -50,7 +50,7 @@ const NewFeedNavigation = () => {
   const currentUser = useSelector(state => state.auth.currentUser)
 
   useLayoutEffect(() => {
-    if(currentUser.displayName == null || currentUser.photoURL == null) {
+    if(currentUser?.displayName == null || currentUser?.photoURL == null) {
       navigation.navigate('modalLogin')
     }
   }, [])

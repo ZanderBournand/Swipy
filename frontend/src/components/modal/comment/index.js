@@ -31,7 +31,7 @@ const CommentModal = ({ post }) => {
           return;
       }
       setComment('')
-      addComment(post.id, currentUser.uid, comment)
+      addComment(post.id, currentUser?.uid, comment)
       setCommentOffset(commentOffset + 1)
   }
 
@@ -48,7 +48,6 @@ const CommentModal = ({ post }) => {
       />
       <View style={styles.containerInput}>
         <CachedImage style={generalStyles.avatarSmall} source={{uri: currentUser?.photoURL}}/>
-        {/* <Image style={generalStyles.avatarSmall} source={{uri: currentUser.photoURL}}/> */}
         <BottomSheetTextInput style={styles.input} value={comment} onChangeText={setComment} placeholder="Add comment..."/>
         <TouchableOpacity onPress={() => handleCommentSend()}>
             <Ionicons name='arrow-up-circle' size={34} color={'crimson'}/>

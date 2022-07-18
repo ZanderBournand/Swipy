@@ -23,8 +23,8 @@ export const useNewMessages = (connectId, contactId) => {
         if(!connectIdInst) {
             let connect = connects.find(item => item.members.some(member => member === contactId))
             if(!connect) {
-                createConnection(currentUser.uid, contactId)
-                setConnectIdInst(generateID(currentUser.uid, contactId))
+                createConnection(currentUser?.uid, contactId)
+                setConnectIdInst(generateID(currentUser?.uid, contactId))
             }
             else {
                 setConnectIdInst(connect.id)

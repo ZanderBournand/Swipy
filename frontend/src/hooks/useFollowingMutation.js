@@ -12,7 +12,7 @@ export const useFollowingMutation = (options = {}) => {
         ...options,
         onMutate: variables => {
             queryClient.setQueryData(
-                keys.userFollowing(firebase.auth().currentUser.uid, variables.otherUserId), !variables.isFollowing
+                keys.userFollowing(firebase.auth().currentUser?.uid, variables.otherUserId), !variables.isFollowing
             )
         }
     })

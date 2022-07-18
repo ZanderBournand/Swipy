@@ -9,27 +9,23 @@ import {CurrentTrackInViewContext} from "../../../Context/TrackContext"
 import {useUser} from "../../../hooks/useUser"
 import { getLikeByUpload, updateLike } from '../../../services/upload'
 import { useConnected } from '../../../hooks/useConnected'
-import ConfirmationModal from './modal'
 import { checkConnectStatus, sendConnectRequest } from '../../../services/connect'
 import { useLiked } from '../../../hooks/useLiked'
 import { useLikedMutation } from '../../../hooks/useLikedMutation'
 import { useConnectedMutation } from '../../../hooks/useConnectedMutation'
+import {openPopup1} from '../../../redux/actions/popup'
 
 const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
   const currentUser = useSelector((state) => state.auth.currentUser)
 
   const [playing, setPlaying] = useState(true)
-  const [modalVisible, setModalVisible] = useState(false)
-  const [modal2Visible, setModal2Visible] = useState(false)
-  const [modal3Visible, setModal3Visible] = useState(false)
 
   const [likeState, setLikeState] = useState(false)
 
   const {contextTrack} = useContext(CurrentTrackInViewContext)
 
-  const newConnected = useConnected(currentUser.uid, contextTrack?.creator).data
-  const newConnectedMutation = useConnectedMutation()
+  const newConnected = useConnected(currentUser?.uid, contextTrack?.creator).data
 
   const isLiked = useLiked(contextTrack, currentUser?.uid).data
   const isLikedMutation = useLikedMutation()
@@ -37,6 +33,7 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
   const user = useUser(contextTrack?.creator).data
   
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setPlaying(true)
@@ -45,7 +42,7 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
   const handleUpdateLike = useMemo(
     () =>
       throttle(500, (currentLikeStateInst) => {
-        isLikedMutation.mutate({upload: contextTrack, user: currentUser.uid, isLiked: currentLikeStateInst})
+        isLikedMutation.mutate({upload: contextTrack, user: currentUser?.uid, isLiked: currentLikeStateInst})
       }, {noTrailing: true}),
     [contextTrack]
   );
@@ -67,77 +64,8 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
   }
 
-  const sendInvitation = () => {
-    if (currentUser != null && contextTrack != null) {
-      sendConnectRequest(currentUser.uid, contextTrack?.creator, contextTrack).then((res) => {
-        if (res === 'sent') {
-          setTimeout(() => {
-            setModal2Visible(true)
-          }, 200)
-        }
-        else if (res === 'complete') {
-          newConnectedMutation.mutate({userId: currentUser?.uid, otherUserId: contextTrack?.creator, isConnected: newConnected})
-          setTimeout(() => {
-            setModal3Visible(true)
-          }, 200)
-        }
-      })
-    }
-  }
-
   return (
     <View style={styles.container}>
-
-      <ConfirmationModal visible={modalVisible}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>Request Confirmation</Text>
-        </View>
-        <View style={styles.subheaderContainer}>
-          <Text style={styles.descriptionText}>The following will send a Connect Invitation to the {contextTrack?.type == 'song' ? "artist" : "producer"} of the song you interacted with</Text>
-        </View>
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity style={styles.buttonCancel} onPress={() => {setModalVisible(false)}}>
-              <Text style={styles.buttonCancelText}>CANCEL</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonConfirm} onPress={() => {
-              sendInvitation()
-              setModalVisible(false)
-            }}>
-              <Text style={styles.buttonConfirmText}>CONFIRM</Text>
-          </TouchableOpacity>
-        </View>
-      </ConfirmationModal>
-
-      <ConfirmationModal visible={modal2Visible}>
-        <View style={styles.titleContainer2}>
-          <Text style={styles.titleText}>ERROR</Text>
-          <View style={styles.subheaderContainer2}>
-            <Text style={styles.descriptionText}>You have already sent a connect request to the {contextTrack?.type == 'song' ? "artist" : "producer"} of this song. Please wait until they answer your invitation before sending another request.</Text>
-          </View>
-          <View style={styles.buttonsContainer2}>
-            <TouchableOpacity onPress={() => {setModal2Visible(false)}}>
-              <Text style={styles.okButtonText}>OK</Text>
-            </TouchableOpacity>
-          </View>
-          </View>
-      </ConfirmationModal>
-
-      <ConfirmationModal visible={modal3Visible}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.titleText}>You Matched!</Text>
-        </View>
-        <View style={styles.subheaderContainer}>
-          <Text style={styles.descriptionText}>You just matched with your desired {contextTrack?.type == 'song' ? "artist" : "producer"}. Feel free to start you conversation by sending the first message!</Text>
-        </View>
-        <View style={styles.buttonsContainer3}>
-          <TouchableOpacity style={styles.buttonMessages} onPress={() => {
-              setModal3Visible(false)
-              navigation.navigate('Inbox')
-            }}>
-              <Text style={styles.buttonConfirmText}>GO TO MESSAGES</Text>
-          </TouchableOpacity>
-        </View>
-      </ConfirmationModal>
 
       <View style={styles.top}>
 
@@ -152,12 +80,12 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
-            {newConnected == true || currentUser.uid == contextTrack?.creator ?
+            {newConnected == true || currentUser?.uid == contextTrack?.creator ?
               <View>
                 <Feather name="user-check" size={28} color="lightgray" />
               </View>
               :
-              <TouchableOpacity style={styles.like} onPress={() => {setModalVisible(true)}}>
+              <TouchableOpacity style={styles.like} onPress={() => {dispatch(openPopup1(contextTrack))}}>
                 <MaterialCommunityIcons name="handshake-outline" size={30} color="lightgray" />
               </TouchableOpacity>
             }

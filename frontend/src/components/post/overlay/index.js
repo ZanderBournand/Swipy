@@ -24,7 +24,7 @@ export default function PostSingleOverlay({user, post}) {
 
   useEffect(() => {
     setCommentOffset(0)
-    getLikeById(post.id, currentUser.uid).then((res) => {
+    getLikeById(post.id, currentUser?.uid).then((res) => {
       setCurrentLikeState({
         ...currentLikeState,
         state: res,
@@ -44,7 +44,7 @@ export default function PostSingleOverlay({user, post}) {
             currentLikeStateInst.counter +
             (currentLikeStateInst.state ? -1 : 1),
         });
-        updateLike(post.id, currentUser.uid, currentLikeStateInst.state);
+        updateLike(post.id, currentUser?.uid, currentLikeStateInst.state);
       }, {noTrailing: true}),
     []
   );
