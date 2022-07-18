@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, StatusBar, TouchableOpacity } from 'react-native'
-import React, {useContext, useEffect, useState, useRef} from 'react'
+import { View, Text, ScrollView, StatusBar, TouchableOpacity, Image } from 'react-native'
+import React, {useContext, useEffect, useState } from 'react'
 import styles from './styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { useUser } from '../../hooks/useUser'
@@ -19,34 +19,26 @@ import { openConnectModal } from '../../redux/actions/modal'
 
 const NewProfileScreen = ({route}) => {
 
-  const [stats, setStats] = useState(null)
-
-  const connects = useSelector(state => state.connects.list)
-  const currentUser = useSelector((state) => state.auth.currentUser)
-
-  const {initialUserId, searched} = route.params;
-
-  const { contextUser } = useContext(CurrentUserProfileItemInViewContext)
-
-  const user = useUser(initialUserId ? initialUserId : contextUser).data
-  const connected = useConnected(currentUser?.uid, user?.uid).data
-
-  const [connectionsCount, setConnectionsCount] = useState(user.connections)
-
-  const uploads = useUploads(initialUserId ? initialUserId : contextUser)
-
   const dispatch = useDispatch()
   const navigation = useNavigation();
 
-  useEffect(() => {
-    if(user === undefined) {
-      return;
-    }
-  }, [user])
+  const {initialUserId, searched} = route.params;
+
+  const connects = useSelector(state => state.connects.list)
+  const currentUser = useSelector((state) => state.auth?.currentUser)
+
+  const user = useUser(initialUserId).data
+  const connected = useConnected(currentUser?.uid, user?.uid).data
+
+  const uploads = useUploads(initialUserId)
+
+  const [stats, setStats] = useState(null)
+
+  const [connectionsCount, setConnectionsCount] = useState(user?.connections)
 
   useEffect(() => {
-    if (user?.uid === currentUser?.uid && connects.length > connectionsCount) {
-      setConnectionsCount(connectionsCount + (connects.length - connectionsCount))
+    if (user?.uid === currentUser?.uid && connects?.length > connectionsCount) {
+      setConnectionsCount(connectionsCount + (connects?.length - connectionsCount))
     }
   }, [connects])
 

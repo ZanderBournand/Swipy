@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList} from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Image} from 'react-native'
 import React, {useEffect, useState, useMemo} from 'react'
 import styles from './styles'
 import { Feather, Entypo } from '@expo/vector-icons';
@@ -29,8 +29,7 @@ const ProfileWorks = ({work, user}) => {
   const renderItem = ({item}) => {
     return (
       <View style={styles.previewTrackContainer}>
-        <CachedImage style={styles.previewTrackImage} source={{uri: item.media.artwork}}/>
-        {/* <Text style={{color: 'gray'}}>{item.type}</Text> */}
+        <Image style={styles.previewTrackImage} source={{uri: item.media.artwork}}/>
         <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
           <Text style={styles.previewTrackTitle}>{item.title}</Text>
           <Text style={{color: 'gray'}}>{item.type}</Text>
@@ -69,7 +68,7 @@ const ProfileWorks = ({work, user}) => {
     return (
       <View style={styles.popularTrackContainer}>
           <Text style={styles.popularTrackIndex}>{index + 1}</Text>
-          <CachedImage style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
+          <Image style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
           <View style={styles.popularTrackInfo}>
               <Text style={styles.popularTrackTitle}>{Object.title}</Text>
               <Text style={styles.popularTrackType}>{Object.type}</Text>

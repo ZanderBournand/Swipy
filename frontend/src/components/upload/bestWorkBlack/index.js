@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, {useState, useEffect, useMemo} from 'react'
 import styles from './styles'
 import CachedImage from 'react-native-expo-cached-image'
@@ -37,7 +37,7 @@ const BestWorkItemBlack = ({ item }) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 1, backgroundColor: 'row'}}>
-        <CachedImage source={{uri: item.media.artwork}} style={styles.artwork}/>
+        <Image source={{uri: item.media.artwork}} style={styles.artwork}/>
       </View>
       <View style={styles.description}>
         <Text adjustsFontSizeToFit={true} numberOfLines={1} style={{fontFamily: 'inter_medium', fontSize: 18, flex: 1, color: 'lightgray'}}>{item.title}</Text>
