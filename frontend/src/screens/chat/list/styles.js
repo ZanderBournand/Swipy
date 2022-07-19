@@ -1,8 +1,5 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
-    container: {
-        
-    },
     topContainer: {
         paddingVertical: 8,
         paddingHorizontal: 25,
@@ -10,6 +7,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between'
     },
+    noDataContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '50%',
+    },
+    noDataText: {
+        color: 'lightgray',
+        textAlign: 'center',
+        fontSize: 15,
+        fontWeight: 'bold',
+    }
 });
 
 export default styles;

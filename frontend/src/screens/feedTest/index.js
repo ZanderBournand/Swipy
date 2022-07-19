@@ -4,7 +4,6 @@ import { useIsFocused } from '@react-navigation/core'
 import {getBeats, getSongs} from '../../services/upload'
 import PostSingleTest from '../../components/postTest'
 import useMaterialNavBarHeight from '../../hooks/useMaterialNavBarHeight'
-import CachedImage from "react-native-expo-cached-image"
 import NewPostOverlay from '../../components/postTest/overlay'
 import { useIsFetching } from 'react-query'
 

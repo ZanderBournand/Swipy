@@ -48,7 +48,6 @@ export default function ProfileHeader({ user }) {
       {true ?
         <View>
           <CachedImage style={styles.userImage} source={{ uri: user?.photoURL}} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/>
-          {/* <Image style={styles.userImage} source={{ uri: user?.photoURL}} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/> */}
           {imageLoading ?
             <ActivityIndicator style={styles.loader} size="small" color="white" />
             :

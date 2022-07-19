@@ -6,7 +6,7 @@ import { useIsFocused } from '@react-navigation/core'
 import { useUser } from '../../hooks/useUser'
 import { Audio } from 'expo-av';
 import PostSingleOverlay from '../post/overlay'
-import CachedImage from "react-native-expo-cached-image"
+
 import NewPostOverlay from './overlay'
 import { CurrentTrackInViewContext } from '../../Context/TrackContext'
 import { updateViews } from '../../services/upload'
@@ -253,21 +253,6 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
 
   return (
     <>
-      {/* <View style={styles.overlayContainer}> 
-
-        <View>
-          <Text style={styles.title}>{item?.title}</Text>
-          <Text style={styles.artist}>{user?.displayName}</Text>
-        </View>
-
-        <View>
-
-        </View>
-        
-      </View> */}
-
-      {/* <NewPostOverlay user={user} post={item} /> */}
-
       {item.media.hasOwnProperty("video") ?
         <Video
         ref={ref}
@@ -281,7 +266,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
         />
         :
         <View style={{width: '100%', height: '100%', alignItems: 'center', justifyContent: 'center', backgroundColor: 'black'}}>
-          <CachedImage style={{width: '90%', aspectRatio: 1/1}} source={{uri: item.media.artwork}}/>
+          <Image style={{width: '90%', aspectRatio: 1/1}} source={{uri: item.media.artwork}}/>
         </View>
       
       }

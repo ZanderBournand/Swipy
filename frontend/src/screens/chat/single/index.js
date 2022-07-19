@@ -42,11 +42,10 @@ const ChatSingleScreen = ({ route }) => {
         <FlatList
               data={messages}
               inverted={-1}
-              // removeClippedSubviews
               renderItem={renderItem}
-              // initialNumToRender={10}
-              // windowSize={10}
-              // maxToRenderPerBatch={5}
+              initialNumToRender={10}
+              windowSize={10}
+              maxToRenderPerBatch={5}
               keyExtractor={(item) => item.id}
         />
         <View style={styles.containerInput}>

@@ -19,7 +19,6 @@ const ChatSingleItem = ({item}) => {
   return (
     <View style={isCurrentUser ? styles.containerCurrent : styles.containerOther}>
       <CachedImage style={generalStyles.avatarSmall} source={{uri: userData?.photoURL}}/>
-      {/* <Image style={generalStyles.avatarSmall} source={{uri: userData?.photoURL}}/> */}
       <View style={isCurrentUser ? styles.containerTextCurrent : styles.containerTextOther}>
         <Text style={isCurrentUser ? styles.textCurrent : styles.textOther}>{item.message}</Text>
       </View>

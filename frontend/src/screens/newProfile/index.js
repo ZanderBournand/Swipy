@@ -33,7 +33,7 @@ const NewProfileScreen = ({route}) => {
   const uploads = useUploads(initialUserId)
 
   const [stats, setStats] = useState(null)
-
+  const [connectedPrev, setConnectedPrev] = useState(null)
   const [connectionsCount, setConnectionsCount] = useState(user?.connections)
 
   useEffect(() => {
@@ -41,6 +41,13 @@ const NewProfileScreen = ({route}) => {
       setConnectionsCount(connectionsCount + (connects?.length - connectionsCount))
     }
   }, [connects])
+
+  useEffect(() => {
+    if (connected == true && connectedPrev == false) {
+      setConnectionsCount(connectionsCount + 1)
+    }
+    setConnectedPrev(connected)
+  }, [connected])
 
   useEffect(() => {
     if (uploads != null) {
@@ -75,11 +82,11 @@ const NewProfileScreen = ({route}) => {
       <View style={styles.subHeaderContainer}>
         <View style={styles.statsContainer}>
             <View style={styles.stats}>
-                <Text style={styles.statsNumber}>{(stats != null ? stats[0] : 0)}</Text>
+                <Text style={styles.statsNumber}>{(stats != null && stats.length > 0 ? stats[0] : 0)}</Text>
                 <Text style={styles.statsText}>Views</Text>
             </View>
             <View style={styles.stats}>
-                <Text style={styles.statsNumber}>{connectionsCount}</Text>
+                <Text style={styles.statsNumber}>{connectionsCount != null ? connectionsCount : 0}</Text>
                 <Text style={styles.statsText}>Connections</Text>
             </View>
         </View>

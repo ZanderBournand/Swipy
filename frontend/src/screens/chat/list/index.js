@@ -15,8 +15,6 @@ const ChatScreen = () => {
   
   const navigation = useNavigation()
 
-  const currentUser = useSelector(state => state.auth.currentUser)
-  const chats = useSelector(state => state.chat.list)
   const connects = useSelector(state => state.connects.list)
 
   const renderItem = ({item}) => {
@@ -34,12 +32,18 @@ const ChatScreen = () => {
             <Feather name="user-plus" size={24} color="lightgray" />
           </TouchableOpacity>
         </View>
-        <FlatList 
+        {connects?.length > 0 ?
+          <FlatList 
             data={connects}
             removeClippedSubviews
             renderItem={renderItem}
             keyExtractor={(item) => item.id}
-        />
+          />
+          :
+          <View style={styles.noDataContainer}>
+              <Text style={styles.noDataText}>No Connects. Start Swiping!</Text>
+          </View>
+        }
     </SafeAreaView>
   )
 }

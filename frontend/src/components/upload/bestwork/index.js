@@ -1,7 +1,6 @@
-import { View, Text } from 'react-native'
+import { View, Text, Image } from 'react-native'
 import React from 'react'
 import styles from './styles'
-import CachedImage from 'react-native-expo-cached-image'
 import { Feather } from '@expo/vector-icons'; 
 import { MaterialCommunityIcons } from '@expo/vector-icons'; 
 import {dateFormat} from "../../../services/helpers"
@@ -15,7 +14,7 @@ const BestWorkItem = ({ item }) => {
   return (
     <View style={styles.container}>
       <View style={{flex: 1, backgroundColor: 'row'}}>
-        <CachedImage source={{uri: item.media.artwork}} style={styles.artwork}/>
+        <Image source={{uri: item.media.artwork}} style={styles.artwork}/>
       </View>
       <View style={styles.description}>
         <Text adjustsFontSizeToFit={true} numberOfLines={1} style={{fontFamily: 'inter_medium', fontSize: 18, flex: 1, color: 'white'}}>{item.title}</Text>

@@ -12,7 +12,6 @@ const CommentItem = ({item}) => {
   return (
     <View style={styles.container}>
       <CachedImage style={generalStyles.avatarSmall} source={{uri: user?.photoURL}}/>
-      {/* <Image style={generalStyles.avatarSmall} source={{uri: user.photoURL}}/> */}
       <View style={styles.containerText}>
         <Text style={styles.displayName}>{user?.displayName}</Text> 
         <Text>{item.comment}</Text>

@@ -7,8 +7,8 @@ import {throttle} from 'throttle-debounce'
 import {useNavigation} from "@react-navigation/native"
 import {useSelector} from 'react-redux'
 import {getPopular, getPreview} from '../../../services/helpers'
-import CachedImage from "react-native-expo-cached-image"
 import { getLikeByUpload, updateLike } from '../../../services/upload';
+import PopularTrack from '../mainContent/popularTrack'
 
 const ProfileWorks = ({work, user}) => {
 
@@ -38,56 +38,11 @@ const ProfileWorks = ({work, user}) => {
     )
   }
 
-  const RenderPopularTrack = ({Object, index}) => {
-
-    const [currentLikeState, setCurrentLikeState] = useState(false)
-
-    useEffect(() => {
-      if (Object != null) {
-        getLikeByUpload(Object, currentUser?.uid).then((res) => {
-          setCurrentLikeState(res)
-        })
-        .catch((err) => {
-          return
-        })
-      }
-      return () => {
-        setCurrentLikeState(null)
-      }
-    }, [])
-
-    const handleUpdateLike = useMemo(
-      () =>
-        throttle(500, (currentLikeStateInst) => {
-          setCurrentLikeState(!currentLikeStateInst);
-          updateLike(Object, currentUser?.uid, currentLikeStateInst);
-        }, {noTrailing: true}),
-      [Object]
-    );
-
-    return (
-      <View style={styles.popularTrackContainer}>
-          <Text style={styles.popularTrackIndex}>{index + 1}</Text>
-          <Image style={styles.popularTrackImage} source={{uri: Object.media.artwork}}/>
-          <View style={styles.popularTrackInfo}>
-              <Text style={styles.popularTrackTitle}>{Object.title}</Text>
-              <Text style={styles.popularTrackType}>{Object.type}</Text>
-          </View>
-          <TouchableOpacity style={styles.popularTrackButton} onPress={() => handleUpdateLike(currentLikeState)}>
-          <Ionicons size={20} name={currentLikeState ? 'heart' :  'heart-outline'} color='white'/>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.popularTrackButton} >
-              <Entypo name="dots-three-horizontal" size={20} color="lightgray" />
-          </TouchableOpacity>
-      </View>
-    )
-  }
-
   const RenderPopularTracks = () => {
     if (popularTracks.length != 0) {
       return (
         popularTracks.map((Object, index) => (
-          <RenderPopularTrack key={Object.title} Object={Object} index={index}/>
+          <PopularTrack key={Object.title} Object={Object} index={index}/>
         ))
       )
     }

@@ -1,7 +1,6 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, {useState, useEffect, useMemo} from 'react'
 import styles from './styles'
-import CachedImage from 'react-native-expo-cached-image'
 import { Feather, Ionicons } from '@expo/vector-icons'; 
 import {useSelector} from 'react-redux'
 import {throttle} from 'throttle-debounce'

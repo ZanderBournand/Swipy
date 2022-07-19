@@ -1,9 +1,8 @@
-import { View, Text, TouchableOpacity } from 'react-native'
+import { View, Text, TouchableOpacity, Image } from 'react-native'
 import React, {useEffect, useState, useCallback} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import styles from './styles'
-import CachedImage from "react-native-expo-cached-image"
 import { Feather } from '@expo/vector-icons';
 import { getPopularNoSlice } from '../../../services/helpers'
 import { clearModal } from '../../../redux/actions/modal';
@@ -95,7 +94,7 @@ const ConnectModal = ({ uploads, user }) => {
               </View>
             }
           </View>
-          <CachedImage style={styles.itemImage} source={{uri: item?.media.artwork}}/>
+          <Image style={styles.itemImage} source={{uri: item?.media.artwork}}/>
           <View style={styles.trackInfo}>
             <Text style={styles.itemTitle}>{item?.title}</Text>
             <Text style={styles.itemType}>{item?.type}</Text>

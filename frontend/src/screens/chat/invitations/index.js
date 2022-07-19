@@ -3,7 +3,6 @@ import React, {useState, useEffect} from 'react'
 import styles from './styles'
 import { Feather } from '@expo/vector-icons';
 import {SafeAreaView} from 'react-native-safe-area-context'
-import CachedImage from 'react-native-expo-cached-image'
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 import { useNavigation } from '@react-navigation/native'
 import { useSelector } from 'react-redux'
