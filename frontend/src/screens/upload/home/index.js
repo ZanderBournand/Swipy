@@ -1,4 +1,4 @@
-import { View, Text, Image, TouchableOpacity, FlatList, Dimensions, ScrollView, StatusBar} from 'react-native'
+import { View, Text, Image, TouchableOpacity, FlatList, Dimensions, ScrollView, StatusBar, ActivityIndicator} from 'react-native'
 import React, {useEffect, useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {Feather} from '@expo/vector-icons'
@@ -84,7 +84,7 @@ const UploadScreen = () => {
             <View style={[styles.subContainer, {flex: 1.5, paddingTop: 10}]}>
                 <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>Your Trending Sounds</Text>
                 <View style={{height: '65%', justifyContent: 'center', alignItems: 'center', marginTop: 10}}>
-                    <Text style={{fontSize: 16, fontWeight: '500'}}>No Data Available</Text>
+                    <Text style={{color: 'lightgray', fontSize: 16, fontWeight: '500'}}>No Data Available</Text>
                 </View>
             </View>
             <TrackCount/>
@@ -131,7 +131,9 @@ const UploadScreen = () => {
             {trendings != null ?
                 <TrendingItems/>
                 :
-                <></>
+                <View style={{flex: 4, justifyContent: 'center', alignItems: 'center'}}>
+                    <ActivityIndicator size="small" color="lightgray"/>
+                </View>
             }
 
         </KeyboardAwareScrollView>

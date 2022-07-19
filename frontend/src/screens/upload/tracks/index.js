@@ -88,7 +88,7 @@ const MyTracksScreen = ({route}) => {
         />
         :
         <View style={{alignItems: 'center', justifyContent: 'center', paddingVertical: 20,}}>
-          <Text>No {capitalizeFirstLetter(uploadType) + "s"} Available</Text>
+          <Text style={{color: 'lightgray'}}>No {capitalizeFirstLetter(uploadType) + "s"} Available</Text>
         </View>
       }
 

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList, Image} from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Image, ActivityIndicator} from 'react-native'
 import React, {useEffect, useState, useMemo} from 'react'
 import styles from './styles'
 import { Feather, Entypo } from '@expo/vector-icons';
@@ -72,40 +72,44 @@ const ProfileWorks = ({work, user}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.sectionContainer}>
-        <Text style={styles.sectionTitle}>Popular</Text>
-        <View style={styles.popularTracksContainer}>
-            {popularTracks != null ?    
-                <RenderPopularTracks />
-                :
-                <Text style={{color: 'white'}}>LOADING...</Text>
-            }
+      {popularTracks == null || previewTracks == null ?
+        <View style={styles.loader}>
+          <ActivityIndicator size="small" color="lightgray"/>
         </View>
-      </View>
-      <View style={styles.sectionContainer}>
-        <View style={styles.sectionContainerHeader}> 
-          <Text style={styles.sectionTitle}>Tracks</Text>
-          <TouchableOpacity style={styles.showButton} onPress={() => navigation.navigate("showAllTracks", {user: user, uploads: work})}> 
-            <Text style={styles.showButtonText}>Show all</Text>
-          </TouchableOpacity>
-        </View>
-            {previewTracks != null && previewTracks.length > 0 ?
-              <FlatList 
-                data={previewTracks}
-                keyExtractor={item => item.title}
-                horizontal={true}
-                renderItem={renderItem}
-                style={styles.previewTracksContainer}
-                initialNumToRender={0}
-                maxToRenderPerBatch={5}
-                windowSize={5}
-                removeClippedSubviews={true}
-                decelerationRate={'normal'}
-              />
-              :
-              <NoTracks />
-            }
-      </View>
+        :
+        <>
+          <View style={styles.sectionContainer}>
+            <Text style={styles.sectionTitle}>Popular</Text>
+            <View style={styles.popularTracksContainer}>
+              <RenderPopularTracks />
+            </View>
+          </View>
+          <View style={styles.sectionContainer}>
+            <View style={styles.sectionContainerHeader}> 
+              <Text style={styles.sectionTitle}>Tracks</Text>
+              <TouchableOpacity style={styles.showButton} onPress={() => navigation.navigate("showAllTracks", {user: user, uploads: work})}> 
+                <Text style={styles.showButtonText}>Show all</Text>
+              </TouchableOpacity>
+            </View>
+                {previewTracks != null && previewTracks.length > 0 ?
+                  <FlatList 
+                    data={previewTracks}
+                    keyExtractor={item => item.title}
+                    horizontal={true}
+                    renderItem={renderItem}
+                    style={styles.previewTracksContainer}
+                    initialNumToRender={0}
+                    maxToRenderPerBatch={5}
+                    windowSize={5}
+                    removeClippedSubviews={true}
+                    decelerationRate={'normal'}
+                  />
+                  :
+                  <NoTracks />
+                }
+          </View>
+        </>
+      }
     </View>
   )
 }

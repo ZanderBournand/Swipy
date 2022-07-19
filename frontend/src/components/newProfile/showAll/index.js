@@ -84,7 +84,7 @@ const ShowAllTracks = ({route}) => {
         />
         :
         <View style={{alignItems: 'center', justifyContent: 'center', paddingVertical: 20,}}>
-          <Text>No {capitalizeFirstLetter(workType) + "s"} Available</Text>
+          <Text style={{color: 'lightgray'}}>No {capitalizeFirstLetter(workType) + "s"} Available</Text>
         </View>
       }
 

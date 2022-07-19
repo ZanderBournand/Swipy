@@ -20,7 +20,7 @@ export default function NavBarGeneralBlack ({title='NavBarGeneral', leftButton={
 
         <TouchableOpacity style={styles.button} onPress={() => rightButton.display ? rightButton.action() : null}>
             {rightButton.display &&
-              <Feather name={rightButton.name} size={26} color={'#FC77CB'}/>
+              <Feather name={rightButton.name} size={26} color={'lightgray'}/>
             }
         </TouchableOpacity>
     </View>

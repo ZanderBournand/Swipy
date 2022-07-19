@@ -4,6 +4,11 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingHorizontal: 15,
     },
+    loader: {
+        height: Dimensions.get('window').height * 0.4,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
     sectionContainer: {
         paddingVertical: 5,
     },

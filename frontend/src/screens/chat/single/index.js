@@ -12,10 +12,13 @@ import { useNewMessages } from '../../../hooks/useNewMessages'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import NavBarGeneral from '../../../components/general/navbar'
 import { sendMessage } from '../../../services/connect'
+import {useNavigation} from '@react-navigation/native'
 import NavBarGeneralBlack from '../../../components/general/navbarBlack'
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar'
 
 const ChatSingleScreen = ({ route }) => {
+
+  const navigation = useNavigation()
 
   const {chatId, contactId, user} = route.params
   const [message, setMessage] = useState('')
@@ -34,10 +37,14 @@ const ChatSingleScreen = ({ route }) => {
       return <ChatSingleItem item={item}/>
   }
 
+  const navigateToUser = () => {
+    navigation.navigate('profileOther', {initialUserId: user?.uid, searched: true})
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <FocusAwareStatusBar barStyle="light-content"/>
-      <NavBarGeneralBlack title={user.displayName}/>
+      <NavBarGeneralBlack title={user?.displayName} rightButton={{display: true, name: 'user', action: navigateToUser}}/>
       <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{flex: 1}}>
         <FlatList
               data={messages}
