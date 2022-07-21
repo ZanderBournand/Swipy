@@ -1,5 +1,5 @@
-import { View, Text, ScrollView, StatusBar, TouchableOpacity, Image } from 'react-native'
-import React, {useContext, useEffect, useState } from 'react'
+import { View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Animated } from 'react-native'
+import React, {useContext, useEffect, useState, useRef } from 'react'
 import styles from './styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { useUser } from '../../hooks/useUser'
@@ -16,6 +16,7 @@ import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 import { getStats } from '../../services/helpers'
 import { useConnected } from '../../hooks/useConnected'
 import { openConnectModal } from '../../redux/actions/modal'
+import { ImageHeaderScrollView, TriggeringView } from 'react-native-image-header-scroll-view';
 
 const NewProfileScreen = ({route}) => {
 
@@ -35,6 +36,8 @@ const NewProfileScreen = ({route}) => {
   const [stats, setStats] = useState(null)
   const [connectedPrev, setConnectedPrev] = useState(null)
   const [connectionsCount, setConnectionsCount] = useState(user?.connections)
+
+  const pan = useRef(new Animated.ValueXY()).current
 
   useEffect(() => {
     if (user?.uid === currentUser?.uid && connects?.length > connectionsCount) {
@@ -72,11 +75,41 @@ const NewProfileScreen = ({route}) => {
   }
 
   return (
-    <ScrollView bounces={true} style={styles.container}> 
+    <ScrollView 
+      bounces={true} style={styles.container}
+      scrollEventThrottle={1}
+      onScroll={Animated.event(
+        [{nativeEvent: {contentOffset: { y: pan.y } } }],
+        {
+          useNativeDriver: false
+        }
+      )}
+    > 
       <FocusAwareStatusBar barStyle="light-content"/>
       <View style={styles.profileHeaderContainer}>
         <NewProfileNavBar user={user} searched={searched != null ? searched : false}/>
-        <CachedImage style={styles.profileImage} source={{uri: user?.photoURL}}/>
+        <Animated.Image 
+        resizeMode="cover"
+        style={[styles.profileImage, {
+          transform: [
+            {
+              translateY: pan.y.interpolate({
+                inputRange: [-1000, 0],
+                outputRange: [-100, 0],
+                extrapolate: 'clamp',
+              }),
+            },
+            {
+              scale: pan.y.interpolate({
+                inputRange: [-3000, 0],
+                outputRange: [20, 1],
+                extrapolate: 'clamp',
+              }),
+            },
+          ],
+        }]}
+        source={{uri: user?.photoURL}}
+        />
         <Text style={styles.username}>{user?.displayName}</Text>
       </View>
       <View style={styles.subHeaderContainer}>
@@ -87,7 +120,9 @@ const NewProfileScreen = ({route}) => {
             </View>
             <View style={styles.stats}>
                 <Text style={styles.statsNumber}>{connectionsCount != null ? connectionsCount : 0}</Text>
-                <Text style={styles.statsText}>Connections</Text>
+                <TouchableOpacity onPress={() => {navigation.navigate('sandbox', {user: currentUser})}}>
+                  <Text style={styles.statsText}>Connections</Text>
+                </TouchableOpacity>
             </View>
         </View>
         <View style={styles.buttonsContainer}>

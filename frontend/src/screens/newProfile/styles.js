@@ -11,7 +11,7 @@ const styles = StyleSheet.create({
     profileImage: {
         width: '100%',
         height: '100%',
-        opacity: 0.6
+        opacity: 0.6,
     },
     username: {
         fontFamily: 'inter_extra_bold',
