@@ -41,6 +41,9 @@ const NewProfileScreen = ({route}) => {
   const animate1 = useRef(null)
   const animate2 = useRef(null)
 
+  const [opacity] = useState(new Animated.Value(1))
+  const faded = useRef(false)
+
   useEffect(() => {
     if (user?.uid === currentUser?.uid && connects?.length > connectionsCount) {
       setConnectionsCount(connectionsCount + (connects?.length - connectionsCount))
@@ -59,6 +62,25 @@ const NewProfileScreen = ({route}) => {
       setStats(getStats(uploads))
     }
   }, [uploads])
+
+  const handleScrollOffset = (value) => {
+    if (!faded.current && value < -30) {
+      faded.current = true
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
+    }
+    else if (faded.current && value > -30) {
+      faded.current = false
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
+    }
+  }
 
   const RenderConnectButton = () => {
     return (
@@ -91,7 +113,9 @@ const NewProfileScreen = ({route}) => {
       renderForeground={() => (
         <>
         <Animatable.View style={{flex: 1}} ref={animate1}>
-          <Text style={{color: 'white', backgroundColor: 'transparent',  fontFamily: 'inter_extra_bold', fontSize: 50, position: 'absolute', bottom: '3%', left: '7%'}}>{user?.displayName}</Text>
+          <Animated.Text style={{color: 'white', backgroundColor: 'transparent',  fontFamily: 'inter_extra_bold', fontSize: 50, position: 'absolute', bottom: '3%', left: '7%', opacity: opacity}}>
+            {user?.displayName}
+          </Animated.Text>
         </Animatable.View>
         </>
       )}
@@ -108,6 +132,11 @@ const NewProfileScreen = ({route}) => {
           </Animatable.View>
         </SafeAreaView>
       )}
+      scrollEventThrottle={1}
+      onScroll={(event) => {
+        const scrollOffset = event.nativeEvent.contentOffset.y;
+        handleScrollOffset(scrollOffset);
+      }}
     >
       <TriggeringView
         onBeginHidden={() => {
