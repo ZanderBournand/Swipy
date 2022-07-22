@@ -35,6 +35,7 @@ const NewProfileScreen = ({route}) => {
   const uploads = useUploads(initialUserId)
 
   const [stats, setStats] = useState(null)
+  const [allUploads, setAllUploads] = useState(null)
   const [connectedPrev, setConnectedPrev] = useState(null)
   const [connectionsCount, setConnectionsCount] = useState(user?.connections)
 
@@ -59,6 +60,7 @@ const NewProfileScreen = ({route}) => {
 
   useEffect(() => {
     if (uploads != null) {
+      setAllUploads(uploads)
       setStats(getStats(uploads))
     }
   }, [uploads])
@@ -169,7 +171,7 @@ const NewProfileScreen = ({route}) => {
               }
           </View>
         </View>
-        <ProfileWorks work={uploads} user={user}/>
+        <ProfileWorks work={allUploads} user={user}/>
       </TriggeringView>
     </ImageHeaderScrollView>
 

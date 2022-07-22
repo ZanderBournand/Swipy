@@ -5,6 +5,8 @@ import {useSelector} from 'react-redux'
 import { Feather, Entypo, Ionicons } from '@expo/vector-icons';
 import { getLikeByUpload, updateLike } from '../../../../services/upload';
 import {throttle} from 'throttle-debounce'
+import { useLiked } from '../../../../hooks/useLiked';
+import { useLikedMutation } from '../../../../hooks/useLikedMutation';
 
 const PopularTrack = ({Object, index}) => {
 
@@ -12,25 +14,13 @@ const PopularTrack = ({Object, index}) => {
 
   const [currentLikeState, setCurrentLikeState] = useState(false)
 
-  useEffect(() => {
-    if (Object != null) {
-      getLikeByUpload(Object, currentUser?.uid).then((res) => {
-        setCurrentLikeState(res)
-      })
-      .catch((err) => {
-        return
-      })
-    }
-    return () => {
-      setCurrentLikeState(null)
-    }
-  }, [])
+  const isLiked = useLiked(Object, currentUser?.uid).data
+  const isLikedMutation = useLikedMutation()
 
   const handleUpdateLike = useMemo(
     () =>
       throttle(500, (currentLikeStateInst) => {
-        setCurrentLikeState(!currentLikeStateInst);
-        updateLike(Object, currentUser?.uid, currentLikeStateInst);
+        isLikedMutation.mutate({upload: Object, user: currentUser?.uid, isLiked: currentLikeStateInst})
       }, {noTrailing: true}),
     [Object]
   );
@@ -43,8 +33,8 @@ const PopularTrack = ({Object, index}) => {
             <Text style={styles.popularTrackTitle}>{Object.title}</Text>
             <Text style={styles.popularTrackType}>{Object.type}</Text>
         </View>
-        <TouchableOpacity style={styles.popularTrackButton} onPress={() => handleUpdateLike(currentLikeState)}>
-        <Ionicons size={20} name={currentLikeState ? 'heart' :  'heart-outline'} color='white'/>
+        <TouchableOpacity style={styles.popularTrackButton} onPress={() => handleUpdateLike(isLiked)}>
+        <Ionicons size={20} name={isLiked ? 'heart' :  'heart-outline'} color='white'/>
         </TouchableOpacity>
         <TouchableOpacity style={styles.popularTrackButton} >
             <Entypo name="dots-three-horizontal" size={20} color="lightgray" />
