@@ -1,4 +1,5 @@
-import { View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Animated } from 'react-native'
+import { View, Text, ScrollView, StatusBar, TouchableOpacity, Image, Animated, Dimensions, RefreshControl } from 'react-native'
+import * as Animatable from 'react-native-animatable';
 import React, {useContext, useEffect, useState, useRef } from 'react'
 import styles from './styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -16,7 +17,7 @@ import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 import { getStats } from '../../services/helpers'
 import { useConnected } from '../../hooks/useConnected'
 import { openConnectModal } from '../../redux/actions/modal'
-import { ImageHeaderScrollView, TriggeringView } from 'react-native-image-header-scroll-view';
+import ImageHeaderScrollView, {TriggeringView } from 'react-native-image-header-scroll-view'
 
 const NewProfileScreen = ({route}) => {
 
@@ -37,7 +38,8 @@ const NewProfileScreen = ({route}) => {
   const [connectedPrev, setConnectedPrev] = useState(null)
   const [connectionsCount, setConnectionsCount] = useState(user?.connections)
 
-  const pan = useRef(new Animated.ValueXY()).current
+  const animate1 = useRef(null)
+  const animate2 = useRef(null)
 
   useEffect(() => {
     if (user?.uid === currentUser?.uid && connects?.length > connectionsCount) {
@@ -75,68 +77,73 @@ const NewProfileScreen = ({route}) => {
   }
 
   return (
-    <ScrollView 
-      bounces={true} style={styles.container}
-      scrollEventThrottle={1}
-      onScroll={Animated.event(
-        [{nativeEvent: {contentOffset: { y: pan.y } } }],
-        {
-          useNativeDriver: false
-        }
+    <ImageHeaderScrollView
+      maxHeight={Dimensions.get('window').height * 0.35}
+      minHeight={Dimensions.get('window').height * 0.12}
+      renderHeader={() => (
+        <>
+        <CachedImage source={{uri: user?.photoURL}} style={{ height: Dimensions.get('window').height * 0.35, width: Dimensions.get('window').width, opacity: 0.7}}/>
+        </>
       )}
-    > 
-      <FocusAwareStatusBar barStyle="light-content"/>
-      <View style={styles.profileHeaderContainer}>
+      maxOverlayOpacity={0.6}
+      fadeOutForeground={true}
+      scrollViewBackgroundColor={'#121212'}
+      renderForeground={() => (
+        <>
+        <Animatable.View style={{flex: 1}} ref={animate1}>
+          <Text style={{color: 'white', backgroundColor: 'transparent',  fontFamily: 'inter_extra_bold', fontSize: 50, position: 'absolute', bottom: '3%', left: '7%'}}>{user?.displayName}</Text>
+        </Animatable.View>
+        </>
+      )}
+      renderTouchableFixedForeground={() => (
         <NewProfileNavBar user={user} searched={searched != null ? searched : false}/>
-        <Animated.Image 
-        resizeMode="cover"
-        style={[styles.profileImage, {
-          transform: [
-            {
-              translateY: pan.y.interpolate({
-                inputRange: [-1000, 0],
-                outputRange: [-100, 0],
-                extrapolate: 'clamp',
-              }),
-            },
-            {
-              scale: pan.y.interpolate({
-                inputRange: [-3000, 0],
-                outputRange: [20, 1],
-                extrapolate: 'clamp',
-              }),
-            },
-          ],
-        }]}
-        source={{uri: user?.photoURL}}
-        />
-        <Text style={styles.username}>{user?.displayName}</Text>
-      </View>
-      <View style={styles.subHeaderContainer}>
-        <View style={styles.statsContainer}>
-            <View style={styles.stats}>
-                <Text style={styles.statsNumber}>{(stats != null && stats.length > 0 ? stats[0] : 0)}</Text>
-                <Text style={styles.statsText}>Views</Text>
-            </View>
-            <View style={styles.stats}>
-                <Text style={styles.statsNumber}>{connectionsCount != null ? connectionsCount : 0}</Text>
-                <TouchableOpacity onPress={() => {navigation.navigate('sandbox', {user: currentUser})}}>
+      )}
+      renderFixedForeground={() => (
+        <SafeAreaView>
+          <Animatable.View
+            ref={animate2}
+            style={{justifyContent: 'center', alignItems: 'center', paddingTop: 10, opacity: 0}}
+          >
+            <Text style={{color: 'lightgray', fontSize: 20, fontWeight: 'bold',}}>{user?.displayName}</Text>
+          </Animatable.View>
+        </SafeAreaView>
+      )}
+    >
+      <TriggeringView
+        onBeginHidden={() => {
+          animate2.current.fadeInUp(200)
+          animate1.current.fadeOut(200)
+        }}
+        onDisplay={() => {
+          animate2.current.fadeOut(200)
+          animate1.current.fadeIn(200)
+        }}
+      >
+        <View style={styles.subHeaderContainer}>
+          <View style={styles.statsContainer}>
+              <View style={styles.stats}>
+                  <Text style={styles.statsNumber}>{(stats != null && stats.length > 0 ? stats[0] : 0)}</Text>
+                  <Text style={styles.statsText}>Views</Text>
+              </View>
+              <View style={styles.stats}>
+                  <Text style={styles.statsNumber}>{connectionsCount != null ? connectionsCount : 0}</Text>
                   <Text style={styles.statsText}>Connections</Text>
-                </TouchableOpacity>
-            </View>
+              </View>
+          </View>
+          <View style={styles.buttonsContainer}>
+              {user?.uid != currentUser?.uid ? 
+                  <RenderConnectButton />
+              :
+                  <TouchableOpacity style={styles.followContainer} onPress={() => navigation.navigate('editProfile')}>
+                      <Feather style={styles.followButton} name="edit-2" size={24} color="#E9E9E9" />
+                  </TouchableOpacity>
+              }
+          </View>
         </View>
-        <View style={styles.buttonsContainer}>
-            {user?.uid != currentUser?.uid ? 
-                <RenderConnectButton />
-            :
-                <TouchableOpacity style={styles.followContainer} onPress={() => navigation.navigate('editProfile')}>
-                    <Feather style={styles.followButton} name="edit-2" size={24} color="#E9E9E9" />
-                </TouchableOpacity>
-            }
-        </View>
-      </View>
-      <ProfileWorks work={uploads} user={user}/>
-    </ScrollView>
+        <ProfileWorks work={uploads} user={user}/>
+      </TriggeringView>
+    </ImageHeaderScrollView>
+
   )
 }
 

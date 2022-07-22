@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         paddingVertical: 20,
         paddingHorizontal: 15,
+        backgroundColor: '#121212'
     },
     statsContainer: {
         flexDirection: 'row',
@@ -62,6 +63,13 @@ const styles = StyleSheet.create({
     followButton: {
         paddingHorizontal: 20,
         paddingVertical: 5
+    },
+    navTitleView: {
+        height: 80,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingTop: 16,
+        opacity: 0,
     }
 });
 

@@ -19,7 +19,6 @@ import DrawerScreen from '../../screens/drawer';
 import ShowAllTracks from '../../components/newProfile/showAll';
 import NewProfileScreen from '../../screens/newProfile';
 import PopUp from '../../components/popup';
-import Sandbox from '../../components/sandbox';
 
 const Stack = createStackNavigator()
 const Stack2 = createStackNavigator()
@@ -37,7 +36,6 @@ const Test = () => {
         <Stack.Screen name="showAllTracks" component={ShowAllTracks} options={{headerShown: false}} />
         <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{headerShown: false}} />
         <Stack.Screen name="chatSingle" component={ChatSingleScreen} options={{headerShown: false}} />
-        <Stack.Screen name="sandbox" component={Sandbox} options={{headerShown: false}} />
       </Stack2.Navigator>
       <PopUp/>
     </>

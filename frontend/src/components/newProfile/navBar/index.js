@@ -29,16 +29,16 @@ export default function NewProfileNavBar({ user, searched }) {
   }
 
   return (
-    <View style={styles.container}> 
+    <SafeAreaView style={styles.container}> 
       <TouchableOpacity style={styles.button} onPress={() => {handleNavigationGoBack()}}>
-        <Feather name={searched ? "arrow-left" : "search"} size={20} color='white'/>
+        <Feather style={{padding: 5}} name={searched ? "arrow-left" : "search"} size={20} color='white'/>
       </TouchableOpacity>
       <Text style={styles.text}></Text>
-      <TouchableOpacity style={styles.button} onPress={() => {navigation.openDrawer()}}>
+      <TouchableOpacity style={user?.uid === firebase.auth().currentUser?.uid? styles.button : styles.noButton} onPress={() => {navigation.openDrawer()}}>
         {user?.uid === firebase.auth().currentUser?.uid &&
           <Feather name="menu" size={24} color='white'/>
         }
       </TouchableOpacity>
-    </View>
+    </SafeAreaView>
   )
 }

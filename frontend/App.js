@@ -45,6 +45,8 @@ export default function App() {
       <></>
     )
   }
+
+  console.warn = () => {}
   
   return (
     StatusBar.setBarStyle('default', true),
