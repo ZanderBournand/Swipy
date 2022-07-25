@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList, Image} from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Image, TouchableWithoutFeedback, TouchableHighlight } from 'react-native'
 import React, {useEffect, useState, useMemo} from 'react'
 import styles from './styles'
 import {useSelector} from 'react-redux'
@@ -7,6 +7,7 @@ import { getLikeByUpload, updateLike } from '../../../../services/upload';
 import {throttle} from 'throttle-debounce'
 import { useLiked } from '../../../../hooks/useLiked';
 import { useLikedMutation } from '../../../../hooks/useLikedMutation';
+import { useNavigation } from '@react-navigation/native';
 
 const PopularTrack = ({Object, index}) => {
 
@@ -16,6 +17,8 @@ const PopularTrack = ({Object, index}) => {
 
   const isLiked = useLiked(Object, currentUser?.uid).data
   const isLikedMutation = useLikedMutation()
+
+  const navigation = useNavigation()
 
   const handleUpdateLike = useMemo(
     () =>

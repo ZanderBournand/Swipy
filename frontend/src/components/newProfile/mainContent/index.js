@@ -1,5 +1,5 @@
-import { View, Text, TouchableOpacity, FlatList, Image, ActivityIndicator} from 'react-native'
-import React, {useEffect, useState, useMemo} from 'react'
+import { View, Text, TouchableOpacity, FlatList, Image, ActivityIndicator, TouchableWithoutFeedback} from 'react-native'
+import React, {useEffect, useState, useMemo, useContext} from 'react'
 import styles from './styles'
 import { Feather, Entypo } from '@expo/vector-icons';
 import {Ionicons} from '@expo/vector-icons'
@@ -9,6 +9,9 @@ import {useSelector} from 'react-redux'
 import {getPopular, getPreview} from '../../../services/helpers'
 import { getLikeByUpload, updateLike } from '../../../services/upload';
 import PopularTrack from '../mainContent/popularTrack'
+import { useDispatch } from 'react-redux'
+import {openPopularFeedModal} from '../../../redux/actions/feedmodal'
+import { ProfileCurrentTrackInViewContext } from '../../../Context/ProfileTrackContext';
 
 const ProfileWorks = ({work, user}) => {
 
@@ -18,6 +21,7 @@ const ProfileWorks = ({work, user}) => {
   const currentUser = useSelector((state) => state.auth.currentUser)
 
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (work != null) {
@@ -42,7 +46,11 @@ const ProfileWorks = ({work, user}) => {
     if (popularTracks.length != 0) {
       return (
         popularTracks.map((Object, index) => (
-          <PopularTrack key={Object.title} Object={Object} index={index}/>
+          <TouchableWithoutFeedback key={Object.title}>
+            <View>
+              <PopularTrack Object={Object} index={index}/>
+            </View>
+          </TouchableWithoutFeedback>
         ))
       )
     }

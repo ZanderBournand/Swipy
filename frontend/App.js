@@ -10,11 +10,11 @@ import React, {createContext, useState, useEffect} from 'react'
 import firebase from 'firebase/app'
 import Route from "./src/navigation/main";
 import { QueryClient, QueryClientProvider } from "react-query";
-import {UserContext} from './src/Context/UserContext'
 import { CommentContext } from "./src/Context/CommentContext";
 import * as Font from 'expo-font';
 import useFonts from "./src/hooks/useFonts";
 import { TrackContext } from "./src/Context/TrackContext";
+import { ProfileTrackContext } from "./src/Context/ProfileTrackContext";
 import { AsyncStorage } from "react-native";
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
@@ -51,15 +51,15 @@ export default function App() {
   return (
     StatusBar.setBarStyle('default', true),
     <Provider store={store}>
-      <UserContext>
-        <TrackContext>
-          <CommentContext>
-            <QueryClientProvider client={queryClient}>
-              <Route />
-            </QueryClientProvider>
-          </CommentContext>
+      <TrackContext>
+          <ProfileTrackContext>
+            <CommentContext>
+              <QueryClientProvider client={queryClient}>
+                <Route />
+              </QueryClientProvider>
+            </CommentContext>
+          </ProfileTrackContext>
         </TrackContext>
-      </UserContext>
     </Provider>
   );
 }

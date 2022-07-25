@@ -5,7 +5,6 @@ import styles from './styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { useUser } from '../../hooks/useUser'
 import {Feather} from '@expo/vector-icons'
-import { CurrentUserProfileItemInViewContext } from '../../Context/UserContext'
 import CachedImage from "react-native-expo-cached-image"
 import { useIsFocused } from '@react-navigation/core'
 import {useDispatch, useSelector} from 'react-redux'
@@ -18,6 +17,7 @@ import { getStats } from '../../services/helpers'
 import { useConnected } from '../../hooks/useConnected'
 import { openConnectModal } from '../../redux/actions/modal'
 import ImageHeaderScrollView, {TriggeringView } from 'react-native-image-header-scroll-view'
+import { ProfileCurrentTrackInViewContext } from '../../Context/ProfileTrackContext';
 
 const NewProfileScreen = ({route}) => {
 
@@ -44,6 +44,8 @@ const NewProfileScreen = ({route}) => {
 
   const [opacity] = useState(new Animated.Value(1))
   const faded = useRef(false)
+
+  const media = useContext(ProfileCurrentTrackInViewContext).media
 
   useEffect(() => {
     if (user?.uid === currentUser?.uid && connects?.length > connectionsCount) {
@@ -101,6 +103,8 @@ const NewProfileScreen = ({route}) => {
   }
 
   return (
+    <>
+    <FocusAwareStatusBar barStyle="light-content"/>
     <ImageHeaderScrollView
       maxHeight={Dimensions.get('window').height * 0.35}
       minHeight={Dimensions.get('window').height * 0.12}
@@ -122,7 +126,9 @@ const NewProfileScreen = ({route}) => {
         </>
       )}
       renderTouchableFixedForeground={() => (
-        <NewProfileNavBar user={user} searched={searched != null ? searched : false}/>
+        <>
+          <NewProfileNavBar user={user} searched={searched != null ? searched : false}/>
+        </>
       )}
       renderFixedForeground={() => (
         <SafeAreaView>
@@ -174,7 +180,7 @@ const NewProfileScreen = ({route}) => {
         <ProfileWorks work={allUploads} user={user}/>
       </TriggeringView>
     </ImageHeaderScrollView>
-
+    </>
   )
 }
 

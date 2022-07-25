@@ -1,20 +1,18 @@
 import { combineReducers } from "redux"
 import {auth} from "./auth"
-import {posts} from "./posts"
 import {modal} from "./modal"
-import {chat} from './chat'
 import {connects} from './connects'
 import {uploads} from './uploads'
 import {popup} from './popup'
+import {feedModal} from './feedmodal'
 
 const Reducers = combineReducers({
     auth,
-    posts,
     modal,
-    chat,
     connects,
     uploads,
-    popup
+    popup,
+    feedModal
 })
 
 export default Reducers;

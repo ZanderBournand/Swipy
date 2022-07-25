@@ -5,9 +5,6 @@ import {Video} from 'expo-av'
 import { useIsFocused } from '@react-navigation/core'
 import { useUser } from '../../hooks/useUser'
 import { Audio } from 'expo-av';
-import PostSingleOverlay from '../post/overlay'
-
-import NewPostOverlay from './overlay'
 import { CurrentTrackInViewContext } from '../../Context/TrackContext'
 import { updateViews } from '../../services/upload'
 

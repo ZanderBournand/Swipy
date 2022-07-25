@@ -7,7 +7,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     profileImage: {
-        width:Dimensions.get('window').width * 0.15,
+        width: Dimensions.get('window').width * 0.15,
         aspectRatio: 1/1,
         borderRadius: 15,
         flex: 1,

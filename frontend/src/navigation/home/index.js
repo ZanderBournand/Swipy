@@ -4,14 +4,9 @@ import { createMaterialBottomTabNavigator } from '@react-navigation/material-bot
 import {SafeAreaView} from 'react-native-safe-area-context'
 import { useDispatch } from 'react-redux'
 import { Feather } from '@expo/vector-icons';
-import CameraScreen from '../../screens/camera';
-import ProfileScreen from '../../screens/profile';
 import SearchScreen from '../../screens/search';
-import FeedScreen from '../../screens/feed';
-import FeedNavigation from '../feed';
 import firebase from 'firebase'
 import ChatScreen from '../../screens/chat/list'
-import { useChats } from '../../hooks/useChats'
 import UploadScreen from '../../screens/upload/home'
 import UploadNavigation from '../upload'
 import FeedTestScreen from '../../screens/feedTest'
@@ -25,7 +20,6 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function HomeScreen() {
 
-  useChats();
   useConnects();
   useUploadsNew()
 
