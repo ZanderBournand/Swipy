@@ -17,6 +17,7 @@ import ShowAllTracks from '../../components/newProfile/showAll';
 import NewProfileScreen from '../../screens/newProfile';
 import PopUp from '../../components/popup';
 import FeedModal from '../../components/feedModal';
+import PlayerModal from '../../components/playerModal';
 
 const Stack = createStackNavigator()
 const Stack2 = createStackNavigator()
@@ -35,6 +36,7 @@ const Test = () => {
       </Stack2.Navigator>
       <PopUp/>
       <FeedModal/>
+      <PlayerModal />
     </>
   )
 }

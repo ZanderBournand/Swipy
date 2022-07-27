@@ -5,6 +5,8 @@ import {connects} from './connects'
 import {uploads} from './uploads'
 import {popup} from './popup'
 import {feedModal} from './feedmodal'
+import {playerModal} from './playerModal'
+import {playerModalPlaying}from './playerModal'
 
 const Reducers = combineReducers({
     auth,
@@ -12,7 +14,9 @@ const Reducers = combineReducers({
     connects,
     uploads,
     popup,
-    feedModal
+    feedModal,
+    playerModal,
+    playerModalPlaying
 })
 
 export default Reducers;

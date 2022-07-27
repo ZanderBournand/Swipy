@@ -18,11 +18,13 @@ import { useConnected } from '../../hooks/useConnected'
 import { openConnectModal } from '../../redux/actions/modal'
 import ImageHeaderScrollView, {TriggeringView } from 'react-native-image-header-scroll-view'
 import { ProfileCurrentTrackInViewContext } from '../../Context/ProfileTrackContext';
+import { clearPlayerModal } from '../../redux/actions/playerModal';
 
 const NewProfileScreen = ({route}) => {
 
   const dispatch = useDispatch()
   const navigation = useNavigation();
+  const isFocused = useIsFocused()
 
   const {initialUserId, searched} = route.params;
 
@@ -66,6 +68,12 @@ const NewProfileScreen = ({route}) => {
       setStats(getStats(uploads))
     }
   }, [uploads])
+
+  useEffect(() => {
+    if (!isFocused) {
+      dispatch(clearPlayerModal())
+    }
+  }, [isFocused])
 
   const handleScrollOffset = (value) => {
     if (!faded.current && value < -30) {

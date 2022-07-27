@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React, {createContext, useState} from 'react'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import {SafeAreaView} from 'react-native-safe-area-context'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Feather } from '@expo/vector-icons';
 import SearchScreen from '../../screens/search';
 import firebase from 'firebase'
@@ -22,6 +22,8 @@ export default function HomeScreen() {
 
   useConnects();
   useUploadsNew()
+
+//   , borderTopWidth: (modalState?.open) ? 3 : 0, borderColor: (modalState?.open) ? '#353535' : ''
 
   return (
     <Tab.Navigator barStyle={{backgroundColor: '#030303'}} initialRouteName="feed">

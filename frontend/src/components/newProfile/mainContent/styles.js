@@ -71,18 +71,27 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         paddingHorizontal: 10,
     },
-    previewTrackImage: {
+    previewTrackImageContainer: {
         width: '100%',
         aspectRatio: 1/1,
         borderRadius: 5,
-        opacity: 0.9
+        opacity: 0.9,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    previewTrackImage: {
+        height: '100%',
+        width: '100%',
     },
     previewTrackTitle: {
         fontFamily: 'inter_semi_bold',
         paddingTop: 5,
         color: 'white',
         fontSize: 16,
-    }
+    },
+    bottomSpacing: {
+        height: Dimensions.get('window').height * 0.07
+    },
 });
 
 export default styles;

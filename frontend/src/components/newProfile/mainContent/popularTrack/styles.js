@@ -8,12 +8,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 7,
     },
-    popularTrackImage: {
+    popularTrackImageContainer: {
         width: Dimensions.get('window').width * 0.15,
         aspectRatio: 1/1,
         flex: 1,
         borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
+    popularTrackImage: {
+        height: '100%',
+        width: '100%',
+    },
+    overlay: {
+        backgroundColor: 'rgba(0,0,0, 0.5)',
+        ...StyleSheet.absoluteFill,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    overlayAnimation: {
+        width: '50%',
+        aspectRatio: 1/1
+    },  
     popularTrackIndex: {
         color: 'lightgray',
         flex: 0.5,

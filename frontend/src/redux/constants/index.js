@@ -14,6 +14,12 @@ export const FEED_MODAL_OPEN = 'FEED_MODAL_OPEN';``
 
 export const CLEAR_FEED_OPEN = 'CLEAR_FEED_OPEN';
 
+export const PLAYER_MODAL_OPEN = 'PLAYER_MODAL_OPEN';``
+
+export const CLEAR_PLAYER_MODAL = 'CLEAR_PLAYER_MODAL';
+
+export const PLAYER_MODAL_PLAYING = 'PLAYER_MODAL_PLAYING'
+
 export const POPUP_1_OPEN = 'POPUP_1_OPEN';
 
 export const POPUP_2_OPEN = 'POPUP_1_OPEN';

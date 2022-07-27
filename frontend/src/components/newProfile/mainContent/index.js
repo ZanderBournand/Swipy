@@ -10,15 +10,15 @@ import {getPopular, getPreview} from '../../../services/helpers'
 import { getLikeByUpload, updateLike } from '../../../services/upload';
 import PopularTrack from '../mainContent/popularTrack'
 import { useDispatch } from 'react-redux'
-import {openPopularFeedModal} from '../../../redux/actions/feedmodal'
+import {openPlayerModal} from '../../../redux/actions/playerModal'
 import { ProfileCurrentTrackInViewContext } from '../../../Context/ProfileTrackContext';
+import LottieView from 'lottie-react-native'
+import PreviewTrack from './previewTrack';
 
 const ProfileWorks = ({work, user}) => {
 
   const [popularTracks, setPopularTracks] = useState(null)
   const [previewTracks, setPreviewTracks] = useState(null)
-
-  const currentUser = useSelector((state) => state.auth.currentUser)
 
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -30,15 +30,20 @@ const ProfileWorks = ({work, user}) => {
     }
   }, [work])
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}) => {
     return (
-      <View style={styles.previewTrackContainer}>
-        <Image style={styles.previewTrackImage} source={{uri: item.media.artwork}}/>
-        <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around'}}>
-          <Text style={styles.previewTrackTitle}>{item.title}</Text>
-          <Text style={{color: 'gray'}}>{item.type}</Text>
+      <TouchableWithoutFeedback onPress={() => {
+        dispatch(openPlayerModal({
+          user: user?.displayName,
+          list: previewTracks,
+          index: index,
+          track: item
+        }))
+      }}>
+        <View>
+          <PreviewTrack item={item}/>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     )
   }
 
@@ -46,7 +51,14 @@ const ProfileWorks = ({work, user}) => {
     if (popularTracks.length != 0) {
       return (
         popularTracks.map((Object, index) => (
-          <TouchableWithoutFeedback key={Object.title}>
+          <TouchableWithoutFeedback key={Object.title} onPress={() => {
+            dispatch(openPlayerModal({
+              user: user?.displayName,
+              list: popularTracks,
+              index: index,
+              track: Object
+            }))
+          }}>
             <View>
               <PopularTrack Object={Object} index={index}/>
             </View>
@@ -115,6 +127,9 @@ const ProfileWorks = ({work, user}) => {
                   :
                   <NoTracks />
                 }
+          </View>
+          <View style={styles.bottomSpacing}>
+            <></>
           </View>
         </>
       }
