@@ -1,5 +1,5 @@
 import { View, Text, TouchableOpacity, Image } from 'react-native'
-import React, {useState, useEffect, useMemo} from 'react'
+import React, {useState, useEffect, useMemo, useRef} from 'react'
 import styles from './styles'
 import { Feather, Ionicons } from '@expo/vector-icons'; 
 import {useSelector} from 'react-redux'
@@ -9,19 +9,23 @@ import {dateFormat} from "../../../services/helpers"
 import { getLikeByUpload, updateLike } from '../../../services/upload';
 import { useLiked } from '../../../hooks/useLiked';
 import { useLikedMutation } from '../../../hooks/useLikedMutation';
+import LottieView from 'lottie-react-native'
 
 const BestWorkItemBlack = ({ item }) => {
 
   const currentUser = useSelector((state) => state.auth.currentUser)
+  const playingState = useSelector(state => state.playerModalPlaying)
+  const playerState = useSelector(state => state.playerModal)
+
+  const [likeCounter, setLikeCounter] = useState(item.likesCount)
+  const animation = useRef(null);
+
+  const isLiked = useLiked(item, currentUser?.uid).data
+  const isLikedMutation = useLikedMutation()
 
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
-  const [likeCounter, setLikeCounter] = useState(item.likesCount)
-
-  const isLiked = useLiked(item, currentUser?.uid).data
-  const isLikedMutation = useLikedMutation()
 
   const handleUpdateLike = useMemo(
     () =>
@@ -33,10 +37,31 @@ const BestWorkItemBlack = ({ item }) => {
     [item]
   );
 
+  useEffect(() => {
+    if (playingState?.playing) {
+      animation.current?.play()
+    }
+    else {
+      animation.current?.pause()
+    }
+  }, [playingState])
+
   return (
     <View style={styles.container}>
       <View style={{flex: 1, backgroundColor: 'row'}}>
         <Image source={{uri: item.media.artwork}} style={styles.artwork}/>
+        {playerState?.data.track === item ?
+          <View style={styles.overlay}>
+            <LottieView 
+              ref={animation}
+              style={styles.overlayAnimation}
+              source={require("../../../../assets/lottie/lf20_qxtct4ei.json")}
+              autoPlay
+            />
+          </View>
+          :
+          <></>
+        }
       </View>
       <View style={styles.description}>
         <Text adjustsFontSizeToFit={true} numberOfLines={1} style={{fontFamily: 'inter_medium', fontSize: 18, flex: 1, color: 'lightgray'}}>{item.title}</Text>

@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, FlatList, StatusBar } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, Dimensions } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import styles from './styles'
 import {SafeAreaView} from 'react-native-safe-area-context'
@@ -50,7 +50,7 @@ const MyTracksScreen = ({route}) => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FocusAwareStatusBar barStyle="light-content"/>
       <View style={styles.topContainer}>
         <View style={styles.titleContainer}>
@@ -85,6 +85,7 @@ const MyTracksScreen = ({route}) => {
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           removeClippedSubviews
+          contentContainerStyle={{paddingBottom:  Dimensions.get('window').height * 0.04}}
         />
         :
         <View style={{alignItems: 'center', justifyContent: 'center', paddingVertical: 20,}}>

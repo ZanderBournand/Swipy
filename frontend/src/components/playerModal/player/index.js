@@ -6,6 +6,8 @@ import {Ionicons, MaterialCommunityIcons, Feather} from '@expo/vector-icons'
 import { Audio } from 'expo-av';
 import { changePlayingStatus, openPlayerModal } from '../../../redux/actions/playerModal'
 import { updateViews } from '../../../services/upload'
+import shorthash from 'shorthash';
+import * as FileSystem from 'expo-file-system'
 
 const Player = () => {
     
@@ -16,6 +18,17 @@ const Player = () => {
   const [sound, setSound] = useState(null);
 
   const dispatch = useDispatch()
+
+  const getURI = async (uri) => {
+    const name = shorthash.unique(uri)
+    const path = `${FileSystem.cacheDirectory}${name}`;
+    const audio = await FileSystem.getInfoAsync(path + ".mp3");
+    if (audio.exists) {
+      return audio.uri
+    }
+    const newAudio = await FileSystem.downloadAsync(uri, path + ".mp3")
+    return newAudio.uri
+  }
 
   useEffect(() => {
 
@@ -28,8 +41,9 @@ const Player = () => {
 
     if (sound == null) {
         const createSound = async () => {
+            const uriToDownload = await getURI(item?.media.audio)
             const {sound} = await Audio.Sound.createAsync(
-              {uri: item?.media.audio},
+              {uri: uriToDownload},
               {isLooping: false, shouldPlay: true}
             )
             dispatch(changePlayingStatus(true))
@@ -41,11 +55,12 @@ const Player = () => {
     }
     else {
         if (sound?._loaded) {
-            unload();
+          unload();
         }
         const changeSound = async () => {
-            sound.loadAsync({uri: item?.media.audio}, {shouldPlay: true})
-            dispatch(changePlayingStatus(true))
+          const uriToDownload = await getURI(item?.media.audio)
+          sound.loadAsync({uri: uriToDownload}, {shouldPlay: true})
+          dispatch(changePlayingStatus(true))
         }
         changeSound()
     }

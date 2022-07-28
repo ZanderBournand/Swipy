@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity, FlatList, StatusBar } from 'react-native'
+import { View, Text, TouchableOpacity, FlatList, TouchableWithoutFeedback, Dimensions } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import {useNavigation} from "@react-navigation/native"
+import { useDispatch, useSelector } from 'react-redux'
 import {SafeAreaView} from 'react-native-safe-area-context'
 import {Feather} from '@expo/vector-icons'
 import CachedImage from 'react-native-expo-cached-image'
@@ -9,10 +10,13 @@ import {sortUploads} from "../../../services/helpers"
 import { useIsFocused } from '@react-navigation/core'
 import BestWorkItemBlack from '../../upload/bestWorkBlack'
 import FocusAwareStatusBar from '../../general/lightStatusBar'
+import { openPlayerModal } from '../../../redux/actions/playerModal'
 
 const ShowAllTracks = ({route}) => {
 
   const {user, uploads} = route.params
+
+  const playerState = useSelector(state => state.playerModal)
 
   const [workType, setWorkType] = useState("song")
   const [data, setData] = useState(null)
@@ -20,6 +24,7 @@ const ShowAllTracks = ({route}) => {
   const workSorted = sortUploads(uploads)
 
   const navigation = useNavigation()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (workSorted != null) {
@@ -32,10 +37,21 @@ const ShowAllTracks = ({route}) => {
     }
   }, [workSorted, workType])
 
-  const renderItem = ({item}) => {
+  const renderItem = ({item, index}) => {
     return (
         <View style={{paddingVertical: 0, paddingLeft: 20}}>
-          <BestWorkItemBlack item={item} />
+          <TouchableWithoutFeedback onPress={() => {
+            dispatch(openPlayerModal({
+              user: user?.displayName,
+              list: data,
+              index: index,
+              track: item
+            }))
+          }}>
+            <View>
+              <BestWorkItemBlack item={item} />
+            </View>
+          </TouchableWithoutFeedback>
         </View>
     )
   }
@@ -45,7 +61,7 @@ const ShowAllTracks = ({route}) => {
   }
   
   return (
-    <SafeAreaView style={{backgroundColor: '#121212', height: '100%'}}>
+    <SafeAreaView style={{backgroundColor: '#121212', height: '100%'}} edges={['top', 'left', 'right']}>
       <FocusAwareStatusBar barStyle="light-content"/>
   
       <View style={styles.topContainer}>
@@ -81,6 +97,7 @@ const ShowAllTracks = ({route}) => {
           renderItem={renderItem}
           keyExtractor={(item) => item.id}
           removeClippedSubviews
+          contentContainerStyle={{paddingBottom: (playerState?.open) ? Dimensions.get('window').height * 0.08 : Dimensions.get('window').height * 0.04}}
         />
         :
         <View style={{alignItems: 'center', justifyContent: 'center', paddingVertical: 20,}}>

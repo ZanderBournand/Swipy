@@ -13,6 +13,7 @@ import FeedTestScreen from '../../screens/feedTest'
 import NewFeedNavigation from '../newFeed'
 import NewProfileScreen from '../../screens/newProfile'
 import MessagesNavigation from '../messages'
+import ProfileNavigation from "../profile"
 import { useConnects } from '../../hooks/useConnects'
 import { useUploadsNew } from '../../hooks/useUploadsNew'
 
@@ -22,8 +23,6 @@ export default function HomeScreen() {
 
   useConnects();
   useUploadsNew()
-
-//   , borderTopWidth: (modalState?.open) ? 3 : 0, borderColor: (modalState?.open) ? '#353535' : ''
 
   return (
     <Tab.Navigator barStyle={{backgroundColor: '#030303'}} initialRouteName="feed">
@@ -65,7 +64,7 @@ export default function HomeScreen() {
         /> 
         <Tab.Screen 
             name="Me" 
-            component={NewProfileScreen}
+            component={ProfileNavigation}
             options={{
                 tabBarIcon: ({color}) => (
                     <Feather name="user" size={24} color={color}/>

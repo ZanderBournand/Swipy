@@ -69,12 +69,6 @@ const NewProfileScreen = ({route}) => {
     }
   }, [uploads])
 
-  useEffect(() => {
-    if (!isFocused) {
-      dispatch(clearPlayerModal())
-    }
-  }, [isFocused])
-
   const handleScrollOffset = (value) => {
     if (!faded.current && value < -30) {
       faded.current = true

@@ -34,7 +34,17 @@ const styles = StyleSheet.create({
         fontSize: 16, 
         paddingLeft: 2,
         color: 'lightgray',
-    }
+    },
+    overlay: {
+        backgroundColor: 'rgba(0,0,0, 0.5)',
+        ...StyleSheet.absoluteFill,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    overlayAnimation: {
+        width: '50%',
+        aspectRatio: 1/1
+    },  
 });
 
 export default styles;

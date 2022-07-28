@@ -149,7 +149,7 @@ const NewFeedScreen = ({route}) => {
     return (
       <>
       <NewPostOverlay scrollLeft={scrollLeft} scrollRight={scrollRight} play={togglePlay} pause={togglePause}/>
-      <View style={{flex: 1, height: feedItemListHeight, backgroundColor: 'black', alignItems: 'center', justifyContent: 'center'}}>
+      <View style={{flex: 1, height: feedItemListHeight, alignItems: 'center', justifyContent: 'center', opacity: 1}}>
         <FlatList 
           data={item.work}
           horizontal={true}
