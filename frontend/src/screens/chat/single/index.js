@@ -36,11 +36,11 @@ const ChatSingleScreen = ({ route }) => {
   }
 
   const navigateToUser = () => {
-    navigation.navigate('profileOther', {initialUserId: user?.uid, searched: true})
+    navigation.navigate('profile', {screen: 'profileOther', params: {initialUserId: user?.uid, searched: true}})
   }
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
       <FocusAwareStatusBar barStyle="light-content"/>
       <NavBarGeneralBlack title={user?.displayName} rightButton={{display: true, name: 'user', action: navigateToUser}}/>
       <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{flex: 1}}>
@@ -52,6 +52,7 @@ const ChatSingleScreen = ({ route }) => {
               windowSize={10}
               maxToRenderPerBatch={5}
               keyExtractor={(item) => item.id}
+              contentContainerStyle={{paddingTop: 10}}
         />
         <View style={styles.containerInput}>
           <TextInput style={styles.input} value={message} onChangeText={setMessage} placeholder="Send a message..." placeholderTextColor="white"/>

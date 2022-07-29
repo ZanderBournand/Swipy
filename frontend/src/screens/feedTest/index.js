@@ -190,23 +190,23 @@ const NewFeedScreen = ({route}) => {
 
   return (
     <>
-    <View style={{flex: 1, backgroundColor: 'black'}}>
-        <FlatList 
-          data={work}
-          windowSize={4}
-          initialNumToRender={0}
-          maxToRenderPerBatch={2}
-          removeClippedSubviews={true}
-          keyExtractor={(item) => item.user}
-          viewabilityConfig={{
-            itemVisiblePercentThreshold: 100,
-          }}
-          onViewableItemsChanged={onViewableItemsChanged1}
-          renderItem={({item, index}) => (<RenderUserWork item={item} currentIndex={index}/>)}
-          pagingEnabled
-          decelerationRate={'fast'}
-        />
-    </View>
+      <View style={{flex: 1, backgroundColor: 'black'}}>
+          <FlatList 
+            data={work}
+            windowSize={4}
+            initialNumToRender={0}
+            maxToRenderPerBatch={2}
+            removeClippedSubviews={true}
+            keyExtractor={(item) => item.user}
+            viewabilityConfig={{
+              itemVisiblePercentThreshold: 100,
+            }}
+            onViewableItemsChanged={onViewableItemsChanged1}
+            renderItem={({item, index}) => (<RenderUserWork item={item} currentIndex={index}/>)}
+            pagingEnabled
+            decelerationRate={'fast'}
+          />
+      </View>
     </>
   )
 }

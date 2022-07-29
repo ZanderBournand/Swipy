@@ -16,6 +16,7 @@ import useFonts from "./src/hooks/useFonts";
 import { TrackContext } from "./src/Context/TrackContext";
 import { ProfileTrackContext } from "./src/Context/ProfileTrackContext";
 import { AsyncStorage } from "react-native";
+import AppLoaded from "./src/Context/AppLoaded";
 
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
@@ -52,14 +53,16 @@ export default function App() {
     StatusBar.setBarStyle('default', true),
     <Provider store={store}>
       <TrackContext>
+        <AppLoaded>
           <ProfileTrackContext>
-            <CommentContext>
-              <QueryClientProvider client={queryClient}>
-                <Route />
-              </QueryClientProvider>
-            </CommentContext>
-          </ProfileTrackContext>
-        </TrackContext>
+              <CommentContext>
+                <QueryClientProvider client={queryClient}>
+                  <Route />
+                </QueryClientProvider>
+              </CommentContext>
+            </ProfileTrackContext>
+        </AppLoaded>
+      </TrackContext>
     </Provider>
   );
 }

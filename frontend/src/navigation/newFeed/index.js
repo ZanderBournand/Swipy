@@ -1,13 +1,19 @@
 import { View, Text, StatusBar } from 'react-native'
-import React, {useLayoutEffect} from 'react'
+import React, {useLayoutEffect, useEffect} from 'react'
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs'
+import { createStackNavigator } from '@react-navigation/stack';
 import { useIsFocused } from '@react-navigation/core'
 import NewFeedScreen from '../../screens/feedTest';
-import {useSelector} from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import FocusAwareStatusBar from '../../components/general/lightStatusBar'
 import { useNavigation } from '@react-navigation/native'
+import NewProfileScreen from '../../screens/newProfile';
+import ShowAllTracks from '../../components/newProfile/showAll';
+import { clearPlayerModal } from '../../redux/actions/playerModal';
 
 const Tab = createMaterialTopTabNavigator();
+const FeedStack = createStackNavigator()
+const ProfileStack = createStackNavigator()
 
 const tabBarOptions = {
     showIcon: true,
@@ -33,14 +39,6 @@ const tabBarOptions = {
     activeTintColor: 'white'
 }
 
-const emptyScreen = () => {
-    return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text>WAITING ON INPLEMENTATION</Text>
-        </View>
-    )
-}
-
 const NewFeedNavigation = () => {
 
   const isFocused = useIsFocused()
@@ -58,11 +56,40 @@ const NewFeedNavigation = () => {
   return (
     <View style={{flex: 1, backgroundColor: 'black'}}>
         <FocusAwareStatusBar barStyle="light-content"/>
-        <Tab.Navigator initialRouteName="Home" style={{width: '100%', backgroundColor: 'black'}} tabBarOptions={tabBarOptions} swipeEnabled={false}>
-            <Tab.Screen name="Songs" component={NewFeedScreen} initialParams={{type: 'songs'}}/>
-            <Tab.Screen name="Beats" component={NewFeedScreen} initialParams={{type: 'beats'}}/>
-        </Tab.Navigator>
+        <FeedStack.Navigator>
+          <FeedStack.Screen name="feed" component={FeedScreenNavigation} options={{headerShown: false}}/>
+          <FeedStack.Screen name="profile" component={FeedProfileNavigation} options={{headerShown: false}}/>
+        </FeedStack.Navigator>
     </View>
+  )
+}
+
+const FeedScreenNavigation = () => {
+
+  return (
+    <Tab.Navigator initialRouteName="Home" style={{width: '100%', backgroundColor: 'black'}} tabBarOptions={tabBarOptions} swipeEnabled={false}>
+        <Tab.Screen name="Songs" component={NewFeedScreen} initialParams={{type: 'songs'}}/>
+        <Tab.Screen name="Beats" component={NewFeedScreen} initialParams={{type: 'beats'}}/>
+    </Tab.Navigator>
+  )
+}
+
+const FeedProfileNavigation = () => {
+
+  const isFocused = useIsFocused()
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+      if (!isFocused) {
+          dispatch(clearPlayerModal())
+      }
+  }, [isFocused])
+
+  return (
+      <ProfileStack.Navigator initialRouteName="profileOther">
+          <ProfileStack.Screen name="profileOther" component={NewProfileScreen} options={{headerShown: false}}/>
+          <ProfileStack.Screen name="showAllTracks" component={ShowAllTracks} options={{headerShown: false}}/>
+      </ProfileStack.Navigator>
   )
 }
 

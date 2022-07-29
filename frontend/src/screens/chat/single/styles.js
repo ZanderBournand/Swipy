@@ -7,9 +7,11 @@ const styles = StyleSheet.create({
         backgroundColor: '#121212'
     },
     containerInput: {
-        paddingVertical: 30,
+        paddingVertical: 20,
         paddingHorizontal: 20,
         flexDirection: 'row',
+        borderTopWidth: 0.25,
+        borderColor: '#404040'
     },
     input: {
         backgroundColor: '#303030',

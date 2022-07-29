@@ -25,7 +25,6 @@ const ProfileNavigation = () => {
     return (
         <ProfileStack.Navigator initialRouteName="profileDefault">
             <ProfileStack.Screen name="profileDefault" component={NewProfileScreen} options={{headerShown: false}} initialParams={{initialUserId: firebase.auth().currentUser?.uid}}/>
-            <ProfileStack.Screen name="profileOther" component={NewProfileScreen} options={{headerShown: false}}/>
             <ProfileStack.Screen name="showAllTracks" component={ShowAllTracks} options={{headerShown: false}}/>
         </ProfileStack.Navigator>
     )

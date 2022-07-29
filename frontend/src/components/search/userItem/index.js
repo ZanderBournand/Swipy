@@ -14,7 +14,7 @@ export default function FSearchUserItem({ item }) {
   const [imageLoading, setImageLoading] = useState(false)
 
   return (
-    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('profileOther', {initialUserId: item?.uid, searched: true})}>
+    <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('profile', {screen: 'profileOther', params: {initialUserId: item?.uid, searched: true}})}>
       <CachedImage style={styles.image} source={{ uri: item?.photoURL }} onLoadStart={() => {setImageLoading(true)}} onLoadEnd={() => {setImageLoading(false)}}/>
       <Text style={styles.text}>{item.displayName}</Text>
     </TouchableOpacity>

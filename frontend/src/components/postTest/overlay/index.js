@@ -73,7 +73,7 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
           <View>
             <Text style={styles.title}>{contextTrack?.title}</Text>
           </View>
-          <TouchableOpacity onPress={() => navigation.navigate('profileOther', {initialUserId: user?.uid, searched: true})}>
+          <TouchableOpacity onPress={() => navigation.navigate('profile', {screen: 'profileOther', params: {initialUserId: user?.uid, searched: true}})}>
             <Text style={styles.artist}>{user?.displayName}</Text>
           </TouchableOpacity>
         </View>

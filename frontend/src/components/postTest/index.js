@@ -8,10 +8,7 @@ import { Audio } from 'expo-av';
 import { CurrentTrackInViewContext } from '../../Context/TrackContext'
 import { updateViews } from '../../services/upload'
 import * as SplashScreen from "expo-splash-screen";
-
-SplashScreen.preventAutoHideAsync().catch(() => {
-  /* reloading the app might trigger some race conditions, ignore them */
-});
+import { IsAppLoadedContext } from '../../Context/AppLoaded'
 
 export const PostSingleTest = forwardRef(({item}, parentRef) => {
  
@@ -19,6 +16,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
   const user = useUser(item.creator).data
 
   const {setCurrentTrackInViewContext} = useContext(CurrentTrackInViewContext)
+  const {isAppLoaded, setIsAppLoaded} = useContext(IsAppLoadedContext)
 
   const [sound, setSound] = useState(null);
 
@@ -105,13 +103,11 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
 
   useEffect(() => {
 
-    const stopSplash = async () => {
-      await SplashScreen.hideAsync();
-    }
-
     if (waiting) {
       if (sound?._loaded) {
-        stopSplash()
+        if (!isAppLoaded) {
+          setIsAppLoaded(true)
+        }
         sound.playAsync()
         paused.current = false
         setCurrentTrackInViewContext(null)
