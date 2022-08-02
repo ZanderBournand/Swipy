@@ -5,14 +5,27 @@ import CachedImage from 'react-native-expo-cached-image'
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native'
 import {useUser} from '../../../hooks/useUser'
+import { useSelector } from 'react-redux';
+import { useConnectedMutation } from '../../../hooks/useConnectedMutation';
 
 const InvitePending = ({item, updateInvitations}) => {
 
   const user = useUser(item.user).data
   const navigation = useNavigation()
 
+  const currentUser = useSelector((state) => state.auth.currentUser)
+  const newConnectedMutation = useConnectedMutation()
+
   const acceptInvitation = () => {
     updateInvitations(item, 'accept')
+    newConnectedMutation.mutate({userId: currentUser?.uid, otherUser: user?.uid, newConnectStatus: {
+      connected: true,
+      count: user?.connections + 1,
+    }})
+    newConnectedMutation.mutate({userId: currentUser?.uid, otherUser: currentUser?.uid, newConnectStatus: {
+      connected: true,
+      count: currentUser?.connections + 1,
+    }})
     LayoutAnimation.configureNext(layoutAnimConfig)
   }
 

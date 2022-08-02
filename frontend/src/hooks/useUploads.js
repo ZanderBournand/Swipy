@@ -6,14 +6,16 @@ import firebase from 'firebase'
 
 export const useUploads = (userId, options = {}) => {
 
-    const currentUserUploads = useSelector(state => state.uploads)
+    //const currentUserUploads = useSelector(state => state.uploads)
     const viewedUserUploads = useQuery(keys.uploads(userId), () => getAllUploadsByUserId(userId), options).data
 
-    if (userId === firebase.auth().currentUser?.uid) {
-        return currentUserUploads
-    }
-    else {
-        return viewedUserUploads
-    }
+    return viewedUserUploads
+
+    // if (userId === firebase.auth().currentUser?.uid) {
+    //     return currentUserUploads
+    // }
+    // else {
+    //     return viewedUserUploads
+    // }
 
 }

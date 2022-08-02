@@ -20,7 +20,6 @@ const CommentModal = ({ post }) => {
   const currentUser = useSelector(state => state.auth.currentUser)
 
   const {commentOffset, setCommentOffset} = useContext(CommentOffsetContext)
-
   useEffect(() => {
     commentListener(post.id, setCommentList)
     return () => clearCommentListener()

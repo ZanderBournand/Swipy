@@ -8,7 +8,6 @@ import {useSelector} from "react-redux"
 import CachedImage from 'react-native-expo-cached-image'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import BestWorkItem from '../../../components/upload/bestwork'
 import { useUploads } from '../../../hooks/useUploads'
 import {sortUploads} from "../../../services/helpers"
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar'

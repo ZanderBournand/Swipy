@@ -9,6 +9,7 @@ import { clearModal } from '../../../redux/actions/modal';
 import { sendConnectRequest } from '../../../services/connect';
 import { useConnectedMutation } from '../../../hooks/useConnectedMutation';
 import { openPopup2, openPopup3 } from '../../../redux/actions/popup';
+import { useUser } from '../../../hooks/useUser';
 
 const ConnectModal = ({ uploads, user }) => {
 
@@ -63,14 +64,21 @@ const ConnectModal = ({ uploads, user }) => {
       return item.checked === true
     })
     delete itemSelected.checked
-    sendConnectRequest(currentUser?.uid, user, itemSelected).then((res) => {
+    sendConnectRequest(currentUser?.uid, user?.uid, itemSelected).then((res) => {
       if (res === 'sent') {
         setTimeout(() => {
           dispatch(openPopup2(itemSelected))
         }, 200)
       }
       else if (res === 'complete') {
-        newConnectedMutation.mutate({userId: currentUser?.uid, otherUserId: user, isConnected: false})
+        newConnectedMutation.mutate({userId: currentUser?.uid, otherUser: user?.uid, newConnectStatus: {
+          connected: true,
+          count: user?.connections + 1,
+        }})
+        newConnectedMutation.mutate({userId: currentUser?.uid, otherUser: currentUser?.uid, newConnectStatus: {
+          connected: true,
+          count: currentUser?.connections + 1,
+        }})
         setTimeout(() => {
           dispatch(openPopup3(itemSelected))
         }, 200)

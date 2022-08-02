@@ -19,7 +19,7 @@ const UploadScreen = () => {
   const navigation = useNavigation()
   const [trendings, setTrendings] = useState(null)
 
-  const uploads = useSelector(state => state.uploads)
+  const uploads = useUploads(currentUser?.uid)
 
   useEffect(() => {
     if(uploads != null) {
@@ -34,7 +34,7 @@ const UploadScreen = () => {
                 <Text style={{fontFamily: 'inter_bold', fontSize: 22, color: 'white'}}>
                     My Tracks 
                     <Text style={{fontFamily: 'inter_extra_light'}}> (</Text>
-                    <Text style={{fontFamily: 'inter_bold'}}>{currentUser?.workCount}</Text>
+                    <Text style={{fontFamily: 'inter_bold'}}>{uploads?.songs.length + uploads?.beats.length}</Text>
                     <Text style={{fontFamily: 'inter_extra_light'}}>)</Text>
                 </Text>
             </View>

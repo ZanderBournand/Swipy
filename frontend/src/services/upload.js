@@ -30,52 +30,12 @@ export const createUpload = (type, title, audio, video, artwork) => new Promise(
         ])
         allSavePromises
             .then((media) => {
-                firebase.firestore()
-                    .collection("uploads")
-                    .doc(firebase.auth().currentUser?.uid)
-                    .collection(type+"s")
-                    .add({
-                        creator: firebase.auth().currentUser?.uid,
-                        media: {
-                            audio: media[0],
-                            artwork: media[1]
-                        },
-                        random: {
-                            1: r1,
-                            2: r2,
-                            3: r3
-                        },
-                        title: title,
-                        type: type,
-                        playsCount: 0,
-                        likesCount: 0,
-                        commentsCount: 0,
-                        interactionsCount: 0,
-                        creation: firebase.firestore.FieldValue.serverTimestamp()
-                    })
-                    .then(() => resolve())
-                    .catch(() => reject())
-            })
-            .catch(() => reject())
-    }
-    else {
-        allSavePromises = Promise.all([
-            saveMediaToStorage(audio,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/audio`),
-            saveMediaToStorage(artwork,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/artwork`),
-            saveMediaToStorage(video,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/video`)
-        ])
-        allSavePromises
-        .then((media) => {
-            firebase.firestore()
-                .collection("uploads")
-                .doc(firebase.auth().currentUser?.uid)
-                .collection(type+"s")
-                .add({
+
+                const newUpload = {
                     creator: firebase.auth().currentUser?.uid,
                     media: {
                         audio: media[0],
-                        artwork: media[1],
-                        video: media[2]
+                        artwork: media[1]
                     },
                     random: {
                         1: r1,
@@ -89,8 +49,54 @@ export const createUpload = (type, title, audio, video, artwork) => new Promise(
                     commentsCount: 0,
                     interactionsCount: 0,
                     creation: firebase.firestore.FieldValue.serverTimestamp()
-                })
-                .then(() => resolve())
+                }
+
+                firebase.firestore()
+                    .collection("uploads")
+                    .doc(firebase.auth().currentUser?.uid)
+                    .collection(type+"s")
+                    .add(newUpload)
+                    .then((res) => resolve({...newUpload, id: res.id}))
+                    .catch(() => reject())
+            })
+            .catch(() => reject())
+    }
+    else {
+        allSavePromises = Promise.all([
+            saveMediaToStorage(audio,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/audio`),
+            saveMediaToStorage(artwork,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/artwork`),
+            saveMediaToStorage(video,`uploads/${firebase.auth().currentUser?.uid}/${type+"s"}/${storageUploadId}/video`)
+        ])
+        allSavePromises
+        .then((media) => {
+
+            const newUpload = {
+                creator: firebase.auth().currentUser?.uid,
+                media: {
+                    audio: media[0],
+                    artwork: media[1],
+                    video: media[2]
+                },
+                random: {
+                    1: r1,
+                    2: r2,
+                    3: r3
+                },
+                title: title,
+                type: type,
+                playsCount: 0,
+                likesCount: 0,
+                commentsCount: 0,
+                interactionsCount: 0,
+                creation: firebase.firestore.FieldValue.serverTimestamp()
+            }
+
+            firebase.firestore()
+                .collection("uploads")
+                .doc(firebase.auth().currentUser?.uid)
+                .collection(type+"s")
+                .add(newUpload)
+                .then((res) => resolve({...newUpload, id: res.id}))
                 .catch(() => reject())
         })
         .catch(() => reject())
@@ -385,7 +391,10 @@ export const getLikeByUpload = (upload, uid) =>
       .collection('likes')
       .doc(uid)
       .get()
-      .then((res) => resolve(res.exists));
+      .then((res) => resolve({
+        liked: res.exists,
+        count: upload.likesCount,
+      }));
 });
 
 export const updateLike = (upload, uid, currentLikeState) => {
@@ -431,9 +440,9 @@ export const updateViews = (upload) => {
 
 }
 
-export const changeLikeState = ({upload, user, isLiked}) => new Promise((resolve, reject) => {
+export const changeLikeState = ({upload, user, newLikeStatus}) => new Promise((resolve, reject) => {
 
-    if (isLiked) {
+    if (newLikeStatus.liked) {
         firebase.firestore()
             .collection("uploads")
             .doc(upload.creator)
@@ -458,52 +467,3 @@ export const changeLikeState = ({upload, user, isLiked}) => new Promise((resolve
             .catch(() => reject())
     }
 })
-
-export const userSongsListener = (listener) => {   
-    firebase.firestore()
-        .collection('uploads')
-        .doc(firebase.auth().currentUser?.uid)
-        .collection('songs')
-        .onSnapshot(listener)
-}
-
-export const userBeatsListener = (listener) => {   
-    firebase.firestore()
-        .collection('uploads')
-        .doc(firebase.auth().currentUser?.uid)
-        .collection('beats')
-        .onSnapshot(listener)
-}
-
-// export const getAllUploadsByUserId = (uid = firebase.auth().currentUser?.uid) => new Promise((resolve, reject) => {
-
-//     const uploads = {};
-    
-//     firebase.firestore()
-//         .collection('uploads')
-//         .doc(uid)
-//         .collection('songs')
-//         .get()
-//         .then((res) => {
-//             const songs = res.docs.map((value) => {
-//                 const id = value.id;
-//                 const data = value.data();
-//                 return {id, ...data}
-//             })
-//             uploads.songs = songs
-//         })
-//     firebase.firestore()
-//         .collection('uploads')
-//         .doc(uid)
-//         .collection('beats')
-//         .get()
-//         .then((res) => {
-//             const beats = res.docs.map((value) => {
-//                 const id = value.id;
-//                 const data = value.data();
-//                 return {id, ...data}
-//             })
-//             uploads.beats = beats
-//             resolve(uploads)
-//         })
-// })

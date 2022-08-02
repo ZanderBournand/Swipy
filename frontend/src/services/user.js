@@ -69,7 +69,7 @@ export const queryUsersByEmail = (email) => new Promise((resolve, reject) => {
 export const getUserById= (id) => new Promise((resolve, reject) => {
     
     if (id == null) {
-        resolve({})
+        resolve(null)
     }
     
     firebase.firestore()

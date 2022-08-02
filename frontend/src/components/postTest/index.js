@@ -20,9 +20,7 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
 
   const [sound, setSound] = useState(null);
 
-  const [songDuration, setSongDuration] = useState(null);
-  const [songPosition, setSongPosition] = useState(null)
-  const [viewed, setViewed] = useState(false)
+  const viewed = useRef(false)
 
   const [waiting, setWaiting] = useState(false)
 
@@ -58,18 +56,13 @@ export const PostSingleTest = forwardRef(({item}, parentRef) => {
   }, [])
 
   const getStatus = (playbackStatus) => {
-    setSongDuration(playbackStatus.playableDurationMillis)
-    setSongPosition(playbackStatus.positionMillis)
-  }
-
-  useEffect(() => {
-    if (viewed == false) {
-      if (songPosition > songDuration * 0.35) {
-        setViewed(true)
+    if (viewed.current == false) {
+      if (playbackStatus.positionMillis > playbackStatus.playableDurationMillis * 0.35) {
+        viewed.current = true
         updateViews(item)
       }
     }
-  }, [songPosition])
+  }
 
   useEffect(() => {
   

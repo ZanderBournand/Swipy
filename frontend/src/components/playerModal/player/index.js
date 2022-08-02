@@ -1,5 +1,5 @@
 import { View, Text, Image, TouchableOpacity } from 'react-native'
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import styles from './styles'
 import { useSelector, useDispatch } from 'react-redux'
 import {Ionicons, MaterialCommunityIcons, Feather} from '@expo/vector-icons'
@@ -16,6 +16,9 @@ const Player = () => {
 
   const [playing, setPlaying] = useState(true)
   const [sound, setSound] = useState(null);
+
+  const itemToView = useRef(null)
+  const viewed = useRef(false)
 
   const dispatch = useDispatch()
 
@@ -52,6 +55,8 @@ const Player = () => {
         }
       
         createSound()
+        itemToView.current = playerState?.data.track
+        viewed.current = false
     }
     else {
         if (sound?._loaded) {
@@ -63,15 +68,24 @@ const Player = () => {
           dispatch(changePlayingStatus(true))
         }
         changeSound()
+        itemToView.current = playerState?.data.track
+        viewed.current = false
     }
 
   }, [playerState])
   
   const getStatus = (playbackStatus) => {
 
+    if (viewed.current != true) {
+      if (playbackStatus.positionMillis > playbackStatus.playableDurationMillis * 0.35) {
+        viewed.current = true
+        updateViews(itemToView.current)
+      }
+    }
+
     if(playbackStatus.didJustFinish) {
-        setPlaying(false)
-        dispatch(changePlayingStatus(false))
+      setPlaying(false)
+      dispatch(changePlayingStatus(false))
     }
 
   }
@@ -90,7 +104,9 @@ const Player = () => {
       }
       else {
         if (soundStatus.playableDurationMillis - soundStatus.positionMillis < 0.005 * soundStatus.playableDurationMillis) {
-            sound.replayAsync()
+            sound.replayAsync().then(() => {
+              viewed.current = false
+            })
         }
         dispatch(changePlayingStatus(true))
         sound.playAsync()

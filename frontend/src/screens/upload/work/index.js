@@ -16,10 +16,15 @@ import * as VideoThumbnails from 'expo-video-thumbnails';
 import { createUpload } from '../../../services/upload';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import FocusAwareStatusBar from '../../../components/general/lightStatusBar';
+import { useUploadsMutation } from '../../../hooks/useUploadsMutation';
+import { useUploads } from '../../../hooks/useUploads';
 
 const UploadWorkScreen = () => {
 
   const currentUser = useSelector(state => state.auth.currentUser)
+  const uploads = useUploads(currentUser?.uid)
+
+  const mutateUploads = useUploadsMutation()
 
   const [uploadType, setUploadType] = useState("song")
   const [artworkUpload, setArtworkUpload] = useState(false)
@@ -96,7 +101,18 @@ const UploadWorkScreen = () => {
   const handleSaveUpload = () => {
     setRequestRunning(true)
     createUpload(uploadType, title, audio.uri, video?.uri, artwork)
-      .then(() => {
+      .then((res) => {
+          
+          let newUploads = uploads 
+          const newTrack = res
+
+          if (res.type == 'song') {
+            newUploads.songs = [...newUploads.songs, res]
+          }
+          else if (res.type == 'beat') {
+            newUploads.beats = [...newUploads.beats, res]
+          }
+          mutateUploads.mutate({user: currentUser?.uid, newUploads: newUploads})
           navigation.goBack()
       })
       .catch(() => setRequestRunning(false))

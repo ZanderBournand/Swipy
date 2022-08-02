@@ -1,5 +1,3 @@
-import uploadSong from "../components/upload/uploadSong";
-
 export const truncateString = (lastMessage) => {
     var maxLength = 60;
     if (lastMessage.length < maxLength) return lastMessage;
@@ -119,8 +117,12 @@ export const getPreview = (uploads) => {
     }
 
     totalWork.sort((a, b) => {
-        let tempA = new Date(a.creation.seconds * 1000)
-        let tempB = new Date(b.creation.seconds * 1000)
+
+        const timestamp1 = (a.creation.hasOwnProperty('seconds')) ? a.creation.seconds * 1000 : new Date().getTime().seconds
+        const timestamp2 = (b.creation.hasOwnProperty('seconds')) ? b.creation.seconds * 1000 : new Date().getTime().seconds
+
+        let tempA = new Date(timestamp1)
+        let tempB = new Date(timestamp2)
 
         if (tempA > tempB) {
             return 1

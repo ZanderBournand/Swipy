@@ -1,8 +1,8 @@
-import { View, Text } from 'react-native'
+import { View, Text, Animated, StyleSheet } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import React, {useEffect} from 'react'
+import React, {useEffect, useState, useMemo, useContext, useCallback} from 'react'
 import { userAuthStateListener } from '../../redux/actions';
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, DarkTheme } from '@react-navigation/native'
 import { createStackNavigator, TransitionPresets } from '@react-navigation/stack';
 import AuthScreen from '../../screens/auth';
 import HomeScreen from '../home';
@@ -18,6 +18,10 @@ import NewProfileScreen from '../../screens/newProfile';
 import PopUp from '../../components/popup';
 import FeedModal from '../../components/feedModal';
 import PlayerModal from '../../components/playerModal';
+import * as SplashScreen from "expo-splash-screen";
+import { Asset } from "expo-asset";
+import Constants from "expo-constants";
+import { IsAppLoadedContext } from '../../Context/AppLoaded';
 
 const Stack = createStackNavigator()
 const Stack2 = createStackNavigator()
@@ -68,19 +72,82 @@ export default function Route() {
   }
 
   return (
-    <NavigationContainer>
-        <Stack.Navigator mode="modal" screenOptions={{cardOverlayEnabled: true, ...TransitionPresets.ModalPresentationIOS}}>
-            {currentUserObj.currentUser == null ?       
-                <Stack.Screen name="auth" component={AuthScreen} options={{headerShown: false, ...TransitionPresets.SlideFromRightIOS}} />
-                :
-                <>
-                  <Stack.Screen name="nav" component={Test2} options={{headerShown: false, ...TransitionPresets.DefaultTransition}} />
-                  <Stack.Screen name="modalLogin" component={ModalScreen} options={{headerShown: false}}/>
-                </>
-            }
-        </Stack.Navigator>
-        <Modal/>
-    </NavigationContainer>
+    <AnimatedSplashScreen>
+      <NavigationContainer theme={DarkTheme}>
+          <Stack.Navigator mode="modal" screenOptions={{cardOverlayEnabled: true, ...TransitionPresets.ModalPresentationIOS}}>
+              {currentUserObj.currentUser == null ?       
+                  <Stack.Screen name="auth" component={AuthScreen} options={{headerShown: false, ...TransitionPresets.SlideFromRightIOS}} />
+                  :
+                  <>
+                    <Stack.Screen name="nav" component={Test2} options={{headerShown: false, ...TransitionPresets.DefaultTransition}} />
+                    <Stack.Screen name="modalLogin" component={ModalScreen} options={{headerShown: false}}/>
+                  </>
+              }
+          </Stack.Navigator>
+          <Modal/>
+      </NavigationContainer>
+    </AnimatedSplashScreen>
   )
+
+}
+
+SplashScreen.preventAutoHideAsync().catch(() => {});
+
+function AnimatedSplashScreen({children}) {
+
+    const animation = useMemo(() => new Animated.Value(1), []);
+    const [isAppReady, setAppReady] = useState(false);
+    const [isSplashAnimationComplete, setAnimationComplete] = useState(false);
+
+    const {isAppLoaded} = useContext(IsAppLoadedContext)
+
+    useEffect(() => {
+        if (isAppReady) {
+          Animated.timing(animation, {
+            toValue: 0,
+            duration: 400,
+            useNativeDriver: true,
+          }).start(() => setAnimationComplete(true));
+        }
+    }, [isAppReady]);
+
+    useEffect(() => {
+        if (isAppLoaded) {
+            onImageLoaded()
+        }
+    }, [isAppLoaded])
+
+    const onImageLoaded = useCallback(async () => {
+        try {
+          await SplashScreen.hideAsync();
+          // Load stuff
+          await Promise.all([]);
+        } catch (e) {
+          // handle errors
+        } finally {
+          setAppReady(true);
+        }
+    }, []);
+
+
+    return (
+        <View style={{ flex: 1 }}>
+          {children}
+          {!isSplashAnimationComplete && (
+            <Animated.View
+              pointerEvents="none"
+              style={[
+                StyleSheet.absoluteFill,
+                {
+                  backgroundColor: '#121212',
+                  opacity: animation,
+                },
+              ]}
+            >
+              <></>
+            </Animated.View>
+          )}
+        </View>
+      );
 
 }

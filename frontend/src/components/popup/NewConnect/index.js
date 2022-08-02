@@ -5,7 +5,7 @@ import {useDispatch, useSelector} from 'react-redux'
 import {clearPopup, openPopup2, openPopup3} from '../../../redux/actions/popup'
 import { useNavigation } from '@react-navigation/native'
 
-const NewConnect = ({track}) => {
+const NewConnect = ({data}) => {
 
   const dispatch = useDispatch();
   const navigation = useNavigation()
@@ -16,7 +16,7 @@ const NewConnect = ({track}) => {
             <Text style={styles.titleText}>You Matched!</Text>
         </View>
         <View style={styles.subheaderContainer}>
-            <Text style={styles.descriptionText}>You just matched with your desired {track?.id != 'n/a' ? track?.type == 'song' ? "artist" : "producer" : 'user'}. Feel free to start you conversation by sending the first message!</Text>
+            <Text style={styles.descriptionText}>You just matched with your desired {data?.track?.id != 'n/a' ? data?.track?.type == 'song' ? "artist" : "producer" : 'user'}. Feel free to start you conversation by sending the first message!</Text>
         </View>
         <View style={styles.buttonsContainer3}>
             <TouchableOpacity style={styles.buttonMessages} onPress={() => {

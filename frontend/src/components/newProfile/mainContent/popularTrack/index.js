@@ -37,7 +37,10 @@ const PopularTrack = ({Object, index}) => {
   const handleUpdateLike = useMemo(
     () =>
       throttle(500, (currentLikeStateInst) => {
-        isLikedMutation.mutate({upload: Object, user: currentUser?.uid, isLiked: currentLikeStateInst})
+        isLikedMutation.mutate({upload: Object, user: currentUser?.uid, newLikeStatus: {
+          liked: !currentLikeStateInst.liked,
+          count: (currentLikeStateInst.liked) ? currentLikeStateInst.count - 1 : currentLikeStateInst.count + 1 
+        }})
       }, {noTrailing: true}),
     [Object]
   );
@@ -65,7 +68,7 @@ const PopularTrack = ({Object, index}) => {
             <Text style={styles.popularTrackType}>{Object.type}</Text>
         </View>
         <TouchableOpacity style={styles.popularTrackButton} onPress={() => handleUpdateLike(isLiked)}>
-        <Ionicons size={20} name={isLiked ? 'heart' :  'heart-outline'} color='white'/>
+        <Ionicons size={20} name={isLiked?.liked ? 'heart' :  'heart-outline'} color='white'/>
         </TouchableOpacity>
         <TouchableOpacity style={styles.popularTrackButton} >
             <Entypo name="dots-three-horizontal" size={20} color="lightgray" />

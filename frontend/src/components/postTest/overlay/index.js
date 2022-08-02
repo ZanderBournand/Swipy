@@ -20,17 +20,15 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
   const currentUser = useSelector((state) => state.auth.currentUser)
 
   const [playing, setPlaying] = useState(true)
-
   const [likeState, setLikeState] = useState(false)
 
   const {contextTrack} = useContext(CurrentTrackInViewContext)
 
-  const newConnected = useConnected(currentUser?.uid, contextTrack?.creator).data
+  const user = useUser(contextTrack?.creator).data
+  const newConnected = useConnected(currentUser?.uid, user?.uid, user).data
 
   const isLiked = useLiked(contextTrack, currentUser?.uid).data
   const isLikedMutation = useLikedMutation()
-
-  const user = useUser(contextTrack?.creator).data
   
   const navigation = useNavigation()
   const dispatch = useDispatch()
@@ -39,17 +37,21 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
     setPlaying(true)
   }, [contextTrack])
 
+
   const handleUpdateLike = useMemo(
     () =>
       throttle(500, (currentLikeStateInst) => {
-        isLikedMutation.mutate({upload: contextTrack, user: currentUser?.uid, isLiked: currentLikeStateInst})
+        isLikedMutation.mutate({upload: contextTrack, user: currentUser?.uid, newLikeStatus: {
+          liked: !currentLikeStateInst.liked,
+          count: (currentLikeStateInst.liked) ? currentLikeStateInst.count - 1 : currentLikeStateInst.count + 1 
+        }})
       }, {noTrailing: true}),
     [contextTrack]
   );
 
   useEffect(() => {
-    if (isLiked != null) {
-      setLikeState(isLiked)
+    if (isLiked!= null) {
+      setLikeState(isLiked?.liked)
     }
   }, [isLiked])
 
@@ -80,12 +82,15 @@ const NewPostOverlay = ({scrollLeft, scrollRight, play, pause}) => {
 
         <View style={styles.buttonsContainer}>
           <View style={styles.buttonContainer}>
-            {newConnected == true || currentUser?.uid == contextTrack?.creator ?
+            {newConnected?.connected == true || currentUser?.uid == contextTrack?.creator ?
               <View>
                 <Feather name="user-check" size={28} color="lightgray" />
               </View>
               :
-              <TouchableOpacity style={styles.like} onPress={() => {dispatch(openPopup1(contextTrack))}}>
+              <TouchableOpacity style={styles.like} onPress={() => {dispatch(openPopup1({
+                user: user,
+                track: contextTrack
+              }))}}>
                 <MaterialCommunityIcons name="handshake-outline" size={30} color="lightgray" />
               </TouchableOpacity>
             }

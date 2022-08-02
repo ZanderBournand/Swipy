@@ -12,7 +12,7 @@ export const useLikedMutation = (options = {}) => {
         ...options,
         onMutate: variables => {
             queryClient.setQueryData(
-                keys.liked(variables.upload, variables.user), !variables.isLiked
+                keys.liked(variables.upload, variables.user), variables.newLikeStatus
             )
         }
     })

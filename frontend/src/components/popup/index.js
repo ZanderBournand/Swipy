@@ -37,11 +37,11 @@ const PopUp = () => {
   const renderContent = () => {
     switch(popupState.popupType) {
       case 1:
-        return (<SendConfirmation track={popupState?.data}/>)
+        return (<SendConfirmation data={popupState?.data}/>)
       case 2:
-        return (<SendError track={popupState?.data}/>)
+        return (<SendError data={popupState?.data}/>)
       case 3:
-        return (<NewConnect track={popupState?.data}/>)
+        return (<NewConnect data={popupState?.data}/>)
       default: 
         return (<></>)
     }

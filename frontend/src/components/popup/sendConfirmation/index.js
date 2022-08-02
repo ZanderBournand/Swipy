@@ -5,8 +5,9 @@ import {useDispatch, useSelector} from 'react-redux'
 import {clearPopup, openPopup2, openPopup3} from '../../../redux/actions/popup'
 import { sendConnectRequest } from '../../../services/connect'
 import { useConnectedMutation } from '../../../hooks/useConnectedMutation'
+import { useUser } from '../../../hooks/useUser'
 
-const SendConfirmation = ({track}) => {
+const SendConfirmation = ({data}) => {
 
   const currentUser = useSelector((state) => state.auth.currentUser)
   const dispatch = useDispatch();
@@ -14,17 +15,24 @@ const SendConfirmation = ({track}) => {
   const newConnectedMutation = useConnectedMutation()
 
   const sendInvitation = () => {
-    if (currentUser != null && track != null) {
-        sendConnectRequest(currentUser?.uid, track?.creator, track).then((res) => {
+    if (currentUser != null && data?.track != null) {
+        sendConnectRequest(currentUser?.uid, data?.user.uid, data?.track).then((res) => {
           if (res === 'sent') {
             setTimeout(() => {
-              dispatch(openPopup2(track))
+              dispatch(openPopup2(data))
             }, 200)
           }
           else if (res === 'complete') {
-            newConnectedMutation.mutate({userId: currentUser?.uid, otherUserId: track?.creator, isConnected: false})
+            newConnectedMutation.mutate({userId: currentUser?.uid, otherUser: data?.user.uid, newConnectStatus: {
+              connected: true,
+              count: data?.user?.connections + 1,
+            }})
+            newConnectedMutation.mutate({userId: currentUser?.uid, otherUser: currentUser?.uid, newConnectStatus: {
+              connected: true,
+              count: currentUser?.connections + 1,
+            }})
             setTimeout(() => {
-                dispatch(openPopup3(track))
+              dispatch(openPopup3(data))
             }, 200)
           }
         })
@@ -37,7 +45,7 @@ const SendConfirmation = ({track}) => {
             <Text style={styles.titleText}>Request Confirmation</Text>
         </View>
         <View style={styles.subheaderContainer}>
-            <Text style={styles.descriptionText}>The following will send a Connect Invitation to the {track?.type == 'song' ? "artist" : "producer"} of the track you interacted with</Text>
+            <Text style={styles.descriptionText}>The following will send a Connect Invitation to the {data?.track?.type == 'song' ? "artist" : "producer"} of the track you interacted with</Text>
         </View>
         <View style={styles.buttonsContainer}>
             <TouchableOpacity style={styles.buttonCancel} onPress={() => {dispatch(clearPopup())}}>

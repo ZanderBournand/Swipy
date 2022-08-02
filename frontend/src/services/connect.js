@@ -95,27 +95,43 @@ export const checkConnectStatus = (user1, user2) => new Promise((resolve, reject
 
 export const checkConnected = (user1, user2) => new Promise((resolve, reject) => {
 
-    if (user1 == null || user2 == null) {
-        resolve([])
+    if (user1 == null || user2 == null || user2 === 'undefined'){
+        resolve(null)
+    }
+    
+    if (user1 === user2?.uid) {
+        resolve({
+            connected: true,
+            count: user2?.connections
+        })
     }
 
     firebase.firestore()
         .collection('user')
         .doc(user1)
         .collection('connections')
-        .doc(user2)
+        .doc(user2?.uid)
         .get()
         .then((res) => {
             if (res.exists) {
-                if (res.data().status == 'complete') {
-                    resolve(true)
+                if (res.data()?.status === 'complete') {
+                    resolve({
+                        connected: true,
+                        count: user2?.connections
+                    })
                 }
                 else {
-                    resolve(false)
+                    resolve({
+                        connected: false,
+                        count: user2?.connections
+                    })
                 }
             }
             else {
-                resolve(false)
+                resolve({
+                    connected: false,
+                    count: user2?.connections
+                })
             }
         })
 
@@ -247,11 +263,14 @@ export const sendMessage = (connectId, message) => {
     })
 }
 
-export const useless = ({userId, otherUserId, isConnected}) => new Promise((resolve, reject) => {
-    if (userId != null && otherUserId != null && isConnected != null) {
+export const useless = ({userId, otherUser, isConnected}) => new Promise((resolve, reject) => {
+    if (userId != null && otherUser != null && isConnected != null) {
         resolve()
     }
-    else {
-        reject()
+})
+
+export const useless2 = ({userId}) => new Promise((resolve, reject) => {
+    if (userId != null) {
+        resolve()
     }
 })

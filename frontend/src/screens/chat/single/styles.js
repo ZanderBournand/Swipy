@@ -4,14 +4,14 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'flex-end',
-        backgroundColor: '#121212'
+        backgroundColor: '#121212',
     },
     containerInput: {
         paddingVertical: 20,
         paddingHorizontal: 20,
         flexDirection: 'row',
         borderTopWidth: 0.25,
-        borderColor: '#404040'
+        borderColor: '#404040',
     },
     input: {
         backgroundColor: '#303030',

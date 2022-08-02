@@ -40,10 +40,10 @@ const ChatSingleScreen = ({ route }) => {
   }
 
   return (
-    <SafeAreaView style={styles.container} edges={['top', 'left', 'right']}>
+    <SafeAreaView style={styles.container} edges={['top', 'left', 'right',]}>
       <FocusAwareStatusBar barStyle="light-content"/>
       <NavBarGeneralBlack title={user?.displayName} rightButton={{display: true, name: 'user', action: navigateToUser}}/>
-      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{flex: 1}}>
+      <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{flex: 1}} > 
         <FlatList
               data={messages}
               inverted={-1}

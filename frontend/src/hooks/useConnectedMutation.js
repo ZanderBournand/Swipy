@@ -4,6 +4,7 @@ import { keys } from './queryKeys'
 import firebase from 'firebase'
 import { changeLikeState, updateLike } from '../services/upload'
 import { useless } from '../services/connect'
+import { useSelector } from 'react-redux'
 
 export const useConnectedMutation = (options = {}) => {
 
@@ -11,9 +12,9 @@ export const useConnectedMutation = (options = {}) => {
 
     return useMutation(useless, {
         ...options,
-        onMutate: variables => {
+        onMutate: variables => { 
             queryClient.setQueryData(
-                keys.userConnected(variables.userId, variables.otherUserId), !variables.isConnected
+                keys.userConnected(variables.userId, variables.otherUser), variables.newConnectStatus
             )
         }
     })

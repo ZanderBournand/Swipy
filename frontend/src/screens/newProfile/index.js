@@ -28,39 +28,21 @@ const NewProfileScreen = ({route}) => {
 
   const {initialUserId, searched} = route.params;
 
-  const connects = useSelector(state => state.connects.list)
   const currentUser = useSelector((state) => state.auth?.currentUser)
 
   const user = useUser(initialUserId).data
-  const connected = useConnected(currentUser?.uid, user?.uid).data
+  const connected = useConnected(currentUser?.uid, user?.uid, user).data
 
   const uploads = useUploads(initialUserId)
 
   const [stats, setStats] = useState(null)
   const [allUploads, setAllUploads] = useState(null)
-  const [connectedPrev, setConnectedPrev] = useState(null)
-  const [connectionsCount, setConnectionsCount] = useState(user?.connections)
 
   const animate1 = useRef(null)
   const animate2 = useRef(null)
 
   const [opacity] = useState(new Animated.Value(1))
   const faded = useRef(false)
-
-  const media = useContext(ProfileCurrentTrackInViewContext).media
-
-  useEffect(() => {
-    if (user?.uid === currentUser?.uid && connects?.length > connectionsCount) {
-      setConnectionsCount(connectionsCount + (connects?.length - connectionsCount))
-    }
-  }, [connects])
-
-  useEffect(() => {
-    if (connected == true && connectedPrev == false) {
-      setConnectionsCount(connectionsCount + 1)
-    }
-    setConnectedPrev(connected)
-  }, [connected])
 
   useEffect(() => {
     if (uploads != null) {
@@ -91,12 +73,12 @@ const NewProfileScreen = ({route}) => {
   const RenderConnectButton = () => {
     return (
       <View>
-        {connected ? 
+        {connected?.connected ? 
           <View style={styles.followContainer}>
             <Feather style={styles.followButton} name="user-check" size={24} color="#E9E9E9" />
           </View>
           :
-          <TouchableOpacity style={styles.followContainer} onPress={() => dispatch(openConnectModal(true, {uploads: uploads, user: user?.uid}))}>
+          <TouchableOpacity style={styles.followContainer} onPress={() => dispatch(openConnectModal(true, {uploads: uploads, user: user}))}>
             <Feather style={styles.followButton} name="user-plus" size={24} color="#E9E9E9" />
           </TouchableOpacity>
         }
@@ -165,7 +147,7 @@ const NewProfileScreen = ({route}) => {
                   <Text style={styles.statsText}>Views</Text>
               </View>
               <View style={styles.stats}>
-                  <Text style={styles.statsNumber}>{connectionsCount != null ? connectionsCount : 0}</Text>
+                  <Text style={styles.statsNumber}>{connected != null ? connected?.count : 0}</Text>
                   <Text style={styles.statsText}>Connections</Text>
               </View>
           </View>
